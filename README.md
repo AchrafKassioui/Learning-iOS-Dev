@@ -67,24 +67,24 @@ import SwiftUI
 
 @main
 struct MyAppName: App {
-	var body: some Scene {
-		WindowGroup {
-			ContentView()
-		}
-	}
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
 }
 
 struct ContentView: View {
-	var body: some View {
-		Text("Hello")
-			.padding()
-	}
+    var body: some View {
+        Text("Hello")
+            .padding()
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
-	static var previews: some View {
-		ContentView()
-	}
+    static var previews: some View {
+        ContentView()
+    }
 }
 ```
 
