@@ -1,6 +1,6 @@
 # Learning iOS dev
 
-This is a collection of notes I take while learning native iOS development. Most entries contain a title, a date, some text, and code snippets. Started June 2023.
+This is a collection of notes I take while learning native iOS development, starting from June 2023. They are purposefully written in a candid style, to honestly capture the mental model and fuzziness of learning.
 
 ## The underscore _
 
@@ -10,13 +10,13 @@ Many times in Swift code, I find this ugly symbol in function signatures.
 
 ```swift
 func greet(_ name: String) {
-    print("Hello, \(name)!")
+    print("Hello, \(name)")
 }
 ```
 
-What is it for? Its purpose is to be able to call a function without specifically naming the parameter. Technically, if a function has a signature in the form of `func greet(name: String)`, then calling the function necessairly requires to specify the name of the parameter, `greet(name: "Achraf")`.
+What is the underscore for? Its purpose is to pass a value to a function without specifically naming the parameter. Technically, if a function has a signature in the form of `func greet(name: String)`, then calling the function necessarily requires to specify the name of the parameter, as in `greet(name: "Achraf")`.
 
-However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming that parameter, `greet("Achraf")`.
+However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming that parameter, as in `greet("Achraf")`.
 
 ## People I'd like to chat with
 
@@ -36,7 +36,7 @@ People I'd like to talk to:
 
 *2 November 2023*
 
-A computed property is a variable whose value isn't stored, but instead computed whenever it is called. We use braces `{}` to define it instead of equal `= `.
+A computed property is a variable whose value isn't fixed, but instead computed whenever it is called. We use braces `{}` to define it instead of equal `= `.
 
 ```swift
 var center: CGPoint {
@@ -51,7 +51,7 @@ var center: CGPoint {
 
 *4 September 2023*
 
-Swift has a specific syntactical construction for functions that calls a block of code (a closure).
+Swift has a specific syntactical construction for functions that call a block of code (a closure).
 
 ``` swift
 func travel(action: () -> Void) {
