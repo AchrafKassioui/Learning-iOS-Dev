@@ -1,6 +1,6 @@
 # Learning iOS dev
 
-This is a collections of notes I took while learning native iOS development. Most entries contain a title, a date, some text, and code snippets. Started June 2023.
+This is a collection of notes I take while learning native iOS development. Most entries contain a title, a date, some text, and code snippets. Started June 2023.
 
 ## The underscore _
 
@@ -16,7 +16,7 @@ func greet(_ name: String) {
 
 What is it for? Its purpose is to be able to call a function without specifically naming the parameter. Technically, if a function has a signature in the form of `func greet(name: String)`, then calling the function necessairly requires to specify the name of the parameter, `greet(name: "Achraf")`.
 
-However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming the parameter, `greet("Achraf")`.
+However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming that parameter, `greet("Achraf")`.
 
 ## People I'd like to chat with
 
@@ -28,22 +28,23 @@ People I've talked to about iOS programming:
 - John Knowles *(started end of October 2023)*
 
 People I'd like to talk to:
-- Makers of Medly, the music app *(3 November 2023)*
+- UIBuzz podcaster, about SpriteKit and game development on iOS (*7 November 2023*)
+- Makers of Medly, the music app (*3 November 2023*)
 - Makers of Boring Apps *(3 November 2023)*
 
 ## Computed properties
 
 *2 November 2023*
 
-A computed property is a variable whose value isn't stored, but instead computed whenever it is called. We use braces {} instead of equal = to give it a value.
+A computed property is a variable whose value isn't stored, but instead computed whenever it is called. We use braces `{}` to define it instead of equal `= `.
 
 ```swift
-// the variable name is "origin"
-// its type is "CGPoint"
-// Its value depends on the "size" property inside the braces {}
-var origin: CGPoint {
+var center: CGPoint {
     CGPoint(x: size.width / 2.0, y: size.height / 2.0)
 }
+// the computed property is "center"
+// its type is "CGPoint"
+// its value is dynamically generated whenever it's called
 ```
 
 ## Swift trailing closure
@@ -307,7 +308,7 @@ https://developer.apple.com/swift/blog/?id=10
 
 ```swift
 // π, aka 3.14....
-.p
+.pi
 ```
 
 ## UIKit methods
@@ -346,13 +347,13 @@ While learning SpriteKit, I was writing a method that checks if an element has r
 
 ```swift
 func checkElementBoundaries() {}
-		let bottomLeft = CGPoint.zero
-		let topRight = CGPoint(x: size.width, y: size.height)
-		
-		if element.position.x <= bottomLeft.x {
-			element.position.x = bottomLeft.x
-			velocity.x = -velocity.x
-		}		
+    let bottomLeft = CGPoint.zero
+    let topRight = CGPoint(x: size.width, y: size.height)
+
+    if element.position.x <= bottomLeft.x {
+        element.position.x = bottomLeft.x
+        velocity.x = -velocity.x
+    }		
 }
 ```
 
@@ -392,10 +393,10 @@ import UIKit
 
 class myViewController: UIViewController {
 	override func viewDidLoad() {
-		super.viewDidLoad() //"super" means we call a method from the superclass of this subclass
-    // Code for my view
+		super.viewDidLoad()
 	}	
 }
+// The "super" means we call a method from the superclass of this subclass
 ```
 
 ### Sources
