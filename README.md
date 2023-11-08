@@ -2,6 +2,35 @@
 
 This is a collections of notes I took while learning native iOS development. Most entries contain a title, a date, some text, and code snippets. Started June 2023.
 
+## The underscore _
+
+*8 November 2023*
+
+Many times in Swift code, I find this ugly symbol in function signatures.
+
+```swift
+func greet(_ name: String) {
+    print("Hello, \(name)!")
+}
+```
+
+What is it for? Its purpose is to be able to call a function without specifically naming the parameter. Technically, if a function has a signature in the form of `func greet(name: String)`, then calling the function necessairly requires to specify the name of the parameter, `greet(name: "Achraf")`.
+
+However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming the parameter, `greet("Achraf")`.
+
+## People I'd like to chat with
+
+*3 November 2023*
+
+I'd like to ask these app makers and some programmers in general about their experiences and knowledge.
+
+People I've talked to about iOS programming:
+- John Knowles *(started end of October 2023)*
+
+People I'd like to talk to:
+- Makers of Medly, the music app *(3 November 2023)*
+- Makers of Boring Apps *(3 November 2023)*
+
 ## Computed properties
 
 *2 November 2023*
