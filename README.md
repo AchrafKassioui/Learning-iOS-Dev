@@ -2,6 +2,31 @@
 
 This is a collection of notes I take while learning native iOS development, starting from June 2023. They are purposefully written in a candid style, to honestly capture the mental model and fuzziness of learning.
 
+## Different names for the same parameter
+
+*8 November 2023*
+
+In Swift, we can define a function using 2 different names for the same parameter:
+
+- One name used externally when calling a function
+- One name used internally in the definition of the function
+
+For example:
+
+```swift
+func myFunction(A B: Int) -> Int {
+    var myValue = B + 2
+    return myValue
+}
+// A is the external name of B
+// B is the internal name used within the function definition
+// A and B are both the same parameter
+
+myFunction(A: 5)
+// I call the function using the external name
+// Returns 7
+```
+
 ## The underscore _
 
 *8 November 2023*
