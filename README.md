@@ -43,6 +43,19 @@ What is the underscore for? Its purpose is to pass a value to a function without
 
 However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming that parameter, as in `greet("Achraf")`.
 
+The underscore is also used to name internal variables in a function. It's a Swift common pattern, not a mandatory rule. It's a way of telling yourself and other people that the variable in for internal use only, and does not belong in another context.
+
+Example:
+
+```swift
+func greet(_ name: String) {
+    var _name = name.lowercased()
+    print("Hello, \(_name)")
+}
+
+greet("ACHRAF")
+```
+
 ## People I'd like to chat with
 
 *3 November 2023*
