@@ -2,6 +2,41 @@
 
 This is a collection of notes I take while learning native iOS development, starting from June 2023. They are purposefully written in a candid style, to honestly capture the mental model and fuzziness of learning.
 
+You can use this online Swift compiler to try out some code: https://www.programiz.com/swift/online-compiler/
+
+## inout
+
+*18 November 2023*
+
+The following two blocks of code give the same output:
+
+```Swift
+var A: Int = 3
+var B: Int = 4
+
+func add(term1: Int, term2: Int) {
+    A = term1 + term2
+}
+
+add(term1: A, term2: B)
+print(A) // Output: 7
+```
+```Swift
+var A: Int = 3
+var B: Int = 4
+
+func addInPlace(term1: inout Int, term2: Int) {
+    term1 = term1 + term2
+}
+
+addInPlace(term1: &A, term2: B)
+print(A) // Output: 7
+```
+
+The difference is the usage of `inout` and `&` in the second one, which pushes Swift to modify the value of passed parameter itself. `&` is a way to make sure the user is aware that they are changing the original value.
+
+You could say that `inout` allows the modification of a value, without copying it, and without using a reference or a global variable inside the function's closure.
+
 ## Different names for the same parameter
 
 *8 November 2023*
@@ -27,6 +62,16 @@ myFunction(A: 5)
 // Returns 7
 ```
 
+This feature is used in Apple frameworks such as UIKit and others. Example:
+
+```swift
+override func didMove(to view: SKView) {
+    // ...
+}
+```
+
+The `to` is the external parameter's name, while `view` is the internal one.
+
 ## The underscore _
 
 *8 November 2023*
@@ -43,7 +88,7 @@ What is the underscore for? Its purpose is to pass a value to a function without
 
 However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming that parameter, as in `greet("Achraf")`.
 
-The underscore is also used to name internal variables in a function. It's a Swift common pattern, not a mandatory rule. It's a way of telling yourself and other people that the variable in for internal use only, and does not belong in another context.
+The underscore is also used to name internal variables in a function. It's a Swift common pattern, not a mandatory rule. It's a way of telling yourself and other people that the variable is for internal use only, and does not belong in another context.
 
 Example:
 
