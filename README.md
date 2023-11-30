@@ -4,6 +4,30 @@ This is a collection of notes I take while learning native iOS development, star
 
 You can use this online Swift compiler to try out some code: https://www.programiz.com/swift/online-compiler/
 
+## 9223372036854775807
+
+*27 November 2023*
+
+That's the biggest number that can be stored in an integer variable in Swift.
+
+```Swift
+var number = Int.max
+print(number) // outputs 9223372036854775807
+```
+
+## String interpolation
+
+*19 November 2023*
+
+String interpolation is the way you inject a value of some type into a placeholder that expects a string type. It's fancy name that refers to a common operation:
+
+```Swift
+var myVariable: Int = 10
+Text("\(myVariable)") // in SwiftUI, displays "10"
+```
+
+Note that string interpolation requires to write the value inside a `""`, i.e. a string literal.
+
 ## inout
 
 *18 November 2023*
@@ -129,6 +153,8 @@ var center: CGPoint {
 // its type is "CGPoint"
 // its value is dynamically generated whenever it's called
 ```
+
+A computer property is also called an accessor. Source: https://developer.apple.com/tutorials/developinswifttutorials/custom-views
 
 ## Swift trailing closure
 
@@ -495,13 +521,7 @@ In Swift, in order to insert a string of text + a programmatic element, you do t
 
 ```swift
 Text("Text")
-```
-
-```swift
 Text("\(myProgrammaticElement) example")
-```
-
-```swift
 Text("\(Image(systemName: "clock")) clock")
 ```
 
@@ -571,4 +591,5 @@ Links:
 ## Links and resources
 
 - Good basic tutorial on how to present a SpriteKit scene in a SwiftUI view: https://www.youtube.com/watch?v=Sb7ytck3gMA
+- Miguel de Icaza talks about Swift in general, then advocates Swift for The Godot engine: https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280
 
