@@ -2,8 +2,6 @@
 
 This is a collection of notes I take while learning native iOS development, starting from June 2023. They are purposefully written in a candid style, to honestly capture the mental model and fuzziness of learning.
 
-You can use this online Swift compiler to try out some code: https://www.programiz.com/swift/online-compiler/
-
 ## 9223372036854775807
 
 *27 November 2023*
@@ -49,18 +47,21 @@ print(A) // Output: 7
 var A: Int = 3
 var B: Int = 4
 
-// Note the use of `inout`
+// Notice the use of `inout`
 func addInPlace(term1: inout Int, term2: Int) {
     term1 = term1 + term2
 }
 
+// Notice the use of `&`
 addInPlace(term1: &A, term2: B)
 print(A) // Output: 7
 ```
 
-The difference is the usage of `inout` and `&` in the second one, which pushes Swift to modify the value of passed parameter itself. `&` is a way to make sure the user is aware that they are changing the original value.
+The two blocks give the same output. The difference is the usage of `inout` and `&` in the second block.
 
-You could say that `inout` allows the modification of a value, without copying it, and without using a reference or a global variable inside the function's closure.
+`inout` tells Swift to modify the value of the passed parameter itself. And `&` is a way to make sure the user is aware that the function they are calling uses `inout`, therefore changing the value of the original variable.
+
+`inout` allows the modification of a value, without copying it, and without using a reference or a global variable inside the function's closure.
 
 ## Different names for the same parameter
 
@@ -87,11 +88,11 @@ myFunction(A: 5)
 // Returns 7
 ```
 
-This feature is used in Apple frameworks such as UIKit and others. Example:
+This feature is used extensively in Apple frameworks. For example here with UIKit:
 
 ```swift
 override func didMove(to view: SKView) {
-    // ...
+    // do something with the view parameter
 }
 ```
 
@@ -101,7 +102,7 @@ The `to` is the external parameter's name, while `view` is the internal one.
 
 *8 November 2023*
 
-Many times in Swift code, I find this ugly symbol in function signatures.
+Many times in Swift code, I find this ugly symbol in function signatures:
 
 ```swift
 func greet(_ name: String) {
@@ -109,9 +110,9 @@ func greet(_ name: String) {
 }
 ```
 
-What is the underscore for? Its purpose is to pass a value to a function without specifically naming the parameter. Technically, if a function has a signature in the form of `func greet(name: String)`, then calling the function necessarily requires to specify the name of the parameter, as in `greet(name: "Achraf")`.
+What is the underscore for? Its purpose is to pass a value to a function without specifically naming the parameter. 
 
-However, if the definition of the function adds `_` before the name of the parameter, then we can call the function without naming that parameter, as in `greet("Achraf")`.
+Technically, if a function has a signature in the form of `func greet(name: String)`, then calling the function necessarily requires to specify the name of the parameter, like `greet(name: "Achraf")`. But if you add `_` before the name of the parameter, then we can call the function without naming that parameter, as in `greet("Achraf")`.
 
 The underscore is also used to name internal variables in a function. It's a Swift common pattern, not a mandatory rule. It's a way of telling yourself and other people that the variable is for internal use only, and does not belong in another context.
 
@@ -138,7 +139,6 @@ People I've talked to about iOS programming:
 People I'd like to talk to:
 - UIBuzz podcaster, about SpriteKit and game development on iOS (*7 November 2023*)
 - Makers of Medly, the music app (*3 November 2023*)
-- Makers of Boring Apps *(3 November 2023)*
 
 ## Computed properties
 
@@ -175,7 +175,7 @@ travel {
 }
 ```
 
-To note:
+Notice:
 
 - The definition of `travel` tells the order of execution of code
 - The call of `travel` is a shorthand syntax made without `()` and immediately trailed by a closure `{}`
@@ -350,7 +350,7 @@ class myClass: MyProtocol {
 
 *7 August 2023*
 
-The reason touch handing inside a SpriteKit scene instance is done with the following override:
+The reason touch handling inside a SpriteKit scene instance is done with the following code:
 
 ```swift
 override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -591,6 +591,7 @@ Links:
 
 ## Links and resources
 
-- Good basic tutorial on how to present a SpriteKit scene in a SwiftUI view: https://www.youtube.com/watch?v=Sb7ytck3gMA
-- Miguel de Icaza talks about Swift in general, then advocates Swift for The Godot engine: https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280
+- 🎬 Miguel de Icaza talks about Swift in general, then advocates Swift for The Godot engine: https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280
+- 💻 You can use this online Swift compiler to try out some code: https://www.programiz.com/swift/online-compiler/
+- 🎬 📒 Good basic tutorial on how to present a SpriteKit scene in a SwiftUI view: https://www.youtube.com/watch?v=Sb7ytck3gMA
 
