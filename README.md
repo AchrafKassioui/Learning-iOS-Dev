@@ -32,7 +32,7 @@ Note that string interpolation requires to write the value inside a `""`, i.e. a
 
 *18 November 2023*
 
-The following two blocks of code give the same output:
+This is not a typo. It's indeed `inout`, not `input`. Consider the following two blocks of code:
 
 ```Swift
 var A: Int = 3
@@ -49,6 +49,7 @@ print(A) // Output: 7
 var A: Int = 3
 var B: Int = 4
 
+// Note the use of `inout`
 func addInPlace(term1: inout Int, term2: Int) {
     term1 = term1 + term2
 }
