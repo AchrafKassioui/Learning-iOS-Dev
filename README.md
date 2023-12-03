@@ -88,7 +88,7 @@ myFunction(A: 5)
 // Returns 7
 ```
 
-This feature is used extensively in Apple frameworks. For example here with UIKit:
+This feature is used extensively in Apple frameworks. For example here in UIKit:
 
 ```swift
 override func didMove(to view: SKView) {
