@@ -59,7 +59,7 @@ print(A) // Output: 7
 
 The two blocks give the same output. The difference is the usage of `inout` and `&` in the second block.
 
-`inout` tells Swift to modify the value of the passed parameter itself. And `&` is a way to make sure the user is aware that the function they are calling uses `inout`, therefore changing the value of the original variable.
+`inout` tells Swift to modify the value of the passed parameter itself. `&` is the way to make sure the user is aware that the function they are calling uses `inout`, therefore changing the value of the original variable.
 
 `inout` allows the modification of a value, without copying it, and without using a reference or a global variable inside the function's closure.
 
