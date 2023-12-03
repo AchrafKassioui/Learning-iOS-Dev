@@ -354,7 +354,7 @@ The reason touch handling inside a SpriteKit scene instance is done with the fol
 
 ```swift
 override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-	// code
+    // code
 }
 ```
 
