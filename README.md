@@ -336,13 +336,13 @@ A protocol is a list of rules or requirements that an object has to follow.
 ```swift
 // define a protocol
 protocol MyProtocol {
-	func interact()
+    func interact()
 }
 
 // conform to a protocol
 class myClass: MyProtocol {
-	func interact() {
-	}	
+    func interact() {
+    }	
 }
 ```
 
