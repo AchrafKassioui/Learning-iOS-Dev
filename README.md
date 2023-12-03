@@ -543,15 +543,15 @@ The preview code is of the shape of:
 ```swift
 // PreviewProvider is the protocol this struct must conforms to
 struct TheCodeToPreview_Previews: PreviewProvider {
-	// a declaration for of the view
-	static var previews: some View {
-      // a reference to the function to preview
-      // or an inline sample code to preview like below 
-      Button("Sleep", action: { })
-          .buttonStyle(TheCodeToPreview())
-          .previewLayout(.sizeThatFits)
-          .padding()
-  }
+    // a declaration for of the view
+    static var previews: some View {
+        // a reference to the function to preview
+        // or an inline sample code to preview like below 
+        Button("Sleep", action: { })
+        .buttonStyle(TheCodeToPreview())
+        .previewLayout(.sizeThatFits)
+        .padding()
+    }
 }
 ```
 
