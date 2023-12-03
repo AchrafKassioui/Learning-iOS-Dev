@@ -17,7 +17,7 @@ print(number) // outputs 9223372036854775807
 
 *19 November 2023*
 
-String interpolation is the way you inject a value of some type into a placeholder that expects a string type. It's the fancy name for calling this common operation:
+String interpolation is the way you inject a value of some type into a placeholder that expects a string type. It's the fancy name for this common operation:
 
 ```Swift
 var myVariable: Int = 10
