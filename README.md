@@ -1,6 +1,6 @@
 # Learning iOS dev
 
-This is a collection of notes I take while learning native iOS development. Notes are written in a candid style, in order to honestly capture the local mental model.
+These are notes I take while learning native iOS development. Notes are written in a candid style, in order to honestly capture the fuzzy mental model as I am learning. 
 
 ## 9223372036854775807
 
