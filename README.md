@@ -502,9 +502,9 @@ So we would have this code:
 import UIKit
 
 class myViewController: UIViewController {
-	override func viewDidLoad() {
-		super.viewDidLoad()
-	}	
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }	
 }
 // The "super" means we call a method from the superclass of this subclass
 ```
