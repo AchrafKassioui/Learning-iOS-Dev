@@ -378,10 +378,10 @@ By convention, these categories are given names that are bitwise operations frie
 
 ```swift
 struct PhysicsCategory {
-	static let None:  UInt32 = 0 // 00000000
-	static let Cat:   UInt32 = 0b1 // 00000001
-	static let Block: UInt32 = 0b10 // 00000010
-	static let Bed:   UInt32 = 0b100 // 00000100
+    static let None:  UInt32 = 0 // 00000000
+    static let Cat:   UInt32 = 0b1 // 00000001
+    static let Block: UInt32 = 0b10 // 00000010
+    static let Bed:   UInt32 = 0b100 // 00000100
 }
 ```
 
