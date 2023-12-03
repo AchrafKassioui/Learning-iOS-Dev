@@ -1,6 +1,6 @@
 # Learning iOS dev
 
-This is a collection of notes I take while learning native iOS development, starting from June 2023. They are purposefully written in a candid style, to honestly capture the mental model and fuzziness of learning.
+This is a collection of notes I take while learning native iOS development. Notes are written in a candid style, in order to honestly capture the local mental model.
 
 ## 9223372036854775807
 
@@ -17,20 +17,20 @@ print(number) // outputs 9223372036854775807
 
 *19 November 2023*
 
-String interpolation is the way you inject a value of some type into a placeholder that expects a string type. It's fancy name that refers to a common operation:
+String interpolation is the way you inject a value of some type into a placeholder that expects a string type. It's the fancy name for calling this common operation:
 
 ```Swift
 var myVariable: Int = 10
 Text("\(myVariable)") // in SwiftUI, displays "10"
 ```
 
-Note that string interpolation requires to write the value inside a `""`, i.e. a string literal.
+Note that string interpolation requires to write the value inside a `""`, which is called a string literal.
 
 ## inout
 
 *18 November 2023*
 
-This is not a typo. It's indeed `inout`, not `input`. Consider the following two blocks of code:
+This is not a typo. `inout` not `input`. Consider the following two blocks of code:
 
 ```Swift
 var A: Int = 3
@@ -161,7 +161,7 @@ A computer property is also called an accessor. Source: https://developer.apple.
 
 *4 September 2023*
 
-Swift has a specific syntactical construction for functions that call a block of code (a closure).
+Swift has a specific syntactical construction for functions that call a block of code (a closure) as an argument.
 
 ``` swift
 func travel(action: () -> Void) {
@@ -179,7 +179,7 @@ Notice:
 
 - The definition of `travel` tells the order of execution of code
 - The call of `travel` is a shorthand syntax made without `()` and immediately trailed by a closure `{}`
-- The closure is the piece of code that was passed as parameter in the function signature
+- The closure is the piece of code that was passed as an argument in the function signature
 
 In Swift, when the last (or only) argument to a function is a closure, we can use the shorthand syntax. The shorthand syntax is used in SwiftUI such as:
 
