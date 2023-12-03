@@ -548,9 +548,9 @@ struct TheCodeToPreview_Previews: PreviewProvider {
         // a reference to the function to preview
         // or an inline sample code to preview like below 
         Button("Sleep", action: { })
-        .buttonStyle(TheCodeToPreview())
-        .previewLayout(.sizeThatFits)
-        .padding()
+        	.buttonStyle(TheCodeToPreview())
+        	.previewLayout(.sizeThatFits)
+        	.padding()
     }
 }
 ```
