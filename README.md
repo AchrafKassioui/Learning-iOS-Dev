@@ -2,6 +2,28 @@
 
 These are notes I take while learning native iOS development. Notes are written in a candid style, in order to honestly capture the fuzzy mental model as I am learning. 
 
+## SpriteKit text blurriness
+
+*5 December 2023*
+
+SpriteKit nodes of type `SKLabelNode`, aka text, get blurry when the camera is zoomed in. See https://stackoverflow.com/a/72286447/420176
+
+One hack around it is to internally multiply the font size by a scale factor, then scale the node down by the same factor, to get a better rendering when zoomed in.
+
+```Swift
+let myText = SKLabelNode()
+let textScaleFactor: CGFloat = 5.0
+myText.fontSize = 28 * textScaleFactor
+myText.name = "myText"
+myText.text = "Hello"
+myText.fontName = "Impact"
+myText.xScale = 1 / textScaleFactor
+myText.yScale = 1 / textScaleFactor
+addChild(myText)
+```
+
+Further testing is required to see how the scaling may affect other behaviors such as physics simulations.
+
 ## 9223372036854775807
 
 *27 November 2023*
