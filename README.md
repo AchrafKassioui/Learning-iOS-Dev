@@ -60,7 +60,7 @@ At some point while playing with the live preview,  I started making swift and s
 
 I want to make this using SwiftUI:
 
-![Selector behavior](/Users/achraf/Library/Mobile Documents/com~apple~CloudDocs/Projects/The Reconstruction Project/The Tool/ScreenShots/Selector behavior.png)
+![Selector component](https://www.achrafkassioui.com/images/Selector%20behavior.png)
 
 ## SpriteKit text blurriness
 
