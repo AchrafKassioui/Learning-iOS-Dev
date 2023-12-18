@@ -82,6 +82,8 @@ addChild(myText)
 
 Further testing is required to see how the scaling may affect other behaviors such as physics simulations.
 
+Update: while adding many emojis to the same `SKLabelNode`, the app crashed with an error about Metal's maximum texture size. I believe that given the internal multi-sampling introduced above, and emojis being images, having many of them in the same SpriteKit node eventually exceeds the rendering engine constraints. `SKLabelNode` text length must be limited.
+
 ## 9223372036854775807
 
 *27 November 2023*
