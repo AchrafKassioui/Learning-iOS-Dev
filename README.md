@@ -1,7 +1,5 @@
 # Learning iOS dev
 
-These are notes I take while learning native iOS development. Notes are written in a candid style, in order to honestly capture the fuzzy mental model as I am learning. 
-
 ## Expand a type
 
 *18 December 2023*
@@ -673,7 +671,7 @@ Links:
 
 ## Links and resources
 
-- 🎬 Miguel de Icaza talks about Swift in general, then advocates Swift for The Godot engine: https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280
-- 💻 You can use this online Swift compiler to try out some code: https://www.programiz.com/swift/online-compiler/
-- 🎬 📒 Good basic tutorial on how to present a SpriteKit scene in a SwiftUI view: https://www.youtube.com/watch?v=Sb7ytck3gMA
+- 🎬 [Miguel de Icaza talks about Swift in general](https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280), and advocates for using Swift for The Godot game engine. 2023.
+- 💻 You can use [this online Swift compiler](https://www.programiz.com/swift/online-compiler/) to run some code. 
+- 🎬 📒 [Good basic tutorial](https://www.youtube.com/watch?v=Sb7ytck3gMA) on how to present a SpriteKit scene in a SwiftUI view, by Daniel Budd. 2023.
 
