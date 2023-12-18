@@ -12,8 +12,8 @@ Therefore expanding a type means elaborating on custom created objects. Swift ha
 
 ```swift
 @Observable class FoodTruckModel {    
-  var orders: [Order] = []
-  var donuts = Donut.all
+    var orders: [Order] = []
+    var donuts = Donut.all
 }
 ```
 
