@@ -2,6 +2,66 @@
 
 These are notes I take while learning native iOS development. Notes are written in a candid style, in order to honestly capture the fuzzy mental model as I am learning. 
 
+## Expand a type
+
+*18 December 2023*
+
+"Expanding a type" is a programmer's way to say: adding methods, properties, or other mechanisms to an object that you have created. For example, when you create a class and name it "myClass", "myClass" becomes a type that you have defined.
+
+Therefore expanding a type means elaborating on custom created objects. Swift has some feature that automates expansions of types, in order to make them do more that what the author wrote them to do explicitly. Macros are an example of such a feature. The following code "expands" on the class `FoodTruckModel` through the user of the `@Observable` macro:
+
+```swift
+@Observable class FoodTruckModel {    
+  var orders: [Order] = []
+  var donuts = Donut.all
+}
+```
+
+## Accidental shader
+
+*16 December 2023*
+
+I run this code from: https://www.hackingwithswift.com/books/ios-swiftui/animating-gestures
+
+```swift
+struct ContentView: View {
+    let letters = Array("Hello SwiftUI")
+    @State private var enabled = false
+    @State private var dragAmount = CGSize.zero
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(0..<letters.count, id: \.self) { num in
+                Text(String(letters[num]))
+                    .padding(5)
+                    .font(.title)
+                    .background(enabled ? .blue : .red)
+                    .offset(dragAmount)
+                    .animation(.linear.delay(Double(num) / 20), value: dragAmount)
+            }
+        }
+        .gesture(
+            DragGesture()
+                .onChanged { dragAmount = $0.translation }
+                .onEnded { _ in
+                    dragAmount = .zero
+                    enabled.toggle()
+                }
+        )
+    }
+}
+```
+
+At some point while playing with the live preview,  I started making swift and short up and down motions with the mouse (see "Accidental shader" video screen recording). The resulting behavior looked like wind blowing on a flag. The combination of the SwiftUI setup and a particular user input pattern generated a behavior that looked like a recognizable natural phenomenon.
+
+## Example in struggling
+
+*13 December 2023*
+
+I want to make this using SwiftUI:
+
+![Selector behavior](/Users/achraf/Library/Mobile Documents/com~apple~CloudDocs/Projects/The Reconstruction Project/The Tool/ScreenShots/Selector behavior.png)
+
 ## SpriteKit text blurriness
 
 *5 December 2023*
