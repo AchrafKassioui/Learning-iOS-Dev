@@ -56,7 +56,7 @@ At some point while playing with the live preview,  I started making swift and s
 
 *13 December 2023*
 
-I want to make this using SwiftUI:
+I want to implement this multi-touch UI control. For that, I need to build a sufficient mental map of the available SwiftUI building blocks, how they assemble together, and what are the recommended practices.
 
 ![Selector component](https://www.achrafkassioui.com/images/Selector%20behavior.png)
 
