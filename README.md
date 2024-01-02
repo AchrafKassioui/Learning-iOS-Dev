@@ -84,6 +84,8 @@ Further testing is required to see how the scaling may affect other behaviors su
 
 Update: while adding many emojis to the same `SKLabelNode`, the app crashed with an error about Metal's maximum texture size. I believe that given the internal multi-sampling introduced above, and emojis being images, having many of them in the same SpriteKit node eventually exceeds the rendering engine constraints. `SKLabelNode` text length must be limited.
 
+https://en.wikipedia.org/wiki/Spatial_anti-aliasing#Super_sampling_/_full-scene_anti-aliasing
+
 ## 9223372036854775807
 
 *27 November 2023*
