@@ -1,5 +1,42 @@
 # Learning iOS dev
 
+## private, fileprivate, internal, public
+
+*20 January 2024*
+
+Swift has keywords that tell the access level of a class, method, property, or other entity.
+
+Access control is a way to cognitively organize your code. It invites you to clarify–and lets you know when reading your code later on–the intended scope of visibility of your entities. This makes it clearer how parts of your code may or may not communicate across files and modules.
+
+See also this interesting link with static and dynamic linking in Swift:
+
+> Swift’s `fileprivate`, `internal`, and `public` correspond, ish, to access levels supported by [libraries] linkers: “only available in this file”, “only available in this library”, and “available to clients”.
+
+Source: https://belkadan.com/blog/2022/02/Dynamic-Linking-and-Static-Linking/
+
+## Stride
+
+*15 January 2024*
+
+This is an interesting loop constructor in Swift: `for in stride()`. We can use the stride loop to run over a range of numbers using an increment. For example:
+
+```swift
+for i in stride(from: 0, to: 10, by: 2) { // excludes upper bound 10 from the loop
+    print(i)
+}
+
+for i in stride(from: 0, through: 10, by: 2) { // includes the upper bound 0.5 in the loop
+    print(i)
+}
+```
+
+## Core Image filters
+
+*15 January 2024*
+
+- [A list of CI Filters](https://gist.github.com/Umity/c42920a236ad4fdd950492678a9136fa), GitHub
+- [Core Image Filter Reference](https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/uid/TP30000136-SW29), Apple
+
 ## Expand a type
 
 *18 December 2023*
