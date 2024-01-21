@@ -11,7 +11,7 @@ If we command-click on `SKScene` in a SpriteKit code, we can bring up the header
 > A scene is infinitely large, but it has a viewport that is the frame through which you present the content of the scene. The passed in size defines the size of this viewport that you use to present the scene.
 >
 
-An older version of the header, [quoted here](https://stackoverflow.com/a/33447352/420176), reads this:
+An older version of the header, [quoted here](https://stackoverflow.com/a/33447352/420176), reads:
 
 > To display different portions of your scene, move the contents relative to the viewport. One way to do that is to create a SKNode to function as a viewport transformation. That node should have all visible contents parented under it.
 
