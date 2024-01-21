@@ -13,7 +13,7 @@ If we command-click on `SKScene` in a SpriteKit code, we can bring up the header
 
 An older version of the header, [quoted here](https://stackoverflow.com/a/33447352/420176), reads this:
 
-> To display different portions of your scene, move the contents relative to the viewport. One way to do that is to create a SKNode to function as a viewport transformation. That node should have all visible conents parented under it. [this last comment is probably anterior to the introduction of SKCameraNode]
+> To display different portions of your scene, move the contents relative to the viewport. One way to do that is to create a SKNode to function as a viewport transformation. That node should have all visible contents parented under it.
 
 That version probably predates the introduction of `SKCameraNode`, since a SpriteKit camera does essential that. Now regarding the relation between the scene size and the viewport size, we can read this about scaling modes from the same header file:
 
