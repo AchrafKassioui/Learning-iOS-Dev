@@ -4,7 +4,7 @@
 
 *21 January 2024*
 
-How should I size my SpriteKit scene? How does scene size affect performance? Will my nodes' position be constrained by the scene size? If a physics body falls under gravity, will it continue falling indefinitely?
+How should I size my SpriteKit scene? How does scene size affect performance? Will my nodes' position be constrained by the scene size? If a physics body falls under gravity, will it continue to fall indefinitely?
 
 If we command-click on `SKScene` in a SpriteKit code, we can bring up the header information for the class:
 
