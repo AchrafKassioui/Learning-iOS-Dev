@@ -1,5 +1,34 @@
 # Learning iOS dev
 
+## SpriteKit scene size
+
+*21 January 2024*
+
+How should I size my SpriteKit scene? How does scene size affect performance? Will my nodes' position be constrained by the scene size? If a physics body falls under gravity, will it continue falling indefinitely?
+
+If we command-click on `SKScene` in a SpriteKit code, we can bring up the header information for the class:
+
+> A scene is infinitely large, but it has a viewport that is the frame through which you present the content of the scene. The passed in size defines the size of this viewport that you use to present the scene.
+>
+
+An older version of the header, [quoted here](https://stackoverflow.com/a/33447352/420176), reads this:
+
+> To display different portions of your scene, move the contents relative to the viewport. One way to do that is to create a SKNode to function as a viewport transformation. That node should have all visible conents parented under it. [this last comment is probably anterior to the introduction of SKCameraNode]
+
+That version probably predates the introduction of `SKCameraNode`, since a SpriteKit camera does essential that. Now regarding the relation between the scene size and the viewport size, we can read this about scaling modes from the same header file:
+
+> fill: Scale the SKScene to fill the entire SKView
+>
+> aspectFill: Scale the SKScene to fill the SKView while preserving the scene's aspect ratio. Some cropping may occur if the view has a different aspect ratio.
+>
+> aspectFit: Scale the SKScene to fit within the SKView while preserving the scene's aspect ratio. Some letterboxing may occur if the view has a different aspect ratio.
+>
+> resizeFill: Modify the SKScene's actual size to exactly match the SKView.
+
+So a SpriteKit scene is an infinite canvas by default. The part of the scene that is being drawn and rendered is the view (`SKView`). A scene can either be scaled somehow to fit a view (`scaleMode`), or use a camera to determine which crop of the scene maps to the view.
+
+Regardless of scene size, objects can be positioned freely without limit. Does positioning objects tens or hundreds of thousands of point away from the scene anchor point or from the viewport (camera) anchor point have an impact on memory consumption and performance? I don't know yet.
+
 ## private, fileprivate, internal, public
 
 *20 January 2024*
