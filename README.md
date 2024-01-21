@@ -15,7 +15,7 @@ An older version of the header, [quoted here](https://stackoverflow.com/a/334473
 
 > To display different portions of your scene, move the contents relative to the viewport. One way to do that is to create a SKNode to function as a viewport transformation. That node should have all visible contents parented under it.
 
-That version probably predates the introduction of `SKCameraNode`, since a SpriteKit camera does essentially that. Now regarding the relation between the scene size and the viewport size, we can read this about scaling modes from the same header file:
+That version probably predates the introduction of `SKCameraNode`, since a SpriteKit camera does essentially that. Now regarding the relation between the scene size and the viewport size, we can read this in the same header file:
 
 > fill: Scale the SKScene to fill the entire SKView
 >
@@ -25,7 +25,7 @@ That version probably predates the introduction of `SKCameraNode`, since a Sprit
 >
 > resizeFill: Modify the SKScene's actual size to exactly match the SKView.
 
-So a SpriteKit scene is an infinite canvas by default. The part of the scene that is being drawn and rendered is the view (`SKView`). A scene can either be scaled somehow to fit a view (`scaleMode`), or use a camera to determine which crop of the scene maps to the view.
+So a SpriteKit scene is an infinite canvas by default. The part of the scene that is being drawn and rendered is the view (`SKView`). A scene can either be scaled somehow to fit a view (one of the 4 `scaleMode`), or use a camera to determine which crop of the scene maps to the view.
 
 Regardless of scene size, objects can be positioned freely without limit. Does positioning objects tens or hundreds of thousands of point away from the scene anchor point or from the viewport (camera) anchor point have an impact on memory consumption and performance? I don't know yet.
 
