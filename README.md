@@ -1,5 +1,151 @@
 # Learning iOS dev
 
+## Code bloat
+
+*1 February 2024*
+
+I caught myself in an act of committing code bloat.
+
+I needed a custom API to apply Core Image filters in SpriteKit and SwiftUI. One of the functionalities I wanted is to define default values and ranges for a curated list of filters. That means coming up with a data structure that stores each chosen filter with its associated meta data such as its keys, the type of value they take, the typical range of the values, and a default value.
+
+While exploring Core Image API, I found that Core Image itself has methods such as `filter.attributes`, which returns a dictionary of information about the filter. Here are the attributes of the `CIZoomBlur` filter:
+
+```swift
+"inputCenter": {
+    CIAttributeClass = CIVector;
+    CIAttributeDefault = "[150 150]";
+    CIAttributeDescription = "The center of the effect as x and y pixel coordinates.";
+    CIAttributeDisplayName = Center;
+    CIAttributeType = CIAttributeTypePosition;
+},
+"CIAttributeFilterAvailable_Mac": 10.4,
+"CIAttributeFilterDisplayName": Zoom Blur,
+"CIAttributeReferenceDocumentation": http://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/filter/ci/CIZoomBlur,
+"CIAttributeFilterName": CIZoomBlur,
+"CIAttributeFilterAvailable_iOS": 8.3,
+"CIAttributeFilterCategories": <__NSArrayI_Transfer 0x60000029f820>(
+    CICategoryBlur,
+    CICategoryStillImage,
+    CICategoryVideo,
+    CICategoryBuiltIn,
+    CICategoryHighDynamicRange
+),
+"inputAmount": {
+    CIAttributeClass = NSNumber;
+    CIAttributeDefault = 20;
+    CIAttributeDescription = "The zoom-in amount. Larger values result in more zooming in.";
+    CIAttributeDisplayName = Amount;
+    CIAttributeIdentity = 0;
+    CIAttributeSliderMax = 200;
+    CIAttributeSliderMin = "-200";
+    CIAttributeType = CIAttributeTypeDistance;
+},
+"inputImage": {
+    CIAttributeClass = CIImage;
+    CIAttributeDescription = "The image to use as an input for the effect.";
+    CIAttributeDisplayName = Image;
+    CIAttributeType = CIAttributeTypeImage;
+}
+```
+
+And here is the work in progress data structure I was writing myself:
+
+```swift
+struct FilterItem {
+    let filter: CIFilter
+    let displayName: String
+    let parameterRanges: [String: ClosedRange<Double>]? /// an optional dictionary
+    let parameterDefaults: [String: Any]? /// an optional dictionary
+    
+    init(
+        filter: CIFilter,
+        displayName: String,
+        parameterRanges: [String: ClosedRange<Double>]? = nil,
+        parameterDefaults: [String: Any]? = nil
+    ) {
+        self.filter = filter
+        self.displayName = displayName
+        self.parameterRanges = parameterRanges
+        self.parameterDefaults = parameterDefaults
+    }
+}
+
+let filtersList: [FilterItem] = [
+    FilterItem(
+        filter: CIFilter(name: "CIZoomBlur")!,
+        displayName: "Zoom Blur",
+        parameterRanges: ["inputAmount": -50...50],
+        parameterDefaults: ["inputCenter": CIVector(x: 150, y: 150), "inputAmount": 20]
+    )
+]
+```
+
+Before finding the Core Image attribute method, I had to search on the web, try many commands and functions in SpriteKit, see how filters behave, learn by trial and error, in order to find the applicable values of a filter. Notice how I was "reinventing" some of the meta data of a filter, such as `displayName`, which would be used in SwiftUI as a label.
+
+I was effectively trying to write my own data structure for a structure that already existed in iOS. But, and this is the interesting part, I had to do it myself in order to understand it and get an intuition for how a filter works. Just using the Core Image filter attribute wouldn't have helped me that much if I didn't go through the trouble of writing my own wrapper around a filter.
+
+It is the very act of understanding and self-appropriating a code structure that I found myself writing an abstraction layer on top of an abstraction layer. That code bloat would probably introduce additional compute time, and possibly errors if my data and the native data drift away from each other. But still, I needed to write my own wrapper that fits my work in progress mental model!
+
+## Key value
+
+*1 February 2024*
+
+Consider a data structure like this:
+
+```swift
+let parameterValues: ["inputRadius": 60, "inputAmount": 10, "inputIntensity": 100]
+```
+
+That's a dictionary. If you have a command that must apply values of that dictionary to their corresponding keys, you'd loop through the dictionary like this:
+
+```swift
+for (key, value) in parameterValues {
+    // a command that takes a pair of key/value
+    myCommand.setValue(value, forKey: key)
+}
+```
+
+I used this pattern with Core Image. In Core Image, you can change the value of a filter's key by using a command like `filter.setValue(0.9, forKey: kCIInputIntensityKey)`.
+
+## Array methods
+
+*31 January 2024*
+
+Suppose you have an array like this:
+
+```swift
+let myArray = [
+    [
+        "name" : "achraf",
+        "occupation" : "please clarify"
+    ],
+    [
+        "name" : "missing",
+        "occupation" : "10x programmer"
+    ],
+]
+```
+
+How do you get the second item of the array? How do you select a specific item in an array? You can write this:
+
+```swift
+func findItemInArray() {
+    if let arrayItem = myArray.first(where: { $0["name"] == "achraf"}) {
+        print(arrayItem)
+    } else {
+        print("array item not found.")
+    }
+}
+```
+
+You can make the search more safe by using type casting:
+
+```swift
+if let arrayItem = myArray.first(where: { $0["name"] as? String == "achraf"}) {
+```
+
+Notice how we use `as? String`. This tells the search pattern to check if the value of key `"name"` is of type `String`. 
+
 ## SpriteKit scene size
 
 *21 January 2024*
