@@ -21,7 +21,7 @@ Now imagine a dictionary (an array of key/value pairs) where some keys have a ne
 ```swift
 let myDictionary: [String: Any] = // an existing dictionary
 
-let nestedDictionaries = myDictionary.filter { $0.value is [String: Any] } // returns a dictionary with keys that have themselves a dictionary as a value
+let nestedDictionaries = myDictionary.filter { $0.value is [String: Any] } // returns a dictionary with the keys that have themselves a dictionary as a value
 ```
 
 ## Code bloat
