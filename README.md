@@ -4,7 +4,7 @@
 
 *1 February 2024*
 
-I caught myself in an act of committing code bloat.
+I caught myself in an act of code bloat.
 
 I needed a custom API to apply Core Image filters in SpriteKit and SwiftUI. One of the functionalities I wanted is to define default values and ranges for a curated list of filters. That means coming up with a data structure that stores each chosen filter with its associated meta data such as its keys, the type of value they take, the typical range of the values, and a default value.
 
