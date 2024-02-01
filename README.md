@@ -1,5 +1,29 @@
 # Learning iOS dev
 
+## Is
+
+*1 February 2024*
+
+We can use the Swift keyword `is` to check the type of an object.
+
+```swift
+let someValue: Any = 42
+
+if someValue is Int {
+    print("It's an integer!")
+} else {
+    print("It's not an integer.")
+}
+```
+
+Now imagine a dictionary (an array of key/value pairs) where some keys have a nested dictionary as their value. If we wanted to list only the keys that have a dictionary as a value, we could write:
+
+```swift
+let myDictionary: [String: Any] = // an existing dictionary
+
+let nestedDictionaries = myDictionary.filter { $0.value is [String: Any] } // returns a dictionary with keys that have themselves a dictionary as a value
+```
+
 ## Code bloat
 
 *1 February 2024*
