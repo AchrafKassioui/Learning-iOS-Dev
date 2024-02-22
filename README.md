@@ -27,8 +27,8 @@ struct ObjectDescription: Codable {
     
     // When you conform a custom type to Codable, Swift looks for an enum
     // that conforms to CodingKey. You can use these to define custom key names
-    // in your external representation.
-    // If this enum doesn't exist, Swift uses the property names as they are.
+    // in your external representation. If this enum doesn't exist, Swift uses
+    // the property names as they are.
     enum CodingKeys: String, CodingKey {
         // the external representation will key `width` as "storedWidth"
         case width = "storedWidth"
