@@ -37,6 +37,8 @@ struct ObjectDescription: Codable {
         
     // serialization
     func encode(to encoder: Encoder) throws {
+        // we use .self to pass the type of CodingKeys as parameter to keyedBy
+        // because keyedBy expect a type as a value
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(size.width, forKey: .width)
         try container.encode(size.height, forKey: .height)
