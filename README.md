@@ -331,7 +331,12 @@ Regardless of scene size, objects can be positioned freely without limit. Does p
 
 Swift has keywords that tell the access level of a class, method, property, or other entity.
 
-Access control is a way to cognitively organize your code. It invites you to clarify–and lets you know when reading your code later on–the intended scope of visibility of your entities. This makes it clearer how parts of your code may or may not communicate across files and modules.
+Access control is a way to cognitively organize your code. It invites you to clarify–and lets you know when reading your code later on–the intended scope of visibility of your entities. This makes it clearer how parts of your code may or may not communicate across files and modules. Here's a list of interesting access level modifiers:
+
+```swift
+// can be read anywhere, but can only be written from within the scope
+private(set) var chainedFilters: [CIFilter]
+```
 
 See also this interesting link with static and dynamic linking in Swift:
 
