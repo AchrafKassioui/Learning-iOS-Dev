@@ -1,5 +1,127 @@
 # Learning iOS dev
 
+## Inheritance list
+
+*22 February 2024*
+
+When you write `struct Landmark: Codable {}` or `class myScene: SKScene {}`, the location after the `:`, usually where you specify the type or super class of an object, is called "inheritance list". Types, custom types, or protocols are all added to the inheritance list.
+
+## Codable
+
+*21 February 2024*
+
+If you need to store something on disk, share data from your code to somewhere else, or recover your state from a previous session, the `Codable` protocol is key.
+
+`Codable` is a protocol in Swift that enables you to encode and decode your data types (like structs, enums, and classes) into and from external representations such as JSON, XML, plist, or custom binary formats. It's essentially about transforming your data into a format that can be stored or transmitted and then reconstructed later.  The `Codable` protocol is a type alias for the `Encodable` and `Decodable` protocols, allowing both encoding and decoding capabilities to be implemented in a single conformance.
+
+Some types such as `String` or `Int` conform to `Codable` out of the box (intuitive! We can store them as is in JSON or another exchange format). But other custom or framework dependent types such as `Range`, `CGSize`, or `CGAffineTransform`, require additional work to make them codable and decodable.
+
+Another key concepts linked to storing and restoring data are "serialization" and "deserialization". These processes refer to converting structured data into a format suitable for storage or transmission (serialization) and converting it back into usable data after retrieval or receipt (deserialization).
+
+If your object has to conform to `Codable` but its content isn't Codable out of the box, you need to implement custom logic using two functions:
+
+```swift
+struct ObjectDescription: Codable {
+    // CGSize is not Codable by default
+    var size: CGSize
+    
+    // When you conform a custom type to Codable, Swift looks for an enum that conforms to CodingKey. You can use these to define custom key names in your external representation.
+    // If this enum doesn't exist, Swift uses the property names as they are.
+    enum CodingKeys: String, CodingKey {
+        // the external representation will key `width` as "storedWidth"
+        case width = "storedWidth"
+        case height = "storedHeight"
+    }
+        
+    // serialization
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(size.width, forKey: .width)
+        try container.encode(size.height, forKey: .height)
+    }
+    
+    // deserialization
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let storedWidth = try container.decode(CGFloat.self, forKey: .width)
+        let storedHeight = try container.decode(CGFloat.self, forKey: .height)
+        self.size = CGSize(width: storedWidth, height: storedHeight)
+    }
+}
+```
+
+The `encode(to:)` and `init(from:)` functions are the functions that you need to implement for objects that do not conform to `Codable` out of the box. These functions can also serve other use cases :
+
+- You can use them to do selective encoding and decoding. Any properties not explicitly handled in these methods will not be encoded and decoded.
+- You can use them to apply data transformation, which can be useful for partial updates, securing sensitive information, or dealing with version compatibility.
+
+## Sorting a dictionary
+
+*21 February 2024*
+
+You nay have data in the form of many `key: value`, i.e. a collection of key/value pairs, aka a dictionary. You may need to do some operations on the key/value pairs, like looping through the keys. Such operations require your data collection to be presented to that operation in a specific way. So you may need to convert a dictionary into an array.
+
+```swift
+let myDictionary = ["b": 2, "a": 1, "c": 3]
+
+// produce an array out of a dictionary
+let sortedArray = myDictionary.sorted { $0.key < $1.key }
+print(sortedArray) // [("a", 1), ("b", 2), ("c", 3)]
+
+// you can also sort the value instead of the keys
+let sortedValues = myDictionary.sorted { $0.value < $1.value }
+print(sortedValues) // [("a", 1), ("b", 2), ("c", 3)]
+```
+
+Sorting a dictionary is useful in scenarios where the unordered nature of dictionaries doesn't suit your needs, such as when generating user interface elements that list content in a sorted manner.
+
+## Xcode shortcuts
+
+*Started 17 February 2024*
+
+- Control + 6 : search your methods and symbols 
+- Command + 0 : show/hide the file navigator
+- Command + Option + Enter : show/hide the live preview
+- Command + Option + [ : move a line up
+- Command + Option + ] : move a line down
+
+## Dealing with optionals and unwrapping
+
+*12 February 2024*
+
+With iOS Swift development, there are many methods that return an optional value. That means that the method may or may not return an object of the expected type. Dealing with optional values is called "unwrapping", and you'll see that word coming up in the compiler very often.
+
+One way to deal with that is "force unwrapping", where we add a `!` at the end of the method chain to tell the compiler "I am sure the return I expect will in fact be returned." But that is not safe, and it is better to "safely unwrap" the optional.
+
+Here are different ways of dealing with optional returns:
+
+```swift
+// Optional Binding
+if let result = myMethod.result? {
+    // do something with result
+} else {
+    // handle case
+}
+
+// Optional Chaining with Default Value
+// The default value is provided using `??`, the nil coalescing operator
+// The default value must be of the some type as the expected return type
+let result = myMethod.result? ?? "Default Value or Message"
+// do something with result
+```
+
+## Array methods
+
+*4 February 2024*
+
+```swift
+// find the first element in an array
+let filterName = list.first(where: { $0.name == filter })
+
+// Find the index, i.e. position of an element
+let index = existingFilters.firstIndex(where: { $0.filter.name == filter })
+```
+
 ## Is
 
 *1 February 2024*
@@ -647,11 +769,7 @@ var myVariable3: Type? // This variable might or might not ever get a value.
 
 *11 August 2023*
 
-Protocols are one way to structure your code. You can create a protocol, define a method inside that protocol, and specify that a class or object conform to that protocol. Then, Swift compiler will alert you if the class does not conform to the protocol, i.e. that you haven't implemented all the methods that the class needs in order to conform to the protocol.
-
-So my understanding is that protocols are not features of the machinery, but rather, protocols are cognitive and organizational tools. They help yo manage your code.
-
-A protocol is a list of rules or requirements that an object has to follow.
+Protocols are one way to structure your code. You can create a protocol, define a method inside that protocol, and specify that a class or object conform to that protocol. Then, Swift compiler will alert you if the class does not conform to the protocol, i.e. that you haven't implemented all the methods that the class needs in order to conform to the requirement.
 
 ```swift
 // define a protocol
@@ -665,6 +783,10 @@ class myClass: MyProtocol {
     }	
 }
 ```
+
+When they are user defined, protocols are cognitive and organizational tools. They help you manage your code. Other protocols come built-in with Swift, such as `Comparable`.
+
+An object conforms to `Comparable` if its content can be compared with relational operators such as `>` or `>=`. `Comparable` itself builds upon another protocol, `Equatable`, which requires the implementation of the `==` operator, i.e. a way to define the concept of equality between objects.
 
 ## Override inheritance
 
