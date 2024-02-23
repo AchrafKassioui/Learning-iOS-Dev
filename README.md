@@ -1,5 +1,36 @@
 # Learning iOS dev
 
+## Static and instance methods
+
+*23 February 2024*
+
+Suppose you have a class with a method inside:
+
+```swift
+class MyClass {
+    func myMethod() {}
+}
+```
+
+If you write `MyClass.myMethod()` somewhere, calling your method on the class itself, the compiler wouldn't auto-complete, and the call wouldn't work anyways. Calling that method would only work on *instances* of your class: 
+
+```swift
+var myClass = MyClass() // by convention, an instance name start with a lowercase
+myClass.myMethod() // this works
+```
+
+If you want a method that you can call on the class type itself, you need to prefix that function with `static`:
+
+```swift
+class MyClass {
+    static func typeMethod() {} // belongs to the type itself
+}
+
+MyClass.typeMethod() // now this works
+```
+
+This is a case where the technical keyword (`static`) isn't intuitive.
+
 ## Inheritance list
 
 *22 February 2024*
@@ -797,19 +828,29 @@ When they are user defined, protocols are cognitive and organizational tools. Th
 
 An object conforms to `Comparable` if its content can be compared with relational operators such as `>` or `>=`. `Comparable` itself builds upon another protocol, `Equatable`, which requires the implementation of the `==` operator, i.e. a way to define the concept of equality between objects.
 
-## Override inheritance
+## Override
 
 *7 August 2023*
 
-The reason touch handling inside a SpriteKit scene instance is done with the following code:
+Throughout iOS and Apple frameworks, you'll see code like:
 
-```swift
-override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    // code
+```swift 
+class MyScene: SKScene {
+    override func didMove(to view: SKView) { /* code */ }
 }
 ```
 
-A scene is a SpriteKit node, nodes are of type SKNode, which inherit from UIResponder. According to Apple documentation: 
+Notice the `override`. A framework would come with predefined classes, such as `SKScene` here, a SpriteKit class, which you can "subclass" to create your own. Inside your subclass, you get access to predefined methods inherited from the parent class, such as `didMove`. And typically, you "override" them in order to write your own custom setup. 
+
+Here is another override to handle touch events inside a SpriteKit scene:
+
+```swift
+class MyScene: SKScene {
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { /* code */ }
+}
+```
+
+A SpriteKit `SKScene` is of type `SKNode`, itself of type `UIResponder`. According to Apple documentation: 
 
 > Responder objects — instances of UIResponder — constitute the event-handling backbone of a UIKit app. [...] As events occur, UIKit dispatches them to your app’s responder objects for handling.
 >
@@ -817,7 +858,7 @@ A scene is a SpriteKit node, nodes are of type SKNode, which inherit from UIResp
 >
 > https://developer.apple.com/documentation/uikit/uiresponder
 
-That's why we override!
+Class inheritances and polymorphism!
 
 ## Bitwise operations
 
