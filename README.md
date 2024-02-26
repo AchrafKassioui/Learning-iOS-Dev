@@ -103,7 +103,7 @@ The `encode(to:)` and `init(from:)` functions are the functions that you need to
 
 *21 February 2024*
 
-You may have data in the form of several `key: value`, i.e. a collection of key/value pairs, aka a dictionary. You may need to do some operations on the key/value pairs, like looping through the keys. Such operations require your data collection to be presented to that operation in a specific way. Typically you'd need to make an array out of a dictionary, given some requirements:
+You may have data in the form of several `key: value`, i.e. a collection of key/value pairs, aka a dictionary. You may need to do some operations on the key/value pairs, like looping through the keys. Such operations require your data to be presented in a form that the operation understands unequivocally. Typically you'd need to make an array out of a dictionary, given some requirements:
 
 ```swift
 let myDictionary = ["b": 2, "a": 1, "c": 3]
