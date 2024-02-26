@@ -123,6 +123,8 @@ Sorting a dictionary is useful in scenarios where the unordered nature of dictio
 
 *Started 17 February 2024*
 
+- Control + I : auto-indent code
+- Control + M : format objects into multiple lines. Useful for function signatures or hierarchical data structures
 - Control + 6 : search your methods and symbols 
 - Command + 0 : show/hide the file navigator
 - Command + Option + Enter : show/hide the live preview
