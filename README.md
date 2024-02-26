@@ -103,12 +103,12 @@ The `encode(to:)` and `init(from:)` functions are the functions that you need to
 
 *21 February 2024*
 
-You may have data in the form of several `key: value`, i.e. a collection of key/value pairs, aka a dictionary. You may need to do some operations on the key/value pairs, like looping through the keys. Such operations require your data collection to be presented to that operation in a specific way. So you may need to convert a dictionary into an array.
+You may have data in the form of several `key: value`, i.e. a collection of key/value pairs, aka a dictionary. You may need to do some operations on the key/value pairs, like looping through the keys. Such operations require your data collection to be presented to that operation in a specific way. Typically you'd need to make an array out of a dictionary, given some requirements:
 
 ```swift
 let myDictionary = ["b": 2, "a": 1, "c": 3]
 
-// produce an array out of a dictionary
+// produce an array out of a dictionary, by ordering the keys
 let sortedArray = myDictionary.sorted { $0.key < $1.key }
 print(sortedArray) // [("a", 1), ("b", 2), ("c", 3)]
 
