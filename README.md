@@ -44,7 +44,7 @@ This is a case where the technical keyword (`static`) isn't intuitive.
 
 *22 February 2024*
 
-When you write `struct Landmark: Codable {}` or `class myScene: SKScene {}`, the location after the `:`, usually where you specify the type or super class of an object, is called "inheritance list". Types, custom types, or protocols are all added to the inheritance list.
+When you write `struct MyStruct: Codable {}` or `class myScene: SKScene {}`, the location after the `:`, usually where you specify the type or super class of an object, is called "inheritance list". Types, custom types, or protocols are all added to the inheritance list.
 
 ## Codable
 
