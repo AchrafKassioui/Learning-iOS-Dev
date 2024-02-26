@@ -1,5 +1,14 @@
 # Learning iOS dev
 
+## Local web server
+
+*26 February 2024*
+
+If you need to start a web server on your Mac, so you can open HTML pages and test some links and code, you don’t need to download or install anything. You can:
+
+- Command + right-click the folder where you want to start a web server
+- Paste `python3 -m http.server 9000` in the command line, where `9000` is your desired port.
+
 ## Static and instance methods
 
 *23 February 2024*
@@ -12,7 +21,7 @@ class MyClass {
 }
 ```
 
-If you write `MyClass.myMethod()` somewhere, calling your method on the class itself, the compiler wouldn't auto-complete, and the call wouldn't work anyways. Calling that method would only work on *instances* of your class: 
+If you write `MyClass.myMethod()` somewhere, calling your method on the class itself, the compiler wouldn’t auto-complete, and the call wouldn't work anyways. Calling that method would only work on *instances* of your class: 
 
 ```swift
 var myClass = MyClass() // by convention, an instance name start with a lowercase
@@ -365,8 +374,13 @@ Swift has keywords that tell the access level of a class, method, property, or o
 Access control is a way to cognitively organize your code. It invites you to clarify–and lets you know when reading your code later on–the intended scope of visibility of your entities. This makes it clearer how parts of your code may or may not communicate across files and modules. Here's a list of interesting access level modifiers:
 
 ```swift
-// can be read anywhere, but can only be written from within the scope
-private(set) var chainedFilters: [CIFilter]
+// can be read (get) from the outside the scope,
+// but can be written (set) only from within the scope
+private(set) var myVariable
+
+// entities outside the defining module of this class can subclass and override
+// members of this class. The most permissive access level in Swift
+open class MyClass {}
 ```
 
 See also this interesting link with static and dynamic linking in Swift:
