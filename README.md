@@ -1,5 +1,37 @@
 # Learning iOS dev
 
+## Enum
+
+*27 February 2024*
+
+Suppose you have a finite list of states for an object. You want to define a specific behavior for each state. How would you implement that?
+
+One way is to use `enum`. An enumeration is a type safe way to tell the compiler that this object has these different cases. Then, when you want to write code for each case, you'll switch through the cases, and the compiler will make sure that you've captured all of them, or at least provided a default fallback behavior. Example:
+
+```swift
+enum Direction: String {
+    case left
+    case up
+    case right
+    case down
+}
+
+func move(_ direction: Direction) {
+    switch direction {
+    case .left:
+        // do something
+    case .up:
+        // do something
+    case .right:
+        // do something
+    case .down:
+        // do something
+    }
+}
+```
+
+Whenever you'll write a piece of code that expects data of type `Direction`, the auto-complete will show you all the applicable options from the `Direction` enum. If you start writing `move(.)`, auto-complete will show you `.left, .up, .right, .down` right after you type `.` inside the function's arguments.
+
 ## Local web server
 
 *26 February 2024*
