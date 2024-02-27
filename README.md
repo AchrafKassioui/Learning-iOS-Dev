@@ -32,6 +32,8 @@ func move(_ direction: Direction) {
 
 Whenever you'll write a piece of code that expects data of type `Direction`, the auto-complete will show you all the applicable options from the `Direction` enum. If you start writing `move(.)`, auto-complete will show you `.left, .up, .right, .down` right after you type `.` inside the function's arguments.
 
+Note that in Swift, the `case` statements are aligned with the `switch` keyword, instead of being indented further. I find it counter-intuitive, but that is the convention in Swift.
+
 ## Local web server
 
 *26 February 2024*
