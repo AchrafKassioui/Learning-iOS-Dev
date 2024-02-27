@@ -18,13 +18,13 @@ enum Direction: String {
 
 func move(_ direction: Direction) {
     switch direction {
-    case .left:
+        case .left:
         // do something
-    case .up:
+        case .up:
         // do something
-    case .right:
+        case .right:
         // do something
-    case .down:
+        case .down:
         // do something
     }
 }
