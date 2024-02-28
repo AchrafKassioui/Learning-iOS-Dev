@@ -1,5 +1,48 @@
 # Learning iOS dev
 
+## init
+
+*28 February 2024*
+
+You'll see the `init` keyword very often in Swift. What is it?
+
+`Init` stands for initialization. It's how you create an instance of a class. Example:
+
+```swift 
+class MyClass {
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+```
+
+That boilerplate code allows you to create an instance of `MyClass` by writing `var myInstance = MyClass(name: "Achraf")`. So `init` is essentially the method that you call when you write `MyClass()`, with some parameters inside `()`.
+
+You can have multiple initializers for the same class, each with a different signature! This feature allows you to create instances of a class in different ways, depending on the context or the specific needs of your code. For example:
+
+```swift
+class MyClass {
+    
+	// Note the optional type of the properties
+    var name: String?
+    var location: String?
+    // This adjustment is necessary because each initializer sets only one of these properties
+    // In Swift, all properties of a class must be initialized during instantiation, either with a non-nil value or as nil for optionals
+    
+    init(name: String) {
+        self.name = name
+    }
+    
+    init(location: String) {
+        self.location = location
+    }
+}
+```
+
+That way, you can create an instance by writing `var myInstance = MyClass(name: "Achraf")`, or `var myInstance = MyClass(location: "Tangier")`. In actual code, this is how you get APIs where you can create an object in different ways. For example, in SpriteKit, you could create a sprite node by calling `mySpriteNode = SKSpriteNode(texture: myTexture)` or `mySpriteNode = SKSpriteNode(imageNamed: myImageName)`. Each of those correspond to different initializers inside the SKSpriteNode class.
+
 ## Enum
 
 *27 February 2024*
