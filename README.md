@@ -29,7 +29,8 @@ class MyClass {
     var name: String?
     var location: String?
     // This adjustment is necessary because each initializer sets only one of these properties
-    // In Swift, all properties of a class must be initialized during instantiation, either with a non-nil value or as nil for optionals
+    // In Swift, all properties of a class must be initialized during instantiation,
+    // either with a non-nil value or as nil for optionals
 
     init(name: String) {
         self.name = name
