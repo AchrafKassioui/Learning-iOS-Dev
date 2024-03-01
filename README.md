@@ -37,7 +37,7 @@ class MyClass {
 
 That would mean that you are sure that by the time you'll use `someNumber` in your code, it *will* have a value that is not `nil`. Use at your own risk. Not recommended.
 
-Throughout your code, you'll notice that the auto-complete will automatically add an `?` after a method or variable while you type. That means that the compiler isn't sure that these values are indeed defined at that point. Maybe the code that is responsible of creating them could return an error, or maybe they rely on an asynchronous I/O call, of which we can not guarantee a definite result at a specific time. So Swift adds these optional, nudging you to handle cases where values are not what they are expected to be.
+Throughout your code, you'll notice that the auto-complete will automatically add an `?` after a method or variable while you type. That means that the compiler isn't sure that these values are indeed defined at that point. Maybe the code that is responsible for creating them could return an error, or maybe they rely on an asynchronous I/O call, of which we can not guarantee a definite result at a specific time. So Swift adds these optional, nudging you to handle cases where values are not what they are expected to be.
 
 ## init
 
