@@ -1,5 +1,44 @@
 # Learning iOS dev
 
+## Optionals
+
+*1 march 2024*
+
+Optionals are annoying when you start writing Swift code. The compiler will often be shouting about "unwrapping optionals". One way of understanding optionals goes like this:
+
+Swift has opinions. It claims that computer programs crash because they expect data that is not there. Programs expect data that is not there because programmers told them to. But in practice, the data may or may not have been fetched or created yet. Therefore Swift thinks that programmers need discipline on how they declare data holders.
+
+In your code, when you declare a variable, Swift expects that you either give it an initial value, or declare it as an optional. An optional is nil by default—until specified otherwise. When you want to use an optional variable in your code later on, the explicit declaration of that variable as an optional means that you need to write special code to handle the optional. That's what *safe unwrapping* is.
+
+```swift
+class MyClass {
+    // variable with initial value. No issue
+    var number = 1
+    // variable without an intial value
+    // the type must be declared, plus the optional `?` nature
+    var aNumber: Int?
+    
+    // later on
+    
+    // safe unwrapping
+    if let aNumber = aNumber {
+        // safely unwrapped `aNumber`
+    }
+}
+```
+
+You *could* declare an uninitialized variable as non optional using a `!` like this:
+
+```swift
+class MyClass {
+    var someNumber: Int!
+}
+```
+
+That would mean that you are sure that by the time you'll use `someNumber` in your code, it *will* have a value that is not `nil`. Use at your own risk. Not recommended.
+
+Throughout your code, you'll notice that the auto-complete will automatically add an `?` after a method or variable while you type. That means that the compiler isn't sure that these values are indeed defined at that point. Maybe the code that is responsible of creating them could return an error, or maybe they rely on an asynchronous I/O call, of which we can not guarantee a definite result at a specific time. So Swift adds these optional, nudging you to handle cases where values are not what they are expected to be.
+
 ## init
 
 *28 February 2024*
