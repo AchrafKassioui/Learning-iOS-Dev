@@ -126,7 +126,7 @@ If you need to start a web server on your Mac, so you can open HTML pages and te
 - Command + right-click the folder where you want to start a web server
 - Paste `python3 -m http.server 9000` in the command line, where `9000` is your desired port.
 
-## Static and instance methods
+## Static and class: type properties
 
 *23 February 2024*
 
@@ -156,6 +156,25 @@ MyClass.typeMethod() // now this works
 ```
 
 This is a case where the technical keyword (`static`) isn't intuitive.
+
+Update *2 march 2024*: it's called `static` because subclasses (not instances!) of the class can not override a method or property prefixed with `static`. You can however define type properties that *can* be overridden by subclasses if you use the keyword `class` instead of `static`. For example:
+
+```swift
+class MyClass {
+    class var typeVariable: String {
+        return "Welcome!"
+    }
+}
+
+class MySubclass: MyClass {
+    override class var typeVariable: String {
+        return "Welcome to MySubclass!"
+    }
+}
+
+print(MyClass.typeVariable) // Prints "Welcome!"
+print(MySubclass.typeVariable) // Prints "Welcome to MySubclass!"
+```
 
 ## Inheritance list
 
