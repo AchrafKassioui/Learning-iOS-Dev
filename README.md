@@ -1,5 +1,24 @@
 # Learning iOS dev
 
+## AudioToolBox
+
+*5 March 2024*
+
+You can add sound effects to any app by using the AudioToolBox framework.
+
+```swift
+// import the framework
+import AudioToolbox
+
+// anywhere in your code, call this method by passing a decimal
+// see the system sounds list below
+AudioServicesPlaySystemSound(1306)
+```
+
+Credits: WaliD on [StackOverflow](https://stackoverflow.com/a/65776719/420176)
+Sounds list: [Predefined System Sounds](https://iphonedev.wiki/AudioServices)
+Interesting clicking sounds: 1057, 1103, 1104, 1105, 1107, 1257, 1306
+
 ## Optionals
 
 *1 march 2024*
@@ -45,7 +64,7 @@ Throughout your code, you'll notice that the auto-complete will automatically ad
 
 You'll see the `init` keyword very often in Swift. What is it?
 
-`Init` stands for initialization. It's how you create an instance of a class. Example:
+`Init` stands for initialization. It's how you create an instance of a class. For example:
 
 ```swift 
 class MyClass {
@@ -57,13 +76,18 @@ class MyClass {
 }
 ```
 
-That boilerplate code allows you to create an instance of `MyClass` by writing `var myInstance = MyClass(name: "Achraf")`. So `init` is essentially the method that you call when you write `MyClass()`, with some parameters inside `()`.
+That boilerplate code allows you to create an instance of `MyClass` anywhere by writing:
 
-You can have multiple initializers for the same class, each with a different signature! This feature allows you to create instances of a class in different ways, depending on the context or the specific needs of your code. For example:
+```swift
+var myInstance = MyClass(name: "Achraf")
+```
+
+So `init` is the method that you implicitly call whenever you write `MyClass()`, with or without parameters inside `()` depending on what the class expects. You define whether or not the class expects parameters with the `init` function signature inside the class definition.
+
+You can have multiple initializers for the same class, each with a different signature. This feature allows you to create instances of a class in different ways, depending on the context or the specific needs of your code. For example:
 
 ```swift
 class MyClass {
-
     // Note the optional type of the properties
     var name: String?
     var location: String?
@@ -81,7 +105,7 @@ class MyClass {
 }
 ```
 
-That way, you can create an instance by writing `var myInstance = MyClass(name: "Achraf")`, or `var myInstance = MyClass(location: "Tangier")`. In actual code, this is how you get APIs where you can create an object in different ways. For example, in SpriteKit, you could create a sprite node by calling `mySpriteNode = SKSpriteNode(texture: myTexture)` or `mySpriteNode = SKSpriteNode(imageNamed: myImageName)`. Each of those correspond to different initializers inside the SKSpriteNode class.
+That way, you can create an instance by writing `var myInstance = MyClass(name: "Achraf")`, or `var myInstance = MyClass(location: "Tangier")`. In practice, this is how you get APIs that create objects in different ways. For example, in SpriteKit you could create a sprite node by calling `mySpriteNode = SKSpriteNode(texture: myTexture)` or `mySpriteNode = SKSpriteNode(imageNamed: myImageName)`. Each of those correspond to different initializers inside the SKSpriteNode class.
 
 ## Enum
 
@@ -473,35 +497,6 @@ if let arrayItem = myArray.first(where: { $0["name"] as? String == "achraf"}) {
 ```
 
 Notice how we use `as? String`. This tells the search pattern to check if the value of key `"name"` is of type `String`. 
-
-## SpriteKit scene size
-
-*21 January 2024*
-
-How should I size my SpriteKit scene? How does scene size affect performance? Will my nodes' position be constrained by the scene size? If a physics body falls under gravity, will it continue to fall indefinitely?
-
-If we command-click on `SKScene` in a SpriteKit code, we can bring up the header information for the class:
-
-> A scene is infinitely large, but it has a viewport that is the frame through which you present the content of the scene. The passed in size defines the size of this viewport that you use to present the scene.
->
-
-An older version of the header, [quoted here](https://stackoverflow.com/a/33447352/420176), reads:
-
-> To display different portions of your scene, move the contents relative to the viewport. One way to do that is to create a SKNode to function as a viewport transformation. That node should have all visible contents parented under it.
-
-That version probably predates the introduction of `SKCameraNode`, since a SpriteKit camera does essentially that. Now regarding the relation between the scene size and the viewport size, we can read this in the same header file:
-
-> fill: Scale the SKScene to fill the entire SKView
->
-> aspectFill: Scale the SKScene to fill the SKView while preserving the scene's aspect ratio. Some cropping may occur if the view has a different aspect ratio.
->
-> aspectFit: Scale the SKScene to fit within the SKView while preserving the scene's aspect ratio. Some letterboxing may occur if the view has a different aspect ratio.
->
-> resizeFill: Modify the SKScene's actual size to exactly match the SKView.
-
-So a SpriteKit scene is an infinite canvas by default. The part of the scene that is being drawn and rendered is the view (`SKView`). A scene can either be scaled to fit a view (one of the 4 `scaleMode`), or be drawn through a camera frame that determines which crop of the scene is in view.
-
-Regardless of scene size, objects can be positioned freely without limit. Does positioning objects tens or hundreds of thousands of points away from each other have an impact on memory consumption and performance? I don't know yet.
 
 ## private, fileprivate, internal, public
 
