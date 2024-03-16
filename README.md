@@ -540,8 +540,10 @@ for i in stride(from: 0, through: 10, by: 2) { // includes the upper bound 0.5 i
 
 *15 January 2024*
 
+- 📕 [CIFilter.io](https://cifilter.app), by Noah Gilmore
+- 📝 [Core Image: using filters](https://medium.com/academy-eldoradocps/core-image-using-filters-c1cae0d24d57), Medium article
 - [A list of CI Filters](https://gist.github.com/Umity/c42920a236ad4fdd950492678a9136fa), GitHub
-- [Core Image Filter Reference](https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/uid/TP30000136-SW29), Apple
+-  [Core Image Filter Reference](https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/uid/TP30000136-SW29), Apple
 
 ## Expand a type
 
@@ -1228,9 +1230,10 @@ Links:
 
 ## Links and resources
 
+-  [WWDC Sessions Archive](https://pvieito.com/2022/05/wwdc-sessions-archive)
 - 🎬 [Miguel de Icaza talks about Swift in general](https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280), and advocates for using Swift for The Godot game engine. 2023.
 - 💻 You can use [this online Swift compiler](https://www.programiz.com/swift/online-compiler/) to run some code. 
-- 🎬 📒 [Good basic tutorial](https://www.youtube.com/watch?v=Sb7ytck3gMA) on how to present a SpriteKit scene in a SwiftUI view, by Daniel Budd. 2023.
+- 🎬 [Good basic tutorial](https://www.youtube.com/watch?v=Sb7ytck3gMA) on how to present a SpriteKit scene in a SwiftUI view, by Daniel Budd. 2023.
 
 
 
