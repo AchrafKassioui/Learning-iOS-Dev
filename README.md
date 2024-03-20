@@ -8,7 +8,7 @@ In 2023, Apple started requiring reasons for using some APIs in apps published o
 
 ### `systemUptime`
 
-In UIKit, UITouch objects have a [timeStamp](https://developer.apple.com/documentation/uikit/uitouch/1618144-timestamp) property. The timeStamp property is the time, in seconds since system startup, that the touch originated or was last changed. It uses the [systemUptime](https://developer.apple.com/documentation/foundation/processinfo/1414553-systemuptime) property, which requires a declaration and usage justification to Apple.
+In UIKit, UITouch objects have a [timeStamp](https://developer.apple.com/documentation/uikit/uitouch/1618144-timestamp) property. The timeStamp property is the time in seconds, since system startup, when the touch originated or was last changed. It inherits from the [systemUptime](https://developer.apple.com/documentation/foundation/processinfo/1414553-systemuptime) property, which requires a declaration and usage justification to Apple.
 
 Discussion: SpriteKit's game loop—a core function of any game engine—provides a currentTime value which is the system time, expressed in terms of seconds since system startup. Do we have to declare usage of a game loop in an app? How does that work?
 
