@@ -1080,7 +1080,7 @@ https://developer.apple.com/swift/blog/?id=10
 
 ## UIKit methods
 
-*Started 18 July 2023*
+* 18 July 2023*
 
 ```swift
 // Haptic feedback
