@@ -1,4 +1,34 @@
-# Learning iOS dev
+# Learning native Apple development
+
+## Required reason API
+
+*20 March 2024*
+
+In 2023, Apple started requiring reasons for using some APIs in apps published on the AppStore. Here are some of these APIs:
+
+### `systemUptime`
+
+In UIKit, UITouch objects have a [timeStamp](https://developer.apple.com/documentation/uikit/uitouch/1618144-timestamp) property. The timeStamp property is the time, in seconds since system startup, that the touch originated or was last changed. It uses the [systemUptime](https://developer.apple.com/documentation/foundation/processinfo/1414553-systemuptime) property, which requires a declaration and usage justification to Apple.
+
+Discussion: SpriteKit's game loop—a core function of any game engine—provides a currentTime value which is the system time, expressed in terms of seconds since system startup. Do we have to declare usage of a game loop in an app? How does that work?
+
+[This Apple documentation page](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api) "explains" how required reason API work. APIs that require a reason to use have preset justifications that the developer must declare they follow. For example, in the case of touch event timestamps, one of the preset justification is:
+
+> 35F9.1
+> Declare this reason to access the system boot time in order to measure the amount of time that has elapsed between events that occurred within the app or to perform calculations to enable timers.
+> Information accessed for this reason, or any derived information, may not be sent off-device. There is an exception for information about the amount of time that has elapsed between events that occurred within the app, which may be sent off-device.
+
+## Code notation
+
+*17 March 2024*
+
+Throughout Apple documentation and references, you'll see specific ways of mentioning code that doesn't quite look like the code you actually write. Things like `init(ciFilter:duration:)`. Here's some context to start you off:
+
+- `init(ciFilter:duration:)` would become `let someObject = SomeObject(ciFilter: myFilter, duration: 1.0)` in practice, where `myFilter` and `1.0` are user-defined values. The doc signature `(x:y:)` means that x and y are parameter names, and that the parameter names must be included when calling that API. If the doc signature was `(_:_:)`, then the API would still expect two parameters, but without explicitly naming them.
+
+### Related notes
+
+- The underscore _
 
 ## AudioToolBox
 
@@ -256,6 +286,10 @@ The `encode(to:)` and `init(from:)` functions are the functions that you need to
 
 - You can use them to do selective encoding and decoding. Any properties not explicitly handled in these methods will not be encoded and decoded.
 - You can use them to apply data transformation, which can be useful for partial updates, securing sensitive information, or dealing with version compatibility.
+
+Related notes:
+
+- Protocols
 
 ## Sorting a dictionary
 
@@ -538,6 +572,16 @@ for i in stride(from: 0, through: 10, by: 2) { // includes the upper bound 0.5 i
 
 ## Core Image filters
 
+*16 March 2024*
+
+Core Image has its own data types usually prefixed with CI such as `CIVector` and `CIColor`. Data types that expect spatial data, such as origin and dimensions, are expressed in physical pixels instead of points. For example, consider a Core Image filter with an `inputCenter` parameter:
+
+```swift
+let zoomBlurFilter = CIFilter(name: "CIZoomBlur", parameters: ['inputCenter': CIVector(x: 300, y: 300)])
+```
+
+First, notice how Core Image uses an old API built with key/values dictionaries, usually of type `String: Any`. Second, the `CIVector` in this case expects values in pixels, not in points. If you want to pass the actual center point of the screen to the filter, you need to know the physical resolution of the screen. An iPhone 13 has a physical resolution of 1170x2536. Therefore, its horizontal center is 1170/2 = 585. It is up to the user to derive the right pixel values given the device they are running.
+
 *15 January 2024*
 
 - 📕 [CIFilter.io](https://cifilter.app), by Noah Gilmore
@@ -603,33 +647,7 @@ At some point while playing with the live preview,  I started making swift and s
 
 I want to implement this multi-touch UI control. For that, I need to build a sufficient mental map of the available SwiftUI building blocks, how they assemble together, and what are the recommended practices.
 
-![Selector component](https://www.achrafkassioui.com/images/Selector%20behavior.png)
-
-## SpriteKit text blurriness
-
-*5 December 2023*
-
-SpriteKit nodes of type `SKLabelNode`, aka text, get blurry when the camera is zoomed in. See https://stackoverflow.com/a/72286447/420176
-
-One hack around it is to internally multiply the font size by a scale factor, then scale the node down by the same factor, to get a better rendering when zoomed in.
-
-```Swift
-let myText = SKLabelNode()
-let textScaleFactor: CGFloat = 5.0
-myText.fontSize = 28 * textScaleFactor
-myText.name = "myText"
-myText.text = "Hello"
-myText.fontName = "Impact"
-myText.xScale = 1 / textScaleFactor
-myText.yScale = 1 / textScaleFactor
-addChild(myText)
-```
-
-Further testing is required to see how the scaling may affect other behaviors such as physics simulations.
-
-Update: while adding many emojis to the same `SKLabelNode`, the app crashed with an error about Metal's maximum texture size. I believe that given the internal multi-sampling introduced above, and emojis being images, having many of them in the same SpriteKit node eventually exceeds the rendering engine constraints. `SKLabelNode` text length must be limited.
-
-https://en.wikipedia.org/wiki/Spatial_anti-aliasing#Super_sampling_/_full-scene_anti-aliasing
+<img src="https://www.achrafkassioui.com/images/Selector%20behavior.png" alt="Selector component" />
 
 ## 9223372036854775807
 
@@ -1230,6 +1248,7 @@ Links:
 
 ## Links and resources
 
+- 🔈 [Amazing podcast with one of Core Graphics Apple engineers](https://pca.st/episode/535318b0-d510-0130-3d77-723c91aeae46)
 -  [WWDC Sessions Archive](https://pvieito.com/2022/05/wwdc-sessions-archive)
 - 🎬 [Miguel de Icaza talks about Swift in general](https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280), and advocates for using Swift for The Godot game engine. 2023.
 - 💻 You can use [this online Swift compiler](https://www.programiz.com/swift/online-compiler/) to run some code. 
