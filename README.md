@@ -41,7 +41,7 @@ import AudioToolbox
 AudioServicesPlaySystemSound(1306)
 ```
 
-Credits to WaliD on [StackOverflow](https://stackoverflow.com/a/65776719/420176) for mentioning this framework. For a list of available sounds and their code, check [this page](https://iphonedev.wiki/AudioServices) from the iPhone Development Wiki. As a note for myself, I like these clicking sounds: 1057, 1103, 1104, 1105, 1107, 1257, 1306
+Credits to WaliD on [StackOverflow](https://stackoverflow.com/a/65776719/420176) for mentioning this framework. For a list of available sounds and their code, check [this page](https://iphonedev.wiki/AudioServices) from the iPhone Development Wiki. As a note for myself, I like these clicking sounds: 1057, 1103, 1104, 1105, 1107, 1257, 1306.
 
 ## Optionals
 
