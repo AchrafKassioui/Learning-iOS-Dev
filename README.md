@@ -1,5 +1,26 @@
 # Learning native Apple development
 
+## Else continue
+
+*20 March 2024*
+
+Consider this code:
+
+```swift
+override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for touch in touches {
+        guard let label = touchLabels[touch] else { continue } // the important bit
+        let touchLocation = touch.location(in: self)
+        label.position = CGPoint(x: touchLocation.x, y: touchLocation.y + 60)
+        label.text = pointToString(touchLocation)
+    }
+}
+```
+
+I find the "continue" keyword in the line using `guard` very confusing. In fact, `continue` doesn't mean that the code continues executing. It means that the immediately following code will NOT be executed, and the next iteration will be evaluated instead. In this case, the next iteration is the next `touch` in `touches`.
+
+`continue` should be "skip" or "next". It skips any code below the guard statement and within the scope.
+
 ## Required reason API
 
 *20 March 2024*
