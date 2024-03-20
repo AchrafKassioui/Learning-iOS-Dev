@@ -24,17 +24,13 @@ Discussion: SpriteKit's game loop—a core function of any game engine—provide
 
 Throughout Apple documentation and references, you'll see specific ways of mentioning code that doesn't quite look like the code you actually write. Things like `init(ciFilter:duration:)`. Here's some context to start you off:
 
-- `init(ciFilter:duration:)` would become `let someObject = SomeObject(ciFilter: myFilter, duration: 1.0)` in practice, where `myFilter` and `1.0` are user-defined values. The doc signature `(x:y:)` means that x and y are parameter names, and that the parameter names must be included when calling that API. If the doc signature was `(_:_:)`, then the API would still expect two parameters, but without explicitly naming them.
-
-### Related notes
-
-- The underscore _
+- `init(ciFilter:duration:)` would become `let someObject = SomeObject(ciFilter: myFilter, duration: 1.0)` in practice, where `myFilter` and `1.0` are user-defined values. The doc signature `(x:y:)` means that x and y are parameter names, and that the parameter names must be included when calling that API. If the doc signature was `(_:_:)`, then the API would still expect two parameters, but without explicitly naming them. See "The underscore _" note about that.
 
 ## AudioToolBox
 
 *5 March 2024*
 
-You can add sound effects to any app by using the AudioToolBox framework.
+If you need to implement some quick sound effects in your app, you can use this old framework. AudioToolBox is fast and requires no advanced setup. It includes the system sounds you are used to on iOS, like the swoosh (Mail) sound or the keyboards clicks.
 
 ```swift
 // import the framework
@@ -45,7 +41,7 @@ import AudioToolbox
 AudioServicesPlaySystemSound(1306)
 ```
 
-Credits: WaliD on [StackOverflow](https://stackoverflow.com/a/65776719/420176). Sounds list: [Predefined System Sounds](https://iphonedev.wiki/AudioServices). Interesting clicking sounds: 1057, 1103, 1104, 1105, 1107, 1257, 1306
+Credits to WaliD on [StackOverflow](https://stackoverflow.com/a/65776719/420176) for mentioning this framework. For a list of available sounds and their code, check [this page](https://iphonedev.wiki/AudioServices) from the iPhone Development Wiki. As a note for myself, I like these clicking sounds: 1057, 1103, 1104, 1105, 1107, 1257, 1306
 
 ## Optionals
 
