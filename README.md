@@ -4,7 +4,7 @@
 
 *21 March 2024*
 
-This is a program that generates a grid and saves it on disc as a PNG image. You can copy paste the code into a new file in Xcode, run the SwiftUI live preview, press the one button in the view, and get the file path to the generated grid image from the Xcode console.
+This Core Graphics program creates a grid and saves it as a PNG image. You can copy paste the code into a new file in Xcode, run the SwiftUI live preview, press the one button in the view, and get the image file path from the Xcode console.
 
 ```swift
 import SwiftUI
@@ -90,7 +90,7 @@ func generateGrid(cellSize: CGFloat, rows: Int, cols: Int) -> Data? {
 
 <img src="Screenshots/grid.png" alt="grid" style="width:25%;" />
 
-Many times I needed to generate such a pattern in Figma or Pixelmator. Generating large repetitive visual patterns is not trivial to do in 2D drawing programs. 3D programs like Cinema 4D do a far better job at generating visual patterns, but the setup is heavier and exporting is cumbersome.
+Many times I needed to generate such a pattern in Figma or Pixelmator. Generating large repetitive visual patterns is not trivial to do in 2D drawing software. 3D programs like Cinema 4D do a better job at generating visual patterns, but the setup is heavier and exporting is cumbersome.
 
 ## Else continue
 
