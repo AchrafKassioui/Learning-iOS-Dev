@@ -286,6 +286,7 @@ If you need to start a web server on your Mac, so you can open HTML pages and te
 
 - Command + right-click the folder where you want to start a web server
 - Paste `python3 -m http.server 9000` in the command line, where `9000` is your desired port.
+- Open your browser and go to address `localhost:9000`
 
 ## Static and class
 
