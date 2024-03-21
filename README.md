@@ -88,7 +88,7 @@ func generateGrid(cellSize: CGFloat, rows: Int, cols: Int) -> Data? {
 }
 ```
 
-<img src="Screenshots/grid.png" alt="grid" style="width:25%;" />
+<img src="Screenshots/grid.png" alt="grid" style="width:50%;" />
 
 Many times I needed to generate such a pattern in Figma or Pixelmator. Generating large repetitive visual patterns is not trivial to do in 2D drawing software. 3D programs like Cinema 4D do a better job at generating visual patterns, but the setup is heavier and exporting is cumbersome.
 
