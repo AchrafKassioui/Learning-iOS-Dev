@@ -1,5 +1,141 @@
 # Learning native Apple development
 
+## Gestures
+
+*15 April 2024*
+
+A basic setup to add a tap recognizer to a view (a SpriteKit view in this case)
+
+```swift
+override func didMove(to view: SKView) {
+	setupGestureRecognizers(in: view)
+}
+
+func setupGestureRecognizers(in view: SKView) {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(gesture:)))
+    tapGesture.numberOfTapsRequired = 2
+    tapGesture.numberOfTouchesRequired = 1
+    view.addGestureRecognizer(tapGesture)
+}
+
+@objc func handleTap(gesture: UIGestureRecognizer) {
+    // do something on double tap
+}
+```
+
+## Xcode comments
+
+*9 April 2024*
+
+Xcode provides various helpful ways to comment and organize your code documentation. Here are some:
+
+```swift
+// regular comment
+
+/// comment written in regular characters, not monospace characters
+
+/// a comment with `inlineCode`
+
+// MARK: A title that will show up in the mini map
+
+// MARK: - A title that will show up with a line separator
+
+/**
+
+ # A documentation comment block
+
+ Document the parameters of a function:
+ - Parameter name: description of the parameter
+
+ */
+```
+## Get the physical corner radius of a screen
+
+*8 April 2024*
+
+Copy this extension somewhere, or create a file for it in your Xcode project:
+
+```swift
+//  Created by Kyle Bashour on 10/24/20.
+
+import UIKit
+
+extension UIScreen {
+    private static let cornerRadiusKey: String = {
+        let components = ["Radius", "Corner", "display", "_"]
+        return components.reversed().joined()
+    }()
+    
+    /// The corner radius of the display. Uses a private property of `UIScreen`,
+    /// and may report 0 if the API changes.
+    public var displayCornerRadius: CGFloat {
+        guard let cornerRadius = self.value(forKey: Self.cornerRadiusKey) as? CGFloat else {
+            assertionFailure("Failed to detect screen corner radius")
+            return 0
+        }
+        
+        return cornerRadius
+    }
+}
+```
+
+Then, in your code, you can access it if you have access to `UIScreen.main`. For example, inside a SpriteKit scene class:
+
+```swift
+override func didMove(to view: SKView) {
+    let displayCornerRadius = UIScreen.main.displayCornerRadius
+    // do something with the corner radius value
+}
+```
+
+## Anecdotes and back stories
+
+*8 April 2024*
+
+Core Animation has been developed by a single Apple engineer, John Harper. Source: [here](https://stackoverflow.com/questions/38297961/when-is-it-appropriate-to-use-core-animation-over-uiview-animation-in-common-cas#comment93215312_38965402) and [here](https://x.com/andy_matuschak/status/1587248459299463169).
+
+Is SpriteKit a wrapper around Core Animation? Are SpriteKit nodes CALayer objects? This [comment](https://stackoverflow.com/questions/35421006/using-core-animation-in-spritekit#comment58729767_35421006) says that SpriteKit is a wrapper around Core Animation. Google Gemini [says](https://gemini.google.com/share/179049aaaad5?hl=en) that each `SKNode` is backed by a `CALayer`.
+
+I tried accessing Core Animation objects through an SKNode, or define a Core Animation animation on a SpriteKit node, without success. Here's the code I tried, suggested by Google Gemini:
+
+```swift
+let sprite = SKSpriteNode(color: .systemRed, size: CGSize(width: 60, height: 60))
+addChild(sprite)
+
+let anim = CABasicAnimation(keyPath: "position")
+anim.fromValue = sprite.position
+anim.toValue = CGPoint(x: sprite.position.x + 100, y: sprite.position.y)
+anim.duration = 1.0
+anim.timingFunction = CAMediaTimingFunction(name: .easeIn)
+
+let layer = view.layer(for: sprite)
+layer?.add(anim, forKey: "customMoveAnimation")
+```
+
+In UIKit, views have a `layer` property that gives access to the `CALayer` handling the view. But I can not access a `layer` property on an `SKNode`.
+
+## Core animation
+
+*8 April 2024*
+
+Core Animation backs many if not all animations on iOS. You can access the Core Animation object that holds your view with `view.layer`. For example, we can add a border to the view by defining it on its CALayer parent:
+
+```swift
+view.layer.borderWidth = 5
+view.layer.borderColor = .red
+```
+
+## Rounding and truncating numbers
+
+*22 March 2024*
+
+```swift
+// Float
+let myFloat: CGFloat = 1.23456
+// round to 1 decimal place
+let myValue = round(myFloat * 10) / 10
+```
+
 ## Generate a grid image
 
 *21 March 2024*
@@ -111,7 +247,7 @@ override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 
 I find the "continue" keyword in the line using `guard` very confusing. In fact, `continue` doesn't mean that the code continues executing. It means that the immediately following code will NOT be executed, and the next iteration will be evaluated instead. In this case, the next iteration is the next `touch` in `touches`.
 
-`continue` should be "skip" or "next". It skips any code below the guard statement and within the scope.
+`continue` should be "skip" or "next". It skips any code below the guard statement and within the scope. Note that the compiler will allow `continue` only inside a loop.
 
 ## Required reason API
 
@@ -135,9 +271,30 @@ Discussion: SpriteKit's game loop—a core function of any game engine—provide
 
 *17 March 2024*
 
-Throughout Apple documentation and references, you'll see specific ways of mentioning code that doesn't quite look like the code you actually write. Things like `init(ciFilter:duration:)`. Here's some context to start you off:
+Throughout Apple documentation and references, you'll see specific ways of mentioning code that doesn't quite look like the code you actually write. Things like `init(ciFilter:duration:)`. Here's some examples to start you off:
 
-- `init(ciFilter:duration:)` would become `let someObject = SomeObject(ciFilter: myFilter, duration: 1.0)` in practice, where `myFilter` and `1.0` are user-defined values. The doc signature `(x:y:)` means that x and y are parameter names, and that the parameter names must be included when calling that API. If the doc signature was `(_:_:)`, then the API would still expect two parameters, but without explicitly naming them. See "The underscore _" note about that.
+### `init(ciFilter:duration:)`
+
+Actual code:
+
+```swift
+let someObject = SomeObject(ciFilter: myFilter, duration: 1.0)
+```
+
+`SomeObject` is the class that has that method. `someObject` is an instance of that class. `myFilter` and `1.0` are user defined values that are of the type expected by that method's parameters.
+
+The doc signature `(x:y:)` means that x and y are parameter names, and that the parameter names must be included when calling that API. If the doc signature was `(_:_:)`, then the API would still expect two parameters, but without explicitly naming them. See "The underscore _" note about that.
+
+### `enumerateBodies(at:using:)`
+
+Actual code: 
+
+```swift
+physicsWorld.enumerateBodies(at: touchLocation) { body, stop in
+	// code for each body
+	// optionally, set stop to true to stop enumeration
+}
+```
 
 ## AudioToolBox
 
@@ -276,7 +433,9 @@ func move(_ direction: Direction) {
 
 Whenever you'll write a piece of code that expects data of type `Direction`, the auto-complete will show you all the applicable options from the `Direction` enum. If you start writing `move(.)`, auto-complete will show you `.left, .up, .right, .down` right after you type `.` inside the function's arguments.
 
-Note that in Swift, the `case` statements are aligned with the `switch` keyword, instead of being indented further. I find it counter-intuitive, but that is the convention in Swift.
+Note that in Swift, the `case` statements are aligned with the `switch` keyword, instead of being indented further. I find it counter-intuitive, but that is the convention in Swift. You can change that behavior in Xcode Settings, to suit your preference:
+
+<img src="Screenshots/Xcode-switch-indentation.png" alt="Xcode-switch-indentation" style="width:100%;" />
 
 ## Local web server
 
@@ -401,7 +560,25 @@ Related notes:
 
 - Protocols
 
-## Sorting a dictionary
+## Dictionary methods
+
+### Retrieve and delete
+
+*14 May 2024*
+
+```swift
+var myDictionary: [KeyType: ValueType] = [:]
+
+// this code reads and then deletes the specific entry in the dictionary
+if let entry = myDictionary.removeValue(forKey: key) {
+    // do something with the retrieved entry
+}
+
+// the following line is no longer needed to clear the dictionary entry
+myDictionary[key] = nil
+```
+
+### Sort
 
 *21 February 2024*
 
@@ -656,6 +833,12 @@ private(set) var myVariable
 // entities outside the defining module of this class can subclass and override
 // members of this class. The most permissive access level in Swift
 open class MyClass {}
+
+/// internal is the default access control
+/// if no access control is specified, internal is implicitely applied
+class MyClass {}
+	internal func myMethod(){}
+}
 ```
 
 See also this interesting link with static and dynamic linking in Swift:
@@ -1188,9 +1371,9 @@ https://developer.apple.com/swift/blog/?id=10
 .pi
 ```
 
-## UIKit methods
+## Haptic feedback
 
-* 18 July 2023*
+*18 July 2023*
 
 ```swift
 // Haptic feedback
@@ -1358,6 +1541,7 @@ Links:
 
 ## Links and resources
 
+-  [Extensive list of WWDC video with download links](https://github.com/youjinp/wwdc-list)
 - 🔈 [Amazing podcast with one of Core Graphics Apple engineers](https://pca.st/episode/535318b0-d510-0130-3d77-723c91aeae46)
 -  [WWDC Sessions Archive](https://pvieito.com/2022/05/wwdc-sessions-archive)
 - 🎬 [Miguel de Icaza talks about Swift in general](https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280), and advocates for using Swift for The Godot game engine. 2023.
