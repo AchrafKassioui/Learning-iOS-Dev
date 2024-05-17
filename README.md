@@ -1,5 +1,21 @@
 # Learning native Apple development
 
+## Delegation
+
+*16 May 2024*
+
+Delegation is the name of a programming pattern that you'll cross often in iOS programming. Here is a concrete example with Swift and SpriteKit:
+
+```swift
+protocol PhysicalButtonDelegate: AnyObject {
+    func buttonTouched(button: ButtonPhysical)
+}
+
+
+```
+
+
+
 ## Gestures
 
 *15 April 2024*
@@ -410,14 +426,14 @@ Suppose you have a finite list of states for an object. You want to define a spe
 One way is to use `enum`. An enumeration is a type safe way to tell the compiler that this object has these different cases. Then, when you want to write code for each case, you'll switch through the cases, and the compiler will make sure that you've captured all of them, or at least provided a default fallback behavior. Example:
 
 ```swift
-enum Direction: String {
+enum Direction {
     case left
     case up
     case right
     case down
 }
 
-func move(_ direction: Direction) {
+func move(direction: Direction) {
     switch direction {
     case .left:
         // do something
