@@ -1,21 +1,5 @@
 # Learning native Apple development
 
-## Delegation
-
-*16 May 2024*
-
-Delegation is the name of a programming pattern that you'll cross often in iOS programming. Here is a concrete example with Swift and SpriteKit:
-
-```swift
-protocol PhysicalButtonDelegate: AnyObject {
-    func buttonTouched(button: ButtonPhysical)
-}
-
-
-```
-
-
-
 ## Gestures
 
 *15 April 2024*
