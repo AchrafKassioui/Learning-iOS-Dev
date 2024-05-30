@@ -1,5 +1,50 @@
 # Learning native Apple development
 
+## Delegation pattern
+
+*30 May 2024*
+
+In the Apple programming world, the delegation pattern is a common pattern that allows one object to make another object execute something. For example:
+
+```swift
+/// A framework to use for this example
+import SpriteKit
+
+/// Define a protocol
+/// Any object that conforms to this protocol must implement the methods defined here
+protocol ButtonDelegate: AnyObject {
+    func buttonTouched(touch: UITouch)
+}
+
+/// Object A, the delegator
+class MyButton: SKSpriteNode {
+    weak var delegate: ButtonDelegate?
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            delegate?.buttonTouched(touch: touch)
+        }
+    }
+}
+
+/// Object B, the delegate
+class MyScene: SKScene, ButtonDelegate {
+    override func didMove(to view: SKView) {
+        let myButton = MyButton(color: .red, size: CGSize(width: 150, height: 150))
+        myButton.delegate = self
+        addChild(myButton)
+    }
+
+    /// Conform to the protocol by implementing its methods
+    func buttonTouched(touch: UITouch) {
+        /// Whenever myButton is touched, this function is called
+        print("Button was touched!")
+    }
+}
+```
+
+The delegation pattern is one way amongst many to implement messaging between objects. Other ways include using the Notification Center. [This post](https://stackoverflow.com/a/28309749/420176) compares the performance of delegation vs notification center.
+
 ## Gestures
 
 *15 April 2024*
