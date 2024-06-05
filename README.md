@@ -22,7 +22,7 @@ You have to know that you need to use something like `onChange` or `onAppear` in
 
 ```swift
 GeometryReader { geoProxy in
-	print(geoProxy) // you can not use print like this
+    print(geoProxy) // you can not use print like this
     SpriteView(scene: myScene)
     .ignoresSafeArea()
 }
@@ -32,7 +32,7 @@ However, you can write this:
 
 ```swift
 GeometryReader { geoProxy in
-	let proxy = geoProxy // assigning the geometry proxy to a constant is ok
+    let proxy = geoProxy // assigning the geometry proxy to a constant is ok
     SpriteView(scene: myScene)
     .ignoresSafeArea()
     .onChange(of: proxy.size) {
