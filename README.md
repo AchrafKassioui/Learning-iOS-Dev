@@ -1,6 +1,61 @@
-# Learning native Apple development
+# Learning Native Apple Development
 
-## Delegation pattern
+## The Magic of SwiftUI
+
+*5 June 2024*
+
+SwiftUI is a collection of opinionated magical invocations that you need to learn and put in the right order to get work done. SwiftUI isn't C, isn't Swift, isn't imperative. If you know another programming language, or if you are used to another UI framework, it tells nothing about whether or not you will be able to get work done with SwiftUI. SwiftUI is its own thing.
+
+Here is a code example that gets you the size of a view once it is rendered:
+
+```swift 
+GeometryReader { geoProxy in
+    SpriteView(scene: myScene)
+    .ignoresSafeArea()
+    .onChange(of: geoProxy.size) {
+        print("New size is \(geoProxy.size)")
+    }
+}
+```
+
+You have to know that you need to use something like `onChange` or `onAppear` in order to execute code inside them, and therefore access the information you seek. You can not just write commands on any line. The following code isn't valid SwiftUI:
+
+```swift
+GeometryReader { geoProxy in
+	print(geoProxy) // you can not use print like this
+    SpriteView(scene: myScene)
+    .ignoresSafeArea()
+}
+```
+
+However, you can write this:
+
+```swift
+GeometryReader { geoProxy in
+	let proxy = geoProxy // assigning the geometry proxy to a constant is ok
+    SpriteView(scene: myScene)
+    .ignoresSafeArea()
+    .onChange(of: proxy.size) {
+        print("New size is \(proxy.size)") // access the constant here
+    }
+}
+```
+
+You can not write this:
+
+```swift
+GeometryReader { geoProxy in
+    SpriteView(scene: myScene)
+    .ignoresSafeArea()
+    .onChange(of: geoProxy) { // you can not listen to changes of the geometry proxy itself
+        print(geoProxy) // not valid
+    }
+}
+```
+
+You have to use one of the properties of the geometry proxy, such as `size` or `safeAreaInsets`.
+
+## Delegation Pattern
 
 *30 May 2024*
 
@@ -1586,6 +1641,7 @@ Links:
 
 ## Links and resources
 
+- 📝 [Total programming in Swift](https://medium.com/@andre_videla/total-programming-in-swift-526508c12a74), *accessed 31 May 2024*
 -  [Extensive list of WWDC video with download links](https://github.com/youjinp/wwdc-list)
 - 🔈 [Amazing podcast with one of Core Graphics Apple engineers](https://pca.st/episode/535318b0-d510-0130-3d77-723c91aeae46)
 -  [WWDC Sessions Archive](https://pvieito.com/2022/05/wwdc-sessions-archive)
