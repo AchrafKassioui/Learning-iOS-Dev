@@ -1,5 +1,13 @@
 # Learning Native Apple Development
 
+## Xcode 16 Beta
+
+*4 July 2024*
+
+Some changes I have noticed with the new Xcode version:
+
+- If the Mac is selected as a build target, and if the project includes a framework that is not native Mac like UIKit, the project won't build successfully.
+
 ## The Magic of SwiftUI
 
 *5 June 2024*
@@ -59,7 +67,7 @@ You have to use one of the properties of the geometry proxy, such as `size` or `
 
 *30 May 2024*
 
-In the Apple programming world, the delegation pattern is a common pattern that allows one object to make another object execute something. For example:
+In the Apple programming world, the delegation pattern is a common pattern that allows one object to tell another object to do something. For example:
 
 ```swift
 /// A framework to use for this example
@@ -977,6 +985,7 @@ First, notice how Core Image uses an old API built with key/values dictionaries,
 
 *15 January 2024*
 
+- [Filterpedia](https://github.com/FlexMonkey/Filterpedia)
 - 📕 [CIFilter.io](https://cifilter.app), by Noah Gilmore
 - 📝 [Core Image: using filters](https://medium.com/academy-eldoradocps/core-image-using-filters-c1cae0d24d57), Medium article
 - [A list of CI Filters](https://gist.github.com/Umity/c42920a236ad4fdd950492678a9136fa), GitHub
@@ -1323,7 +1332,7 @@ I have reached Metal texture size limitations! Woohoo!
 
 Declaring a function as static inside a class is another way of organizing code. It's another cognitive and complexity management tool. A static method does not hold specific values for each instance of the class. Instead, it is a general method of the class itself. So static may be used to make sure that the method does not access or expect particular values from different instances.
 
-## Notification pattern
+## Notification Pattern
 
 *14 August 2023*
 
@@ -1641,6 +1650,7 @@ Links:
 
 ## Links and resources
 
+- 🎬 [CoreML basic tutorial](https://www.youtube.com/watch?v=OxKHt1NwOHw), *accessed 9 July 2024*. Nice basic setup of a model with CoreML. Also interesting to see how SpriteKit and UIKit belong to the same family.
 - 📝 [Total programming in Swift](https://medium.com/@andre_videla/total-programming-in-swift-526508c12a74), *accessed 31 May 2024*
 -  [Extensive list of WWDC video with download links](https://github.com/youjinp/wwdc-list)
 - 🔈 [Amazing podcast with one of Core Graphics Apple engineers](https://pca.st/episode/535318b0-d510-0130-3d77-723c91aeae46)
