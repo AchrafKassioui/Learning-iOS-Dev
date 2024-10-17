@@ -4,14 +4,19 @@
 
 *16 October 2024*
 
-I switched my Xcode project from Swift 5 to Swift 6, and I instantly got about 64 errors and counting. Most errors have to do with `@MainActor`, `non-'Sendable' type`, and thread safety.
+I switched my Xcode project from Swift 5 to Swift 6, and I got about 64 errors and counting. Most errors have to do with `@MainActor`, `non-'Sendable' type`, and thread safety. I'll investigate one particular example.
 
-For example, I have a top-level Core Graphics function designed to generate a SpriteKit texture. I often use Core Graphics functions to generate textures like grids and drop shadows. A generator would look something like this:
+I have a top-level Core Graphics function designed to generate a SpriteKit texture. I often use Core Graphics functions to generate textures like grids and drop shadows. A generator would look something like this:
 
 ```swift
 // Grid Generator
 func generateGridTexture(cellSize: CGFloat, rows: Int, cols: Int, linesColor: SKColor) -> SKTexture {
     // Process the arguments...
+    
+    // Note this line
+    let scale = UIScreen.main.scale
+    
+    // ...
     let renderer = UIGraphicsImageRenderer(size: size)
     let image = renderer.image { ctx in
         let context = ctx.cgContext       
@@ -22,7 +27,7 @@ func generateGridTexture(cellSize: CGFloat, rows: Int, cols: Int, linesColor: SK
 }
 ```
 
-After the switch to Swift 6, the compiler generated an error. The straightforward fix was to prefix the function with `@MainActor`:
+After the switch to Swift 6, the compiler generated the error: "Main actor-isolated class property 'main' can not be referenced from a nonisolated context" on the line `let scale = UIScreen.main.scale`. I'm accessing a method that runs on the main thread inside a function that is outside an existing main thread context. The straightforward fix was to prefix the whole function with `@MainActor`:
 
 ```swift
 @MainActor func generateGridTexture(cellSize: CGFloat, rows: Int, cols: Int, linesColor: SKColor) -> SKTexture {
@@ -30,9 +35,9 @@ After the switch to Swift 6, the compiler generated an error. The straightforwar
 }
 ```
 
-My understanding is that any code running on the main thread is considered part of the main actor by default or should be marked as such. UI related code is main thread. SpriteKit methods are main thread. Since my generator uses a SpriteKit method `SKTexture(image: image)`, and because my function is top-level and not nested in an existing main actor context, the compiler requires clarification.
+My understanding is that any code running on the main thread is considered part of the main actor by default or should be marked as such. UI related code is main thread. SpriteKit methods are main thread. Since my generator uses a UIKit method `UIScreen.main.scale` that runs on the main thread, and because my function is top-level and not nested in an existing main actor context, the compiler requires a clarification.
 
-In my case, the purpose of the generator is to programmatically generate an image. The generation itself does not need to execute in the main thread. Only the integration of the texture into SpriteKit does. So I rewrote the generator using pure Core Graphics methods and Swift 6 `async`:
+In my case, the purpose of the generator is to programmatically generate an image. The generation itself does not need to execute in the main thread. Only the integration of the texture into SpriteKit does. So I rewrote the generator using `async` and pure Core Graphics:
 
 ```swift
 // Note the async
