@@ -4,7 +4,7 @@
 
 *16 October 2024*
 
-I switched my Xcode project from Swift 5 to Swift 6, and I got about 64 errors and counting. Most errors have to do with `@MainActor`, `non-'Sendable' type`, and thread safety. I'll investigate one particular example.
+I switched my Xcode project from Swift 5 to Swift 6 and got 64 errors and counting. Most errors have to do with `@MainActor`, `non-'Sendable' type`, and thread safety. I'll investigate one particular example.
 
 I have a top-level Core Graphics function designed to generate a SpriteKit texture. I often use Core Graphics functions to generate textures like grids and drop shadows. A generator would look something like this:
 
