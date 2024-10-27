@@ -5,6 +5,12 @@
 A list of interesting UIKit methods, started *23 October 2024*:
 
 ```swift
+// Get information about the display
+UIScreen.main.brightness
+UIScreen.main.nativeBounds
+UIScreen.main.scale
+...
+
 // Create thumbnails from images
 let myImage: UIImage
 myImage.preparingThumbnail(of: CGSize(width: 60, height: 60))
