@@ -304,7 +304,7 @@ func setupGestureRecognizers(in view: SKView) {
 }
 ```
 
-## Xcode comments
+## Xcode Comments
 
 *9 April 2024*
 
