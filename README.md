@@ -1,6 +1,86 @@
 # Learning Native Apple Development
 
+## UIKit
+
+A list of interesting UIKit methods, started *23 October 2024*:
+
+```swift
+// Create thumbnails from images
+let myImage: UIImage
+myImage.preparingThumbnail(of: CGSize(width: 60, height: 60))
+
+// Haptic feedback
+let generator = UIImpactFeedbackGenerator(style: .light)
+generator.impactOccurred()
+```
+
+## Functions as Argument
+
+*22 October 2024*
+
+How to pass a function as an argument in Swift?
+
+```swift
+func myFunction(action: () -> Void) {
+    action()
+}
+```
+
+The type `() -> Void` means the argument is a closure (or function) that takes no parameters and returns nothing `Void`. To call that function, we can write:
+
+```swift
+myFunction(action: myOtherFunction)
+```
+
+Or use the trailing closure syntax:
+
+```swift
+myFunction {
+    // any code to execute
+}
+```
+
+## Async Patterns
+
+*18 October 2024*
+
+```swift
+Task {
+    // call an async function here
+    let someBackgroundValue = await myBackgroundMethod()
+    
+    await MainActor.run {
+        // when the async function returns some value,
+        // use it here in the main thread 
+    }
+}
+```
+
+The `await` above expects an `async` function with this signature:
+
+```swift
+func myBackgroundMethod() async -> ReturnType {
+    //...
+}
+```
+
+To use something from the main thread inside the task closure, we can write this:
+
+```swift
+Task {
+    let neededValueFromMainThread = await MainActor.run {
+        // the main thread method here
+    }
+}
+```
+
 ## Swift 6
+
+*27 October 2024*
+
+I didn't find a way to use GameplayKit and SpriteKit with Swift 6. The Swift 6 compiler keeps shouting about nonisolation and other errors. GameplayKit doesn't seem to be Swift 6 ready. Or rather, Swift 6 doesn't seem to be ready nor friendly. Switching back to Swift 5.
+
+See the issue with GameplayKit and Swift 6 on the [Apple Forums](https://forums.developer.apple.com/forums/thread/767042) and [StackOverflow](https://stackoverflow.com/questions/79128004/gameplaykit-usage-with-swift-6-call-to-main-actor-isolated-instance-method-run).
 
 *16 October 2024*
 
@@ -100,14 +180,6 @@ However, the rewrite comes with more verbose code, and it forces to think about 
 Compared to my original implementation with `UIGraphicsImageRenderer`, the pure Core Graphics version produces less sharp images and less saturated colors. `UIGraphicsImageRenderer` automatically generate P3 colors, and its anti-aliasing looks superior. I'm sure pure Core Graphics could produce similar results, for both iOS and macOS. But it will require further exploration.
 
 This is typical whenever I explore a new aspect of a programming language. It can be useful and even fascinating, but it often leads me down side quests that distract from the main goal.
-
-## Xcode 16 Beta
-
-*4 July 2024*
-
-Some changes I have noticed with the new Xcode version:
-
-- If the Mac is selected as a build target, and if the project includes a framework that is not native Mac like UIKit, the project won't build successfully.
 
 ## The Magic of SwiftUI
 
@@ -258,7 +330,7 @@ Xcode provides various helpful ways to comment and organize your code documentat
 
  */
 ```
-## Get the physical corner radius of a screen
+## Get the Physical Corner Radius of a Device
 
 *8 April 2024*
 
@@ -297,7 +369,7 @@ override func didMove(to view: SKView) {
 }
 ```
 
-## Anecdotes and back stories
+## Anecdotes and Back Stories
 
 *8 April 2024*
 
@@ -323,7 +395,7 @@ layer?.add(anim, forKey: "customMoveAnimation")
 
 In UIKit, views have a `layer` property that gives access to the `CALayer` handling the view. But I can not access a `layer` property on an `SKNode`.
 
-## Core animation
+## Core Animation
 
 *8 April 2024*
 
@@ -334,7 +406,7 @@ view.layer.borderWidth = 5
 view.layer.borderColor = .red
 ```
 
-## Rounding and truncating numbers
+## Rounding and Truncating Numbers
 
 *22 March 2024*
 
@@ -345,7 +417,7 @@ let myFloat: CGFloat = 1.23456
 let myValue = round(myFloat * 10) / 10
 ```
 
-## Generate a grid image
+## Generate a Grid Image
 
 *21 March 2024*
 
@@ -437,7 +509,7 @@ func generateGrid(cellSize: CGFloat, rows: Int, cols: Int) -> Data? {
 
 Many times I needed to generate such a pattern in Figma or Pixelmator. Generating large repetitive visual patterns is not trivial to do in 2D drawing software. 3D programs like Cinema 4D do a better job at generating visual patterns, but the setup is heavier and exporting is cumbersome.
 
-## Else continue
+## Else Continue
 
 *20 March 2024*
 
@@ -458,7 +530,7 @@ I find the "continue" keyword in the line using `guard` very confusing. In fact,
 
 `continue` should be "skip" or "next". It skips any code below the guard statement and within the scope. Note that the compiler will allow `continue` only inside a loop.
 
-## Required reason API
+## Required Reason API
 
 *20 March 2024*
 
@@ -476,7 +548,7 @@ Discussion: SpriteKit's game loop—a core function of any game engine—provide
 > Declare this reason to access the system boot time in order to measure the amount of time that has elapsed between events that occurred within the app or to perform calculations to enable timers.
 > Information accessed for this reason, or any derived information, may not be sent off-device. There is an exception for information about the amount of time that has elapsed between events that occurred within the app, which may be sent off-device.
 
-## Code notation
+## Code Notation
 
 *17 March 2024*
 
@@ -646,7 +718,7 @@ Note that in Swift, the `case` statements are aligned with the `switch` keyword,
 
 <img src="Screenshots/Xcode-switch-indentation.png" alt="Xcode-switch-indentation" style="width:100%;" />
 
-## Local web server
+## Local Web Server
 
 *26 February 2024*
 
@@ -656,7 +728,27 @@ If you need to start a web server on your Mac, so you can open HTML pages and te
 - Paste `python3 -m http.server 9000` in the command line, where `9000` is your desired port.
 - Open your browser and go to address `localhost:9000`
 
-## Static and class
+## Static
+
+*Update 27 October 2024*
+
+If the property of a `class` or `struct` is marked as `static`, we can change its value at runtime, and all existing instances of the class or struct will immediately update to the new value.
+
+```swift
+class MyClass {
+	var property = 1 // Instance property
+    static var sharedProperty = 10 // Static (class) property
+}
+
+let myInstance = MyClass()
+print(myInstance.property) // 1 (unique to this instance)
+print(MyClass.sharedProperty) // 10 (shared across the type)
+
+MyClass.sharedProperty = 100
+print(MyClass.sharedProperty) // 100 (reflects updated value)
+```
+
+Note that we can not access a static property from an instance. `myInstance.sharedProperty` is invalid.
 
 *23 February 2024*
 
@@ -685,9 +777,9 @@ class MyClass {
 MyClass.typeMethod() // now this works
 ```
 
-This is a case where the technical keyword (`static`) isn't intuitive.
+This is a case where the technical keyword (`static`) wasn't intuitive to me.
 
-Update *2 march 2024*: it's called `static` because subclasses (not instances!) of the class can not override a method or property prefixed with `static`. You can however define type properties that *can* be overridden by subclasses if you use the keyword `class` instead of `static`. For example:
+Update *2 march 2024*: it's called `static` because subclasses (not instances!) of the class can *not* override a method or property prefixed with `static`. You can however define type properties that *can* be overridden by subclasses if you use the keyword `class` instead of `static`. For example:
 
 ```swift
 class MyClass {
@@ -706,7 +798,11 @@ print(MyClass.typeVariable) // Prints "Welcome!"
 print(MySubclass.typeVariable) // Prints "Welcome to MySubclass!"
 ```
 
-## Inheritance list
+*15 August 2023*
+
+Declaring a function as static inside a class is another way of organizing code. It's another cognitive and complexity management tool. A static method does not hold specific values for each instance of the class. Instead, it is a general method of the class itself. So static may be used to make sure that the method does not access or expect particular values from different instances.
+
+## Inheritance List
 
 *22 February 2024*
 
@@ -769,7 +865,7 @@ Related notes:
 
 - Protocols
 
-## Dictionary methods
+## Dictionary Methods
 
 ### Retrieve and delete
 
@@ -807,19 +903,20 @@ print(sortedValues) // [("a", 1), ("b", 2), ("c", 3)]
 
 Sorting a dictionary is useful in scenarios where the unordered nature of dictionaries doesn't suit your needs, such as when generating user interface elements that list content in a sorted manner.
 
-## Xcode shortcuts
+## Xcode Shortcuts
 
 *Started 17 February 2024*
 
 - Control + I : auto-indent code
 - Control + M : format objects into multiple lines. Useful for function signatures or hierarchical data structures
 - Control + 6 : search your methods and symbols 
-- Command + 0 : show/hide the file navigator
-- Command + Option + Enter : show/hide the live preview
+- Command + 0 : show/hide file navigator
+- Command + Option + Enter : show/hide live preview
+- Command + Option + P: refresh live preview
 - Command + Option + [ : move a line up
 - Command + Option + ] : move a line down
 
-## Dealing with optionals and unwrapping
+## Dealing with Optionals and Unwrapping
 
 *12 February 2024*
 
@@ -844,7 +941,7 @@ let result = myMethod.result? ?? "Default Value or Message"
 // do something with result
 ```
 
-## Array methods
+## Array Methods
 
 *4 February 2024*
 
@@ -855,6 +952,43 @@ let filterName = list.first(where: { $0.name == filter })
 // Find the index, i.e. position of an element
 let index = existingFilters.firstIndex(where: { $0.filter.name == filter })
 ```
+
+*31 January 2024*
+
+Suppose you have an array like this:
+
+```swift
+let myArray = [
+    [
+        "name" : "achraf",
+        "occupation" : "please clarify"
+    ],
+    [
+        "name" : "missing",
+        "occupation" : "10x programmer"
+    ],
+]
+```
+
+How do you get the second item of the array? How do you select a specific item in an array? You can write this:
+
+```swift
+func findItemInArray() {
+    if let arrayItem = myArray.first(where: { $0["name"] == "achraf"}) {
+        print(arrayItem)
+    } else {
+        print("array item not found.")
+    }
+}
+```
+
+You can make the search more safe by using type casting:
+
+```swift
+if let arrayItem = myArray.first(where: { $0["name"] as? String == "achraf"}) {
+```
+
+Notice how we use `as? String`. This tells the search pattern to check if the value of key `"name"` is of type `String`.
 
 ## Is
 
@@ -880,7 +1014,7 @@ let myDictionary: [String: Any] = // an existing dictionary
 let nestedDictionaries = myDictionary.filter { $0.value is [String: Any] } // returns a dictionary with the keys that have themselves a dictionary as a value
 ```
 
-## Code bloat
+## Code Bloat
 
 *1 February 2024*
 
@@ -966,7 +1100,7 @@ I was effectively trying to write my own data structure for a structure that alr
 
 It is the very act of understanding and self-appropriating a code structure that I found myself writing an abstraction layer on top of an abstraction layer. That code bloat would probably introduce additional compute time, and possibly errors if my data and the native data drift away from each other. But still, I needed to write my own wrapper that fits my work in progress mental model!
 
-## Key value
+## Key Value
 
 *1 February 2024*
 
@@ -986,45 +1120,6 @@ for (key, value) in parameterValues {
 ```
 
 I used this pattern with Core Image. In Core Image, you can change the value of a filter's key by using a command like `filter.setValue(0.9, forKey: kCIInputIntensityKey)`.
-
-## Array methods
-
-*31 January 2024*
-
-Suppose you have an array like this:
-
-```swift
-let myArray = [
-    [
-        "name" : "achraf",
-        "occupation" : "please clarify"
-    ],
-    [
-        "name" : "missing",
-        "occupation" : "10x programmer"
-    ],
-]
-```
-
-How do you get the second item of the array? How do you select a specific item in an array? You can write this:
-
-```swift
-func findItemInArray() {
-    if let arrayItem = myArray.first(where: { $0["name"] == "achraf"}) {
-        print(arrayItem)
-    } else {
-        print("array item not found.")
-    }
-}
-```
-
-You can make the search more safe by using type casting:
-
-```swift
-if let arrayItem = myArray.first(where: { $0["name"] as? String == "achraf"}) {
-```
-
-Notice how we use `as? String`. This tells the search pattern to check if the value of key `"name"` is of type `String`. 
 
 ## private, fileprivate, internal, public
 
@@ -1056,7 +1151,7 @@ See also this interesting link with static and dynamic linking in Swift:
 
 Source: https://belkadan.com/blog/2022/02/Dynamic-Linking-and-Static-Linking/
 
-## Stride
+## stride
 
 *15 January 2024*
 
@@ -1084,15 +1179,16 @@ let zoomBlurFilter = CIFilter(name: "CIZoomBlur", parameters: ['inputCenter': CI
 
 First, notice how Core Image uses an old API built with key/values dictionaries, usually of type `String: Any`. Second, the `CIVector` in this case expects values in pixels, not in points. If you want to pass the actual center point of the screen to the filter, you need to know the physical resolution of the screen. An iPhone 13 has a physical resolution of 1170x2536. Therefore, its horizontal center is 1170/2 = 585. It is up to the user to derive the right pixel values given the device they are running.
 
-*15 January 2024*
+Resources:
 
+- [Core Image for Swift](https://books.apple.com/us/book/core-image-for-swift/id1073029980), by Simon Gladman.
 - [Filterpedia](https://github.com/FlexMonkey/Filterpedia)
 - 📕 [CIFilter.io](https://cifilter.app), by Noah Gilmore
 - 📝 [Core Image: using filters](https://medium.com/academy-eldoradocps/core-image-using-filters-c1cae0d24d57), Medium article
 - [A list of CI Filters](https://gist.github.com/Umity/c42920a236ad4fdd950492678a9136fa), GitHub
 -  [Core Image Filter Reference](https://developer.apple.com/library/archive/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html#//apple_ref/doc/uid/TP30000136-SW29), Apple
 
-## Expand a type
+## Expand a Type
 
 *18 December 2023*
 
@@ -1107,7 +1203,7 @@ Therefore expanding a type means elaborating on custom created objects. Swift ha
 }
 ```
 
-## Accidental shader
+## Accidental Shader
 
 *16 December 2023*
 
@@ -1144,7 +1240,7 @@ struct ContentView: View {
 
 At some point while playing with the live preview,  I started making swift and short up and down motions with the mouse (see "Accidental shader" video screen recording). The resulting behavior looked like wind blowing on a flag. The combination of the SwiftUI setup and a particular user input pattern generated a behavior that looked like a recognizable natural phenomenon.
 
-## Example in struggling
+## Example in Struggling
 
 *13 December 2023*
 
@@ -1163,7 +1259,7 @@ var number = Int.max
 print(number) // outputs 9223372036854775807
 ```
 
-## String interpolation
+## String Methods
 
 *19 November 2023*
 
@@ -1175,6 +1271,16 @@ Text("\(myVariable)") // in SwiftUI, displays "10"
 ```
 
 Note that string interpolation requires to write the value inside a `""`, which is called a string literal.
+
+*6 July 2023*
+
+In Swift, in order to insert a string of text + a programmatic element, you do this:
+
+```swift
+Text("Text")
+Text("\(myProgrammaticElement) example")
+Text("\(Image(systemName: "clock")) clock")
+```
 
 ## inout
 
@@ -1213,7 +1319,7 @@ The two blocks give the same output. The difference is the usage of `inout` and 
 
 `inout` allows the modification of a value, without copying it, and without using a reference or a global variable inside the function's closure.
 
-## Different names for the same parameter
+## Different Names for the Same Parameter
 
 *8 November 2023*
 
@@ -1248,7 +1354,7 @@ override func didMove(to view: SKView) {
 
 The `to` is the external parameter's name, while `view` is the internal one.
 
-## The underscore _
+## The Underscore _
 
 *8 November 2023*
 
@@ -1290,7 +1396,7 @@ People I'd like to talk to:
 - UIBuzz podcaster, about SpriteKit and game development on iOS (*7 November 2023*)
 - Makers of Medly, the music app (*3 November 2023*)
 
-## Computed properties
+## Computed Properties
 
 *2 November 2023*
 
@@ -1307,11 +1413,11 @@ var center: CGPoint {
 
 A computer property is also called an accessor. Source: https://developer.apple.com/tutorials/developinswifttutorials/custom-views
 
-## Swift trailing closure
+## Swift Trailing Closure
 
 *4 September 2023*
 
-Swift has a specific syntactical construction for functions that call a block of code (a closure) as an argument.
+Swift has a specific syntactical construction for functions that calls a block of code (a closure).
 
 ``` swift
 func travel(action: () -> Void) {
@@ -1321,17 +1427,17 @@ func travel(action: () -> Void) {
 }
 
 travel {
-    print("in betwen step")
+    print("between steps")
 }
 ```
 
-Notice:
+Note:
 
-- The definition of `travel` tells the order of execution of code
-- The call of `travel` is a shorthand syntax made without `()` and immediately trailed by a closure `{}`
-- The closure is the piece of code that was passed as an argument in the function signature
+- The definition of `travel` defines the order of execution of code
+- We can call `travel` without writing `()` by immediately opening the `{}`
+- The closure is the piece of code that was passed as parameter in the function signature
 
-In Swift, when the last (or only) argument to a function is a closure, we can use the shorthand syntax. The shorthand syntax is used in SwiftUI such as:
+In Swift, when the last (or only) argument of a function is a closure, we can use the shorthand syntax. The shorthand syntax is used in SwiftUI a lot:
 
 ```swift
 VStack {
@@ -1378,13 +1484,11 @@ struct ContentView_Previews: PreviewProvider {
 }
 ```
 
-## Function overloading
+## Function Overloading
 
 *23 August 2023*
 
-In Swift, since it is a strongly typed language, the expected type of a function parameter effectively discriminates that function. We can have functions with the same name, but different expected type as argument. This allows to execute a different code with the same function signature depending on the type of the passed on parameter.
-
-Example:
+In Swift, we can have functions with similar names but different parameters. This allows to execute a different code path using the same function, by passing different types of parameters. Example:
 
 ```swift
 extension MyClass {
@@ -1427,41 +1531,7 @@ MTLTextureDescriptor has height (18000) greater than the maximum allowed size of
 
 I have reached Metal texture size limitations! Woohoo!
 
-## Static
-
-*15 August 2023*
-
-Declaring a function as static inside a class is another way of organizing code. It's another cognitive and complexity management tool. A static method does not hold specific values for each instance of the class. Instead, it is a general method of the class itself. So static may be used to make sure that the method does not access or expect particular values from different instances.
-
-## Notification Pattern
-
-*14 August 2023*
-
-```swift
-static let myNotification = "myNotification"
-
-// run this to broadcast a notification
-NotificationCenter.default.post(
-    Notification(
-        name: NSNotification.Name(myNotification),
-        object: nil)
-)
-
-// add an oberver for the notification elsewhere
-NotificationCenter.default.addObserver(
-    self,
-    selector: #selector(callToExecute),
-    name: Notification.Name(myNotification),
-    object: nil
-)
-
-// run this when the observer receives notification
-@objc func callToExecute() {
-    
-}
-```
-
-## Declaring variables
+## Declaring Variables
 
 *13 August 2023*
 
@@ -1526,15 +1596,13 @@ A SpriteKit `SKScene` is of type `SKNode`, itself of type `UIResponder`. Accordi
 >
 > https://developer.apple.com/documentation/uikit/uiresponder
 
-Class inheritances and polymorphism!
+That's where the override comes from!
 
-## Bitwise operations
+## Bitwise Operations
 
 *7 August 2023*
 
-It's interesting to see low-level computing optimization scoop up in a high-level programming API. For example, in SpriteKit, we can define different categories inside a physics simulation, in order to tell which body can collide with which.
-
-By convention, these categories are given names that are bitwise operations friendly. Such as
+It's interesting to see low-level computing optimization show up in a high-level programming API. For example, in SpriteKit, we can define different categories inside a physics simulation, in order to tell which bodies can collide with each other. By convention, these categories are given names that are bitwise operations friendly. Such as
 
 ```swift
 struct PhysicsCategory {
@@ -1547,11 +1615,11 @@ struct PhysicsCategory {
 
 Notice the binary equivalent for each category name. These expressions allow for efficient, low power bitwise operation: https://en.wikipedia.org/wiki/Bitwise_operation. It also provides handy operations in code:
 
-> This is very handy and allows you to easily combine categories. For example, when you want to specify that the cat should collide with all block bodies and the bed, you can say the collision bit mask for the cat is PhysicsCategory.Block | PhysicsCategory.Bed (read this as “block OR bed”), which produces the logical OR of the two values
+> This is very handy and allows you to easily combine categories. For example, when you want to specify that the cat should collide with all block bodies and the bed, you can say the collision bit mask for the cat is PhysicsCategory.Block | PhysicsCategory.Bed (read this as “block OR bed”), which produces the logical OR of the two values.
 >
 > 2D Apple Games by Tutorials (2017), p. 228
 
-## Less verbose Xcode console
+## Less Verbose Xcode Console
 
 *5 August 2023*
 
@@ -1564,7 +1632,7 @@ In the "Environment Variables", add this item:
 - Name: OS_ACTIVITY_MODE
 - Value: disable
 
-## Value type VS reference type
+## Value Type VS Reference Type
 
 *5 August 2023*
 
@@ -1572,36 +1640,13 @@ Can be useful to understand and use for The Tool.
 
 https://developer.apple.com/swift/blog/?id=10
 
-## Swift methods and commands
-
-*Started 18 July 2023*
-
-```swift
-// π, aka 3.14....
-.pi
-```
-
-## Haptic feedback
-
-*18 July 2023*
-
-```swift
-// Haptic feedback
-let generator = UIImpactFeedbackGenerator(style: .light)
-generator.impactOccurred()
-```
-
-## Present a view
+## Present a View
 
 *13 July 2023*
 
-Confusing programming word of the day:
+Confusing programming word of the day: *present* a view. On iOS using UIKit, we say "present a view" to mean that the view has appeared on screen.
 
-*Present* a view
-
-On iOS using UIKit, we say "present a view" to mean that the view has appeared on screen.
-
-## Touches vs. gestures
+## Touches vs. Gestures
 
 *9 July 2023*
 
@@ -1609,7 +1654,7 @@ In "2D Apple games by Tutorials", page 68, we can implement an interaction metho
 
 With single touches, we can tap the screen repeatedly and quickly, and the method will be triggered. Whereas with a gesture recognizer, it seems that quickly and repeatedly tapping the screen doesn't always trigger the method. This is likely because the gesture recognizer is working to discriminate between double taps and other composed touches, and so repeatedly tapping the screen may be interpreted as a double tap, therefore not triggering the method, since that method except a single tap.
 
-## Clamping a position
+## Clamping a Position
 
 *9 July 2023*
 
@@ -1635,7 +1680,7 @@ Links:
 - Full code sample in project "Clamping - Sample code"
 - In other areas, "clamping" means "securing in place."
 
-## UIKit view controller
+## UI View Controller
 
 *7 July 2023*
 
@@ -1647,7 +1692,7 @@ For example:
 import UIKit
 
 class myViewController: UIViewController {
-  // Code for my view	
+  // Code for the view	
 }
 ```
 
@@ -1674,19 +1719,7 @@ class myViewController: UIViewController {
 - https://stackoverflow.com/questions/40151723/why-when-do-we-have-to-call-super-viewdidload
 - Book: 2D Apple Games by Tutorials, Page 37
 
-## String insertion and concatenation
-
-*6 July 2023*
-
-In Swift, in order to insert a string of text + a programmatic element, you do this:
-
-```swift
-Text("Text")
-Text("\(myProgrammaticElement) example")
-Text("\(Image(systemName: "clock")) clock")
-```
-
-## Disclosure indicators
+## Disclosure Indicators
 
 *5 July 2023*
 
@@ -1694,11 +1727,25 @@ You know the chevrons next to a navigable button or link? They are called "Discl
 
 ## Previews
 
+*27 October 2024*
+
+Since Xcode 15, live previews can be written using the `#Preview` macro:
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    // ...
+}
+
+#Preview {
+    ContentView()
+}
+```
+
 *29 June 2023*
 
-A preview on the live canvas can be added to any file.
-
-The preview code is of the shape of:
+A preview on the live canvas can be added to any file. The preview code is of the shape of:
 
 ```swift
 // PreviewProvider is the protocol this struct must conforms to
@@ -1716,7 +1763,7 @@ struct TheCodeToPreview_Previews: PreviewProvider {
 ```
 
 
-## Custom button and label styles
+## Custom Button and Label Styles
 
 *29 June 2023*
 
@@ -1737,9 +1784,9 @@ Links:
 
 How to rename a function? You right-click on the name of the function and you choose "Refactor > Rename"!
 
-One of the first thing I intuitively tried in front of a ContentView.swift file was to rename all "ContentView" references to something else, like "ContentViewer", including the file in the finder. That didn't go well. I lost some time recreating the file and figuring how to place it again in the project.
+One of the first thing I intuitively tried in front of a ContentView.swift file was to rename all "ContentView" references to something else, like "ContentViewer", including the file in the finder. That didn't go well. I lost some time recreating the file and figuring out how to place it again in the project.
 
-So how do I rename a function or a block of code that's referenced elsewhere? Apparently, I "right-click>refactor>rename" it!
+So how do I rename a function or a block of code that's referenced elsewhere? Apparently, I right-click then > refactor > rename.
 
 Thoughts:
 
@@ -1749,8 +1796,9 @@ Links:
 
 - Learnt in https://developer.apple.com/tutorials/app-dev-training/using-stacks-to-arrange-views
 
-## Links and resources
+## General Links and Resources
 
+- 🎬 [So You Think You Know Swift?](https://www.youtube.com/watch?v=smkRzwANNQ8), Nick Lockwood. Accessed *27 October 2024*.
 - 🎬 [CoreML basic tutorial](https://www.youtube.com/watch?v=OxKHt1NwOHw), *accessed 9 July 2024*. Nice basic setup of a model with CoreML. Also interesting to see how SpriteKit and UIKit belong to the same family.
 - 📝 [Total programming in Swift](https://medium.com/@andre_videla/total-programming-in-swift-526508c12a74), *accessed 31 May 2024*
 -  [Extensive list of WWDC video with download links](https://github.com/youjinp/wwdc-list)
