@@ -1,5 +1,26 @@
 # Learning Native Apple Development
 
+## Hide Status Bar
+
+*20 November 2024*
+
+In order to hide the status bar in an iOS app, add the entry "View controller-based status bar appearance" in the info tab of your project configuration.
+
+<img src="Screenshots/Xcode - Hide Status Bar.png" alt="Xcode - Hide Status Bar" style="width:100%;" />
+
+In order to hide the homebar, add this modifier to your SwiftUI view:
+
+```swift
+struct MyView: View {
+    var body: some View {
+        ZStack {
+            // ...
+        }
+        .persistentSystemOverlays(.hidden) // Add this modifier
+    }
+}
+```
+
 ## UIKit
 
 A list of interesting UIKit methods, started *23 October 2024*:
