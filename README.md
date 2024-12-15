@@ -6,19 +6,19 @@
 
 Assuming you have a launch image (aka splash screen) with a fixed width and height, and assuming you want that image to be centered as is on any screen size, here are the steps to do that with Xcode Storyboard:
 
-![Xcode Storyboard - Add Launch Image](Screenshots/Xcode Storyboard - Add Launch Image.png)
+<img src="Screenshots/Xcode Storyboard - Add Launch Image.png" alt="Xcode Storyboard - Add Launch Image" />
 
 1. Select the LaunchScreen.storyboard file.
 2. Select the View in the View Controller (you can select the safe area)
 3. Click the + button, search for Image View.
 4. Drag the Image View on top of the safe area.
 
-<img src="Screenshots/Xcode Storyboard - Constrain Image Size.png" alt="Xcode Storyboard - Constrain Image Size" style="width:50%;" />
+<img src="Screenshots/Xcode Storyboard - Constrain Image Size.png" alt="Xcode Storyboard - Constrain Image Size" />
 
 5. Click the icon "Add New Constraints".
 6. Check the width and height, and fill in the values (the size of your image).
 
-<img src="Screenshots/Xcode Storyboard - Constrain Image Position.png" alt="Xcode Storyboard - Constrain Image Position" style="width:50%;" />
+<img src="Screenshots/Xcode Storyboard - Constrain Image Position.png" alt="Xcode Storyboard - Constrain Image Position" />
 
 7. Click the "Align" icon.
 8. Check "Horizontally in Container" and "Vertically in Container".
