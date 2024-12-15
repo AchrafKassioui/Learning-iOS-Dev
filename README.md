@@ -1,5 +1,70 @@
 # Learning Native Apple Development
 
+## Center a Launch Image in Storyboard
+
+*15 December 2024*
+
+Assuming you have a launch image (aka splash screen) with a fixed width and height, and assuming you want that image to be centered as is on any screen size, here are the steps to do that with Xcode Storyboard:
+
+<img src="Screenshots/Xcode Storyboard - Add Launch Image.png" alt="Xcode Storyboard - Add Launch Image" style="width:50%;" />
+
+1. Select the LaunchScreen.storyboard file.
+2. Select the View in the View Controller (you can select the safe area)
+3. Click the + button, search for Image View.
+4. Drag the Image View on top of the safe area.
+
+<img src="Screenshots/Xcode Storyboard - Constrain Image Size.png" alt="Xcode Storyboard - Constrain Image Size" style="width:50%;" />
+
+5. Click the icon "Add New Constraints".
+6. Check the width and height, and fill in the values (the size of your image).
+
+<img src="Screenshots/Xcode Storyboard - Constrain Image Position.png" alt="Xcode Storyboard - Constrain Image Position" style="width:50%;" />
+
+7. Click the "Align" icon.
+8. Check "Horizontally in Container" and "Vertically in Container".
+
+## App Entry Point
+
+*15 December 2024*
+
+To define which view controller is the entry point of your UIKit app, select the SceneDelegate.swift file, and find this function:
+
+```swift
+func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+
+}
+```
+
+Then put this code inside it:
+
+```swift
+func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+    guard let windowScene = (scene as? UIWindowScene) else { return }
+
+    /// Create the window with the given scene
+    window = UIWindow(windowScene: windowScene)
+    /// Set the custom view controller as the root
+    window?.rootViewController = MyViewController() /// The name of your view controller
+    /// Make the window visible
+    window?.makeKeyAndVisible()
+}
+```
+
+## First Mistakes with UIKit
+
+Missteps and incomprehensions I had while learning UIKit:
+
+- Added auto layout constraints to a view before adding the view to the view hierarchy. In order for auto layout to work and not crash the app, the lines of codes declaring constraints must be written after the line of code that adds this view to the overall view hierarchy.
+
+## Background Tasks
+
+*27 November 2024*
+
+Interesting resources:
+
+- Apple Developer Forums, [UIApplication Background Task Notes](https://developer.apple.com/forums/thread/85066), *accessed 27 November 2024*
+- Apple Developer Forums, [iOS Background Execution Limits](https://forums.developer.apple.com/forums/thread/685525), *accessed 27 November 2024*
+
 ## Hide Status Bar
 
 *20 November 2024*
@@ -21,16 +86,22 @@ struct MyView: View {
 }
 ```
 
-## UIKit
+## Interesting UIKit Methods
 
 A list of interesting UIKit methods, started *23 October 2024*:
 
 ```swift
+// Animate something over a duration. 12 December 2024
+UIView.animate(withDuration: 0.3) {
+	// ..
+}
+
 // Get information about the display
 UIScreen.main.brightness
 UIScreen.main.nativeBounds
 UIScreen.main.scale
-...
+// Xcode says that `main` will be deprecated, use this instead:
+view.window?.screen.scale
 
 // Create thumbnails from images
 let myImage: UIImage
