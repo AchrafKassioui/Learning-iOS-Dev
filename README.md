@@ -4,12 +4,12 @@
 
 *15 December 2024*
 
-Say you have a launch image (aka splash screen) you want to center on screen, regardless of the screen size, below are the steps to do that with Xcode Storyboard (aka Interface Builder). Assuming the image has a fixed width and height:
+Say you have a launch image (aka splash screen) you want to center on screen, regardless of the screen size, below are the steps to do that with Xcode Interface Builder. Assuming the image has a fixed width and height:
 
 <img src="Screenshots/Xcode Storyboard - Add Launch Image.png" alt="Xcode Storyboard - Add Launch Image" />
 
-1. Select the LaunchScreen.storyboard file.
-2. Select the View in the View Controller (you can select the safe area)
+1. Select the LaunchScreen.storyboard file. Interface Builder is the set of tools that appear when you select a .storyboard file.
+2. Select the View in the View Controller.
 3. Click the + button, search for Image View.
 4. Drag the Image View on top of the View Controller’s view.
 
