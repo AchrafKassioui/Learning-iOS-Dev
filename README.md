@@ -1,4 +1,4 @@
-# Learning Native Apple Development
+# Learning iOS Development
 
 ## Center a Launch Image in Storyboard
 
