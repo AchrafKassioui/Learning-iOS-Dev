@@ -88,17 +88,35 @@ struct MyView: View {
 }
 ```
 
+With UIKit, override these two properties of UIViewController and return true.
+
+```swift
+class MyViewController: UIViewController {
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
+    override var prefersHomeIndicatorAutoHidden: Bool {
+        return true
+    }
+}
+```
+
+Overriding a property means that the class `UIViewController` has these two properties associated with a default value. When you override them in a subclass inheriting from `UIViewController`, you can assign different values to them.
+
 ## Interesting UIKit Methods
 
 A list of interesting UIKit methods, started *23 October 2024*:
 
 ```swift
-// Animate something over a duration. 12 December 2024
+// Animate something over a duration.
+
 UIView.animate(withDuration: 0.3) {
 	// ..
 }
 
 // Get information about the display
+
 UIScreen.main.brightness
 UIScreen.main.nativeBounds
 UIScreen.main.scale
@@ -106,10 +124,12 @@ UIScreen.main.scale
 view.window?.screen.scale
 
 // Create thumbnails from images
+
 let myImage: UIImage
 myImage.preparingThumbnail(of: CGSize(width: 60, height: 60))
 
 // Haptic feedback
+
 let generator = UIImpactFeedbackGenerator(style: .light)
 generator.impactOccurred()
 ```
@@ -215,7 +235,7 @@ After the switch to Swift 6, the compiler generated the error: "Main actor-isola
 }
 ```
 
-My understanding is that any code running on the main thread is considered part of the main actor by default or should be marked as such. UI related code is main thread. SpriteKit methods are main thread. Since my generator uses a UIKit method `UIScreen.main.scale` that runs on the main thread, and because my function is top-level and not nested in an existing main actor context, the compiler requires a clarification.
+My understanding is that any code running on the main thread is considered part of the main actor by default or should be marked as such. UI related code is main thread. Many SpriteKit methods are main thread. Since my generator uses a UIKit method `UIScreen.main.scale` that runs on the main thread, and because my function is top-level and not nested in an existing main actor context, the compiler requires a clarification.
 
 In my case, the purpose of the generator is to programmatically generate an image. The generation itself does not need to execute in the main thread. Only the integration of the texture into SpriteKit does. So I rewrote the generator using `async` and pure Core Graphics:
 
