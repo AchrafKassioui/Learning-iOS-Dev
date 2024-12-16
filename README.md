@@ -282,9 +282,9 @@ Task {
     // Generate the grid image in the background
     let gridImage = await generateGridTexture(cellSize: 60, rows: 10, cols: 10, linesColor: CGColor(red: 0, green: 0, blue: 0, alpha: 0.5))
 
-    // Switch back to the main actor to create the SKTexture
+    // Switch back to the main actor to use some main actor methods
+    // Here we use addChild, a SKNode method, which is a main actor class.
     await MainActor.run {
-        // This is where you interact with SpriteKit, which must happen on the main thread
         let uiImage = UIImage(cgImage: gridImage)
         let backgroundTexture = SKTexture(image: uiImage)
         let backgroundSprite = SKSpriteNode(texture: backgroundTexture)
@@ -299,7 +299,7 @@ However, the rewrite comes with more verbose code, and it forces to think about 
 
 Compared to my original implementation with `UIGraphicsImageRenderer`, the pure Core Graphics version produces less sharp images and less saturated colors. `UIGraphicsImageRenderer` automatically generate P3 colors, and its anti-aliasing looks superior. I'm sure pure Core Graphics could produce similar results, for both iOS and macOS. But it will require further exploration.
 
-This is typical whenever I explore a new aspect of a programming language. It can be useful and even fascinating, but it often leads me down side quests that distract from the main goal.
+This is typical whenever I explore a new aspect of a programming language. It can be useful and even fascinating, but it often sends me on side quests that distract from the main goal.
 
 ## The Magic of SwiftUI
 
