@@ -1,5 +1,93 @@
 # Learning iOS Development
 
+## Gesture Recognizers
+
+*18 December 2024*
+
+Gesture recognizers are setup on a UIView. I have a [SpriteKit custom camera](https://github.com/AchrafKassioui/SpriteKit-Inertial-Camera) class that uses gesture recognizers to handle pan, pinch, and rotation. At first, I setup the gesture recognizers on the SKView that presents the scene in which the camera is instantiated. However, I noticed that if I have views in the UIViewController that presents the SpriteKit scene through a child SKView, the UIViews on top of the SKView intercept the gestures, and they are no longer fed to the SpriteKit camera.
+
+I knew from the start that I had to clarify my gesture recognition setup: does each instance of the camera create its own gesture recognizers? Do they multiply? Or is there one global gesture recognition logic that dispatches the events to as many objects as there are objects handling gestures?
+
+While exploring UIKit views, I found out that if I double setup the gesture recognizers on both the SKView and an UIView on top of the SKView, the pan translation would compound on the camera. The gesture translation was being called twice. Moreover, I needed clarity about which view should handle the gesture recognition, and later in the code I'd choose which object on which view should respond to the gesture recognition information.
+
+Before in the camera initialization:
+
+```swift
+class InertialCamera: SKCameraNode, UIGestureRecognizerDelegate {
+    /// The scene where the camera is instantiated
+    weak var parentScene: SKScene?
+
+    /// The SKView presenting the scene.
+    weak var parentView: SKView?
+
+    init(scene: SKScene, parentView: SKView) {
+        super.init()
+        self.parentScene = scene
+        self.parentView = parentView
+        self.setupGestureRecognizers(view: parentView)
+    }
+    
+    func setupGestureRecognizers(view: SKView) {
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panCamera(gesture:)))
+        panRecognizer.delegate = self
+        /// ...
+        view.addGestureRecognizer(panRecognizer)
+    }  
+}
+```
+
+After:
+
+```swift
+class InertialCamera: SKCameraNode, UIGestureRecognizerDelegate {
+    /// The scene where the camera is instantiated
+    weak var parentScene: SKScene?
+
+    /// The view to which the gesture recognizers are attached.
+    /// It could be the SKView rendering the SKScene in which the camera is instantiated.
+    /// Or a UIView that is the superview of the view presenting the scene.
+    weak var gesturesView: UIView?
+
+    init(scene: SKScene, gesturesView: UIView) {
+        super.init()
+        self.parentScene = scene
+    }
+    
+    func setupGestureRecognizers(gesturesView: UIView) {
+        let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panCamera(gesture:)))
+        panRecognizer.delegate = self
+        /// ...
+        gesturesView.addGestureRecognizer(panRecognizer)
+    }
+}
+```
+
+Then in the UIKit view controller:
+
+```swift
+let scene = MyScene()
+
+override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    if let camera = scene.camera as? InertialCamera {
+        camera.gesturesView = view
+        camera.setupGestureRecognizers(gesturesView: view)
+    }
+}
+```
+
+This is a temporary setup. Creating the camera this way requires to instantiate it in the SKScene AND setup its gesture recognizers in the UIView that owns the SKView. But this was a cool find that helped me understand how gesture recognizers work.
+
+The idea forward is to setup one gesture recognizer that handles all gestures, and then each components that needs gestures, whether in SpriteKit or in UIKit, would listen to the events sent by that one recognizer from the superview. State management would do the rest.
+
+## Xcode Wishlist
+
+*18 December 2024*
+
+- I'd like to mark a file on the navigator pane on the left with a color or a visual indicator. That way, I can find it faster.
+- I'd like to put a stickie or a text block next to the code. This text block can be dragged, pinned, or resized. I could put formatted code inside that block, or regular styled text.
+
 ## Center an Image in Storyboard
 
 *15 December 2024*
