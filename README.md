@@ -66,14 +66,18 @@ class InertialCamera: SKCameraNode, UIGestureRecognizerDelegate {
 Then in the UIKit view controller:
 
 ```swift
-let scene = MyScene()
+class MyViewController: UIViewController {
+    let scene = MyScene()
+    
+    /// ...
 
-override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
-    if let camera = scene.camera as? InertialCamera {
-        camera.gesturesView = view
-        camera.setupGestureRecognizers(gesturesView: view)
+        if let camera = scene.camera as? InertialCamera {
+            camera.gesturesView = view
+            camera.setupGestureRecognizers(gesturesView: view)
+        }
     }
 }
 ```
