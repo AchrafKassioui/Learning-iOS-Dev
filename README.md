@@ -56,7 +56,6 @@ class InertialCamera: SKCameraNode, UIGestureRecognizerDelegate {
     /// This has now to be called manually from the UIView hierarchy, outside the camera class
     func setupGestureRecognizers(gesturesView: UIView) {
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panCamera(gesture:)))
-        panRecognizer.delegate = self
         /// ...
         gesturesView.addGestureRecognizer(panRecognizer)
     }
