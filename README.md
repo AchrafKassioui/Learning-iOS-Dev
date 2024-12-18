@@ -8,7 +8,7 @@ Gesture recognizers are setup on a UIView. I have a [SpriteKit custom camera](ht
 
 I knew from the start that I had to clarify my gesture recognition setup: does each instance of the camera create its own gesture recognizers? Do they multiply? Or is there one global gesture recognition logic that dispatches the events to as many objects as there are objects handling gestures?
 
-While exploring UIKit views, I found out that if I double setup the camera gesture recognizers on both the SKView and an UIView on top of the SKView, the pan translation would compound on the camera. The gesture translation was being called twice. Moreover, I needed clarity about which view should handle the gesture recognition, and later in the code I'd choose which object on which view should respond to the gesture recognition information.
+While exploring UIKit views, I found out that if I double setup the camera gesture recognizers on both the SKView and an UIView on top of the SKView, the pan translation would compound on the camera. The gesture translation was being called twice. I needed clarity about which view should handle the gesture recognition, and later in the code I'd choose which object on which view should respond to the gesture recognition information.
 
 Before in the camera initialization:
 
@@ -53,6 +53,7 @@ class InertialCamera: SKCameraNode, UIGestureRecognizerDelegate {
         self.parentScene = scene
     }
     
+    /// This has now to be called manually from the UIView hierarchy, outside the camera class
     func setupGestureRecognizers(gesturesView: UIView) {
         let panRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panCamera(gesture:)))
         panRecognizer.delegate = self
