@@ -1,6 +1,6 @@
 # Learning iOS Development
 
-## Gesture Recognizers
+## Gesture Recognizers Response Chain
 
 *18 December 2024*
 
