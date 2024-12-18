@@ -71,8 +71,8 @@ class MyViewController: UIViewController {
     
     /// ...
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+	override func viewDidLoad() {
+        super.viewDidLoad()
 
         if let camera = scene.camera as? InertialCamera {
             camera.gesturesView = view
