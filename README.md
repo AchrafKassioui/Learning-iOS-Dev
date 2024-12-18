@@ -305,7 +305,7 @@ This is typical whenever I explore a new aspect of a programming language. It ca
 
 *5 June 2024*
 
-SwiftUI is a collection of opinionated magical invocations that you need to learn and put in the right order to get work done. SwiftUI isn't C, isn't Swift, isn't imperative. If you know another programming language, or if you are used to another UI framework, it tells nothing about whether or not you will be able to get work done with SwiftUI. SwiftUI is its own thing.
+SwiftUI is a collection of opinionated magical invocations that you need to learn and put in the right order to get work done. SwiftUI isn't C, isn't Swift, isn't imperative. SwiftUI is its own thing.
 
 Here is a code example that gets you the size of a view once it is rendered:
 
