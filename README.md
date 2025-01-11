@@ -1,5 +1,56 @@
 # Learning iOS Development
 
+## Zip
+
+*11 January 2025*
+
+Suppose you have two arrays, and you want a loop that iterates through the two arrays at the same time, taking one value from each array at each step, as if the two arrays were data models that store different types, like this:
+
+```swift
+let colors: [SKColor] = [.white, .systemYellow, .systemTeal, .systemPink]
+let scales: [CGFloat] = [1, 2, 0.5, 1.25]
+```
+
+You want to create something that takes both a color and a scale from the arrays. You can write this:
+```swift
+for (color, scale) in zip(colors, scales) {
+    // do something with each `color`
+    // do something with each `scale`
+}
+```
+
+`zip`! Nice! And if the two arrays have different lengths, `zip` only combines elements up to the length of the shorter one.
+
+## Satisfying
+
+*9 January 2025*
+
+Gotta say, it was satisfying to discover the Swift array property `allSatisfy`. We can use it to check if all items of an array satisfy a given condition. For example:
+
+```swift
+let draggableNodes = [Draggable]()
+
+// Each instance of Draggable has a boolean property called `dragWithPhysics`
+// The line below check if all members have the same value for that property
+let draggablesHaveDragWithPhysics = draggableNodes.allSatisfy { $0.dragWithPhysics }
+```
+
+The method works on any array and is perfect for checking uniformity among elements. For instance, we can check that all numbers in an array are positive with `numbers.allSatisfy { $0 >= 0 }`. In Swift, `$0` represent "each element" in the collection being processed.
+
+`allSatisfy` returns `true` for an empty array because there’s no element to contradict the condition.
+
+## UIKit Dynamics
+
+*22 December 2024*
+
+UIKit includes a physics engine. It has physics fields and collisions, and it is reminiscent of what SpriteKit offers.
+
+> One notable and common use of a dynamic item behavior is to confer a velocity to a dynamic item to match the ending velocity of a user gesture.
+
+[UIDynamicItemBehavior](https://developer.apple.com/documentation/uikit/uidynamicitembehavior).
+
+Apple has a project sample called [StickyCorners](https://developer.apple.com/library/archive/samplecode/StickyCorners/Introduction/Intro.html#//apple_ref/doc/uid/TP40016189-Intro-DontLinkElementID_2). It implements a square that we can throw around with touch gestures, and the square would stick to the nearest screen corner. I think it is this sort of early experiments that grew into many current iOS behaviors such as the picture-in-picture overlay. The sticky corners demo dates from 2016. When you open it with Xcode 16, Xcode will say that it does not support that Swift version. But there is only one notable change to make, which is to add an `objc` prefix before some gesture functions, and the project will run perfectly. You can even live preview it on the canvas, by putting the view controller inside a `#Preview` macro.
+
 ## Gesture Recognizers Response Chain
 
 *18 December 2024*
