@@ -25,7 +25,7 @@ for (color, scale) in zip(colors, scales) {
 
 *9 January 2025*
 
-Gotta say, it was satisfying to discover the Swift array property `allSatisfy`. We can use it to check if all items of an array satisfy a given condition. For example:
+It was satisfying to discover the Swift array property `allSatisfy`. We can use it to check if all items of an array satisfy a given condition. For example:
 
 ```swift
 let draggableNodes = [Draggable]()
