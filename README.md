@@ -41,7 +41,7 @@ The method works on any array and is perfect for checking uniformity among eleme
 
 ## UIKit Dynamics
 
-*22 December 2024*
+*22 December 2024, updated 11 January 2025*
 
 UIKit includes a physics engine. It has physics fields and collisions, and it is reminiscent of what SpriteKit offers.
 
@@ -50,6 +50,8 @@ UIKit includes a physics engine. It has physics fields and collisions, and it is
 [UIDynamicItemBehavior](https://developer.apple.com/documentation/uikit/uidynamicitembehavior).
 
 Apple has a project sample called [StickyCorners](https://developer.apple.com/library/archive/samplecode/StickyCorners/Introduction/Intro.html#//apple_ref/doc/uid/TP40016189-Intro-DontLinkElementID_2). It implements a square that we can throw around with touch gestures, and the square would stick to the nearest screen corner. I think it is this sort of early experiments that grew into many current iOS behaviors such as the picture-in-picture overlay. The sticky corners demo dates from 2016. When you open it with Xcode 16, Xcode will say that it does not support that Swift version. But there is only one notable change to make, which is to add an `objc` prefix before some gesture functions, and the project will run perfectly. You can even live preview it on the canvas, by putting the view controller inside a `#Preview` macro.
+
+https://github.com/user-attachments/assets/3020a8e5-4b4c-4731-9209-3568c802d8ba
 
 ## Gesture Recognizers Response Chain
 
