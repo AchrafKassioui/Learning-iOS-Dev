@@ -140,10 +140,11 @@ The idea forward is to setup one gesture recognizer that handles all gestures, a
 
 ## Xcode Wishlist
 
-*18 December 2024*
+*18 December 2024, updated 17 January 2025*
 
+- A shortcut to restore the caret position. Navigating text in macOS doesn't feel great to me. Sometimes I hit the "Home" or "End" keys, and I can't get easily back to my position in the file.
 - I'd like to mark a file on the navigator pane on the left with a color or a visual indicator. That way, I can find it faster.
-- I'd like to put a stickie or a text block next to the code. This text block can be dragged, pinned, or resized. I could put formatted code inside that block, or regular styled text.
+- I'd like to put a stickie or a text block next to the code. This text block can be dragged, pinned, or resized. I could put formatted code inside that block as well as regular text.
 
 ## Center an Image in Storyboard
 
@@ -249,34 +250,36 @@ class MyViewController: UIViewController {
 
 Overriding a property means that the class `UIViewController` has these two properties associated with a default value. When you override them in a subclass inheriting from `UIViewController`, you can assign different values to them.
 
-## Interesting UIKit Methods
+## Interesting Methods
 
-A list of interesting UIKit methods, started *23 October 2024*:
+*23 October 2024, updated 17 January 2025*
 
 ```swift
-// Animate something over a duration.
+// Delay the execution of something, Mac and iOS
+DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+    // Run something after 0.1 second
+}
 
+// Animate something over a duration in UIKit
 UIView.animate(withDuration: 0.3) {
 	// ..
 }
 
-// Get information about the display
-
+// Get information about the display in UIKit
 UIScreen.main.brightness
 UIScreen.main.nativeBounds
 UIScreen.main.scale
 // Xcode says that `main` will be deprecated, use this instead:
 view.window?.screen.scale
 
-// Create thumbnails from images
-
+// Create thumbnails from images in UIKit
 let myImage: UIImage
 myImage.preparingThumbnail(of: CGSize(width: 60, height: 60))
 
-// Haptic feedback
-
-let generator = UIImpactFeedbackGenerator(style: .light)
-generator.impactOccurred()
+// Haptic feedback in UIKit
+let hapticFeedback = UIImpactFeedbackGenerator()
+hapticFeedback.prepare() // Run inside a closure to get the taptic engine ready
+hapticFeedback.impactOccurred(intensity: 0.5)
 ```
 
 ## Functions as Argument
@@ -559,7 +562,7 @@ override func didMove(to view: SKView) {
 
 func setupGestureRecognizers(in view: SKView) {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(gesture:)))
-    tapGesture.numberOfTapsRequired = 2
+    tapGesture.numberOfTapsRequired = 2 // This is a double tap
     tapGesture.numberOfTouchesRequired = 1
     view.addGestureRecognizer(tapGesture)
 }
@@ -576,24 +579,26 @@ func setupGestureRecognizers(in view: SKView) {
 Xcode provides various helpful ways to comment and organize your code documentation. Here are some:
 
 ```swift
-// regular comment
+// Regular comment
 
-/// comment written in regular characters, not monospace characters
+/// Comment written in regular characters, not monospace characters
 
-/// a comment with `inlineCode`
+/// `inlineCode`
 
 // MARK: A title that will show up in the mini map
 
-// MARK: - A title that will show up with a line separator
+// MARK: - A title that will show up in the mini map with a line separator
 
 /**
 
- # A documentation comment block
+ # A documentation comment block with a title
 
  Document the parameters of a function:
  - Parameter name: description of the parameter
 
  */
+
+// TODO: A comment that will show up in the symbol navigator as a todo mark
 ```
 ## Get the Physical Corner Radius of a Device
 
@@ -634,51 +639,30 @@ override func didMove(to view: SKView) {
 }
 ```
 
-## Anecdotes and Back Stories
-
-*8 April 2024*
-
-Core Animation has been developed by a single Apple engineer, John Harper. Source: [here](https://stackoverflow.com/questions/38297961/when-is-it-appropriate-to-use-core-animation-over-uiview-animation-in-common-cas#comment93215312_38965402) and [here](https://x.com/andy_matuschak/status/1587248459299463169).
-
-Is SpriteKit a wrapper around Core Animation? Are SpriteKit nodes CALayer objects? This [comment](https://stackoverflow.com/questions/35421006/using-core-animation-in-spritekit#comment58729767_35421006) says that SpriteKit is a wrapper around Core Animation. Google Gemini [says](https://gemini.google.com/share/179049aaaad5?hl=en) that each `SKNode` is backed by a `CALayer`.
-
-I tried accessing Core Animation objects through an SKNode, or define a Core Animation animation on a SpriteKit node, without success. Here's the code I tried, suggested by Google Gemini:
-
-```swift
-let sprite = SKSpriteNode(color: .systemRed, size: CGSize(width: 60, height: 60))
-addChild(sprite)
-
-let anim = CABasicAnimation(keyPath: "position")
-anim.fromValue = sprite.position
-anim.toValue = CGPoint(x: sprite.position.x + 100, y: sprite.position.y)
-anim.duration = 1.0
-anim.timingFunction = CAMediaTimingFunction(name: .easeIn)
-
-let layer = view.layer(for: sprite)
-layer?.add(anim, forKey: "customMoveAnimation")
-```
-
-In UIKit, views have a `layer` property that gives access to the `CALayer` handling the view. But I can not access a `layer` property on an `SKNode`.
-
 ## Core Animation
 
 *8 April 2024*
 
-Core Animation backs many if not all animations on iOS. You can access the Core Animation object that holds your view with `view.layer`. For example, we can add a border to the view by defining it on its CALayer parent:
+Core Animation backs many of animations on iOS. You can access the Core Animation object that holds a view with `view.layer`. For example, we can add a border to the view by defining it on its CALayer parent:
 
 ```swift
 view.layer.borderWidth = 5
 view.layer.borderColor = .red
 ```
 
-## Rounding and Truncating Numbers
+Core Animation was developed by a single Apple engineer, John Harper. Source: [here](https://stackoverflow.com/questions/38297961/when-is-it-appropriate-to-use-core-animation-over-uiview-animation-in-common-cas#comment93215312_38965402) and [here](https://x.com/andy_matuschak/status/1587248459299463169).
 
-*22 March 2024*
+## Methods on Numbers
+
+*22 March 2024, updated 17 January 2025*
 
 ```swift
-// Float
+// Calculate the smallest equal or greater integer
+let width: CGFloat = 390
+let integer = Int(ceil(width / 150)) // 3
+
+// Round a number to 1 decimal place
 let myFloat: CGFloat = 1.23456
-// round to 1 decimal place
 let myValue = round(myFloat * 10) / 10
 ```
 
@@ -857,11 +841,11 @@ import AudioToolbox
 AudioServicesPlaySystemSound(1306)
 ```
 
-Credits to WaliD on [StackOverflow](https://stackoverflow.com/a/65776719/420176) for mentioning this framework. For a list of available sounds and their code, check [this page](https://iphonedev.wiki/AudioServices) from the iPhone Development Wiki. As a note for myself, I like these clicking sounds: 1057, 1103, 1104, 1105, 1107, 1257, 1306.
+Credits to WaliD on [StackOverflow](https://stackoverflow.com/a/65776719/420176) for mentioning this framework. For a list of available sounds and their code, check [iOSSystemSoundsLibrary](https://github.com/TUNER88/iOSSystemSoundsLibrary). As a note for myself, I like these clicking sounds: 1057, 1103, 1104, 1105, 1107, 1257, 1306.
 
 ## Optionals
 
-*1 march 2024*
+*1 March 2024*
 
 Optionals are annoying when you start writing Swift code. The compiler will often be shouting about "unwrapping optionals". One way of understanding optionals goes like this:
 
@@ -896,7 +880,7 @@ class MyClass {
 
 That would mean that you are sure that by the time you'll use `someNumber` in your code, it *will* have a value that is not `nil`. Use carefully.
 
-Throughout your code, you'll notice that the auto-complete will automatically add an `?` after a method or variable while you type. That means that the compiler isn't sure that these values are indeed defined at that point. Maybe the code that is responsible for creating them could return an error, or maybe they rely on an asynchronous I/O call, of which we can not guarantee a definite result at a specific time. So Swift adds these optional, nudging you to handle cases where values are not what they are expected to be.
+Throughout your code, you'll notice that methods or properties are sometimes followed by a `?`. That means that the value they refer to might not exist at that point. For example, an optional chain like `myObject?.doSomething()` will attempt to execute the method only if myObject is non-nil. If myObject is nil, the operation is safely skipped, avoiding crashes.
 
 ## init
 
@@ -945,7 +929,7 @@ class MyClass {
 }
 ```
 
-That way, you can create an instance by writing `var myInstance = MyClass(name: "Achraf")`, or `var myInstance = MyClass(location: "Tangier")`. In practice, this is how you get APIs that create objects in different ways. For example, in SpriteKit you could create a sprite node by calling `mySpriteNode = SKSpriteNode(texture: myTexture)` or `mySpriteNode = SKSpriteNode(imageNamed: myImageName)`. Each of those correspond to different initializers inside the SKSpriteNode class.
+That way, you can create an instance by writing `var myInstance = MyClass(name: "Achraf")`, or `var myInstance = MyClass(location: "Tangier")`. In practice, this is how you get APIs that create objects in different ways. For example in SpriteKit you could create a sprite node by calling `mySpriteNode = SKSpriteNode(texture: myTexture)` or `mySpriteNode = SKSpriteNode(imageNamed: myImageName)`. Each of these correspond to different initializers inside the SKSpriteNode class.
 
 ## Enum
 
@@ -1176,6 +1160,7 @@ Sorting a dictionary is useful in scenarios where the unordered nature of dictio
 - Control + M : format objects into multiple lines. Useful for function signatures or hierarchical data structures
 - Control + 6 : search your methods and symbols 
 - Command + 0 : show/hide file navigator
+- Command + /: comment a line
 - Command + Option + Enter : show/hide live preview
 - Command + Option + P: refresh live preview
 - Command + Option + [ : move a line up
@@ -1202,8 +1187,8 @@ if let result = myMethod.result? {
 // Optional Chaining with Default Value
 // The default value is provided using `??`, the nil coalescing operator
 // The default value must be of the some type as the expected return type
-let result = myMethod.result? ?? "Default Value or Message"
-// do something with result
+let result: Int = myMethod.result? ?? 42
+// do something with `result`
 ```
 
 ## Array Methods
@@ -1432,7 +1417,7 @@ for i in stride(from: 0, through: 10, by: 2) { // includes the upper bound 0.5 i
 }
 ```
 
-## Core Image filters
+## Core Image
 
 *16 March 2024*
 
@@ -1515,14 +1500,16 @@ I want to implement this multi-touch UI control. For that, I need to build a suf
 
 ## 9223372036854775807
 
-*27 November 2023*
+*27 November 2023, updated 17 January 2025*
 
-That's the biggest number that can be stored in an integer variable in Swift.
+That's the biggest number that can be stored in an integer variable in Swift on 64-bit platforms.
 
 ```Swift
 var number = Int.max
 print(number) // outputs 9223372036854775807
 ```
+
+On a 32-bit platform, the maximum value is 2147483647.
 
 ## String Methods
 
@@ -1647,19 +1634,6 @@ func greet(_ name: String) {
 
 greet("ACHRAF")
 ```
-
-## People I'd like to chat with
-
-*3 November 2023*
-
-I'd like to ask these app makers and some programmers in general about their experiences and knowledge.
-
-People I've talked to about iOS programming:
-- John Knowles *(started end of October 2023)*
-
-People I'd like to talk to:
-- UIBuzz podcaster, about SpriteKit and game development on iOS (*7 November 2023*)
-- Makers of Medly, the music app (*3 November 2023*)
 
 ## Computed Properties
 
