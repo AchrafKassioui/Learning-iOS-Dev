@@ -1,5 +1,63 @@
 # Learning iOS Development
 
+## UIKit Z Position
+
+*22 January 2025*
+
+The order with which views are created matters. If a view that covers the screen is created after another view that displays a button, the full screen view will cover the button. Make sure to add views in the intended order.
+
+You can use the z position property of a view layer to reorder its visual stacking:
+
+```swift
+myView.layer.zPosition = 10
+```
+
+However, the z position won't affect the order in which the views receive input events. If view B is created after view A and overlaps it, view B will block touch events to view A, regardless of their zPosition. Input events (like taps) are handled based on the view hierarchy and not zPosition. To handle this, you can adjust the view hierarchy using `bringSubviewToFront` or `sendSubviewToBack`:
+
+```swift
+let rootView = UIView()
+let viewA = UIView()
+let viewB = UIView()
+
+rootView.addSubview(viewA)
+rootView.addSubview(viewB)
+
+// Bring view A to the front after views A and B were added
+rootView.bringSubviewToFront(viewA)
+```
+
+Or disable interaction on the covering view:
+
+```swift
+viewB.isUserInteractionEnabled = false
+```
+
+## UIKit Background Blur
+
+*22 January 2025*
+
+In order to add a background blur effect to a view, you create a special type of view and add it as a subview to the view you want to blur.
+
+```swift
+let blurEffect = UIBlurEffect(style: .light)
+let blurView = UIVisualEffectView(effect: blurEffect)
+blurView.frame = menuBar.bounds
+blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+myView.addSubview(blurView)
+
+myView.clipsToBounds = true
+```
+
+Adding `clipsToBounds = true` to the main view will constraint the blur within the visible bounds of the view, for example if the view has rounded corners.
+
+## info.plist
+
+*19 January 2024*
+
+If you are organizing your Xcode project files, do not move your info.plist file from the root of your project folder. The build won't succeed if Xcode doesn't find the info file where it expects it to.
+
+<img src="Screenshots/Xcode - Info plist file.png" alt="Xcode - Info plist file" style="zoom:50%;" />
+
 ## Zip
 
 *11 January 2025*
