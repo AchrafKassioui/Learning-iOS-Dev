@@ -26,7 +26,7 @@ func setWindowBackgroundToBlack(){
 
 ### AppDelegate
 
-This approach ensures the background color is applied globally, including in Xcode live previews and on both simulators and devices. However, the DispatchQueue with a delay is not ideal. [Source](https://www.youtube.com/watch?v=6SWrpjTMvzs).
+This approach ensures the background color is applied globally, including in Xcode live previews and on both simulators and devices. However, the DispatchQueue with a delay is rather ugly. [Source](https://www.youtube.com/watch?v=6SWrpjTMvzs).
 
 ```swift
 @main
