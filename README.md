@@ -717,32 +717,36 @@ func setupGestureRecognizers(in view: SKView) {
 
 ## Xcode Comments
 
-*9 April 2024*
+*9 April 2024, updated 25 January 2025*
 
-Xcode provides various helpful ways to comment and organize your code documentation. Here are some:
+Xcode provides various ways to style and organize code comments:
 
 ```swift
 // Regular comment
 
-/// Comment written in regular characters, not monospace characters
+/// Comment written in regular characters, not monospace characters.
 
 /// `inlineCode`
 
-// MARK: A title that will show up in the mini map
+// MARK: A Title that Shows up in the Minimap
 
-// MARK: - A title that will show up in the mini map with a line separator
+// MARK: - A Title that Shows up in the Minimap with a Line Separator
+
+// TODO: A Comment that Shows up in the Symbol Navigator as a Todo Item
 
 /**
-
- # A documentation comment block with a title
-
- Document the parameters of a function:
+ 
+ # A Documentation Block with a Title
+ 
+ The parameters of a function:
  - Parameter name: description of the parameter
-
+ 
  */
-
-// TODO: A comment that will show up in the symbol navigator as a todo mark
 ```
+<p align="center">
+<img src="Screenshots/Xcode - Comments.png" alt="Xcode - Comments" style="width:50%;" />
+</p>
+
 ## Get the Physical Corner Radius of a Device
 
 *8 April 2024*
