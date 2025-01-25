@@ -744,8 +744,9 @@ Xcode provides various ways to style and organize code comments:
  */
 ```
 <p align="center">
-<img src="Screenshots/Xcode - Comments.png" alt="Xcode - Comments" style="width:50%;" />
+<img src="Screenshots/Xcode - Comments.png" alt="Xcode - Comments" style="width:100%;" />
 </p>
+
 
 ## Get the Physical Corner Radius of a Device
 
