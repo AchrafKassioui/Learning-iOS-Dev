@@ -4,7 +4,7 @@
 
 *25 January 2025*
 
-<img src="Screenshots/UIKit - Sheet View - Window Background Color.png" alt="UIKit - Sheet View - Window Background Color" style="zoom:50%;" />
+<img src="Screenshots/UIKit - Sheet View - Window Background Color.png" alt="UIKit - Sheet View - Window Background Color" style="width:33%;" />
 
 In some situations, like when presenting a view as a sheet, the window's background color becomes visible. The default background color, white or black, depends on the system's color scheme. Below are three approaches in a UIKit app to set a custom window background color.
 
