@@ -1,5 +1,70 @@
 # Learning iOS Development
 
+## UIWindow Background Color
+
+*25 January 2025*
+
+<img src="Screenshots/UIKit - Sheet View - Window Background Color.png" alt="UIKit - Sheet View - Window Background Color" style="zoom:50%;" />
+
+In some situations, like when presenting a view as a sheet, the window's background color becomes visible. The default background color, white or black, depends on the system's color scheme. Below are three approaches in a UIKit app to set a custom window background color.
+
+### Inline
+
+This method can be called from anywhere in your app:
+
+```swift
+func setWindowBackgroundToBlack(){
+    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+        for window in windowScene.windows {
+            window.backgroundColor = .black // Set to any UIColor
+        }
+    }
+}
+```
+
+### AppDelegate
+
+This approach ensures the background color is applied globally, including in Xcode live previews and on both simulators and devices. However, the DispatchQueue with a delay is not ideal. [Source](https://www.youtube.com/watch?v=6SWrpjTMvzs).
+
+```swift
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                for window in windowScene.windows {
+                    window.backgroundColor = .black
+                }
+            }
+        }
+
+        return true
+    }
+}
+```
+
+### SceneDelegate
+
+This method is clean but doesn't reflect changes in Xcode live previews. It only works on compiled apps running on simulators or devices.
+
+```swift
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = MyViewController()
+        window.backgroundColor = .black
+        window.makeKeyAndVisible()
+        self.window = window
+    }
+}
+```
+
 ## UIKit Z Position
 
 *22 January 2025*
@@ -39,16 +104,34 @@ viewB.isUserInteractionEnabled = false
 In order to add a background blur effect to a view, you create a special type of view and add it as a subview to the view you want to blur.
 
 ```swift
-let blurEffect = UIBlurEffect(style: .light)
-let blurView = UIVisualEffectView(effect: blurEffect)
-blurView.frame = menuBar.bounds
-blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-myView.addSubview(blurView)
+func testBlurEffect() {
+    // Create a test view
+    let testView = UIView()
+    testView.frame = CGRect(x: 50, y: 100, width: 200, height: 200)
+    testView.backgroundColor = UIColor.white.withAlphaComponent(0.1)
+    testView.layer.cornerRadius = 20
+    testView.layer.cornerCurve = .continuous
+    testView.clipsToBounds = true // Ensure blur respects rounded corners
+    testView.alpha = 1 // Make sure the alpha is 1 (default value)
+    view.addSubview(testView)
 
-myView.clipsToBounds = true
+    // Add a blur effect to the test view
+    let blurEffect = UIBlurEffect(style: .light) // You can try other styles
+    let blurView = UIVisualEffectView(effect: blurEffect)
+    blurView.frame = testView.bounds
+    blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight] // Ensure it resizes with testView
+    testView.addSubview(blurView)
+}
+
+override func viewDidLoad() {
+    super.viewDidLoad()
+    testBlurEffect()
+}
 ```
 
 Adding `clipsToBounds = true` to the main view will constraint the blur within the visible bounds of the view, for example if the view has rounded corners.
+
+Note that the alpha property of `myView` must be 1. If you set the alpha to a value less than 1, the blur view won't render as expected.
 
 ## info.plist
 
