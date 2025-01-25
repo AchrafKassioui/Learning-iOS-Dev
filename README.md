@@ -343,9 +343,36 @@ func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options conn
 
 ## First Mistakes with UIKit
 
-Missteps and incomprehensions I had while learning UIKit:
+*Updated 25 January 2025*
 
-- Added auto layout constraints to a view before adding the view to the view hierarchy. In order for auto layout to work and not crash the app, the lines of codes declaring constraints must be written after the line of code that adds this view to the overall view hierarchy.
+Missteps and incomprehensions I had while learning UIKit.
+
+### Initializing a UIViewController
+
+- Mistake: using `super.init()`
+- Solution: use this weird super init instead `super.init(nibName: nil, bundle: nil)`
+
+```swift
+class MyViewController: UIViewController {
+    let customProperty: CGFloat
+
+    // Custom initializer with a property
+    init(customProperty: CGFloat) {
+        self.customProperty = customProperty
+        super.init(nibName: nil, bundle: nil) // ???
+    }
+
+    // Required
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+```
+
+### Enable Auto Layout on a View
+
+- Mistake: adding auto layout constraints to a view *before* adding the view to the view hierarchy.
+- Solution: first add the view to the hierarchy, and then declare the Auto Layout constraints for that view.
 
 ## Background Tasks
 
