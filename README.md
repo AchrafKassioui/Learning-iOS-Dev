@@ -1,5 +1,67 @@
 # Learning iOS Development
 
+## reserveCapacity
+
+*15 February 2025*
+
+[From Apple Documentation](https://developer.apple.com/documentation/swift/array/reservecapacity(_:)):
+
+> If you are adding a known number of elements to an array, use this method to avoid multiple reallocations. This method ensures that the array has unique, mutable, contiguous storage, with space allocated for at least the requested number of elements.
+
+This loop over a set of GKEntity:
+
+```swift
+var entities = Set<GKEntity>()
+
+var selectedEntities: [GKEntity] = []
+for entity in entities {
+    if let selectionComponent = entity.component(ofType: SelectionStateComponent.self), selectionComponent.isSelected {
+        selectedEntities.append(entity)
+    }
+}
+```
+
+Could be optimized like this:
+
+```swift
+var entities = Set<GKEntity>()
+
+var selectedEntities = [GKEntity]()
+selectedEntities.reserveCapacity(entities.count)
+for entity in entities {
+    if let selectionComponent = entity.component(ofType: SelectionStateComponent.self), selectionComponent.isSelected {
+        selectedEntities.append(entity)
+    }
+}
+```
+
+This looks fancy and smart, but it also smells suspicious. Like a pre-mature optimization. See also [Array performance: append() vs reserveCapacity()](https://www.hackingwithswift.com/articles/128/array-performance-append-vs-reservecapacity).
+
+## Connected Screens
+
+*28 January 2025*
+
+You can use AirPlay to share your iPhone screen on a supported external screen, like your connected Mac.
+
+<p align="center">
+<img src="Screenshots/iOS - Screen Mirroring.jpeg" alt="iOS - Screen Mirroring" style="width:25%;" />
+</p>
+In your app, you can get the number of connected screens using this code:
+
+```swift
+let numberOfConnectedScreens = UIScreen.screens.count
+```
+
+That method returns 1 on an iPhone, and returns 2 when screen mirroring is enabled.
+
+However, Xcode says that `UIScreen.screens` was deprecated in iOS 16. We should use a scene-based API instead of the screen based one (I find the screen based framework to be more intuitive and straightforward...)
+
+```swift
+let numberOfConnectedScenes = UIApplication.shared.connectedScenes.count
+```
+
+Returns 1 on an iPhone, and 2 when the screen mirroring is enabled.
+
 ## UIWindow Background Color
 
 *25 January 2025*
@@ -2212,6 +2274,7 @@ Links:
 
 ## General Links and Resources
 
+- 📝 [Xcode constantly phones home](https://lapcatsoftware.com/articles/2025/2/5.html), Jeff Johnson. Accessed *3 March 2025*.
 - 🎬 [So You Think You Know Swift?](https://www.youtube.com/watch?v=smkRzwANNQ8), Nick Lockwood. Accessed *27 October 2024*.
 - 🎬 [CoreML basic tutorial](https://www.youtube.com/watch?v=OxKHt1NwOHw), *accessed 9 July 2024*. Nice basic setup of a model with CoreML. Also interesting to see how SpriteKit and UIKit belong to the same family.
 - 📝 [Total programming in Swift](https://medium.com/@andre_videla/total-programming-in-swift-526508c12a74), *accessed 31 May 2024*
