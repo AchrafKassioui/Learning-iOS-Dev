@@ -1,5 +1,71 @@
 # Learning iOS Development
 
+## Detect When Window Moves to a Different Display
+
+*17 April 2025*
+
+When the window of an iOS or Catalyst app moves to a different display, how to detect the change programmatically? Inside the app `SceneDelegate.swift` file:
+
+```swift
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+    
+    // Logic for detection starts here
+    func windowScene(
+        _ windowScene: UIWindowScene,
+        didUpdate previousCoordinateSpace: UICoordinateSpace,
+        interfaceOrientation previousInterfaceOrientation: UIInterfaceOrientation,
+        traitCollection previousTraitCollection: UITraitCollection
+    ) {
+        handleTraitCollectionChange(windowScene.traitCollection, previousTraitCollection)
+    }
+    
+    private func handleTraitCollectionChange(_ newTraitCollection: UITraitCollection, _ oldTraitCollection: UITraitCollection) {
+        guard let screen = window?.screen else { return }
+        
+        let traitsChanged = newTraitCollection != oldTraitCollection
+        let refreshChanged = screen.maximumFramesPerSecond != DeviceInfo.refreshRate
+        
+        if traitsChanged || refreshChanged {
+            // Do work
+        }
+    }
+```
+
+Inside `if traitsChanged || refreshChanged {}`, we can get information about the display holding the window such as `newTraitCollection.displayScale` (Retina scale) and refresh rate. This is useful for application windows that must detect monitors with different refresh rates.
+
+## Gesture Recognizers Delegate
+
+*27 March 2025*
+
+Use `UIGestureRecognizerDelegate` to fine tune the gesture recognizer. For example, we can decide whether or not a specific touch event should participate in the gesture recognition by using this method of the delegate:
+```swift
+func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    // Return false to ignore the touch
+    // Return true to recognize the touch
+    return true
+}
+```
+
+Gesture recognizer delegates fire before `UIResponder` touch event methods. For example:
+
+```swift
+// Inside a UIView
+override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for touch in touches {
+        print("touchesBegan \(Date.now.timeIntervalSince1970)")
+}
+
+// A UIGestureRecognizerDelegate method
+func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+    print("gestureRecognizer \(Date.now.timeIntervalSince1970)")
+
+    return true
+}
+```
+
+The print of the delegate happens before the print of the touch event. If you want to determine whether the gesture recognizer should recognize that touch or not, the logic should not depend on what the touchesBegan has determined, because that logic runs after the delegate method. Instead, the delegate method should be considered as a touch began, and any touch exclusion logic should run there.
+
 ## reserveCapacity
 
 *15 February 2025*
@@ -35,7 +101,7 @@ for entity in entities {
 }
 ```
 
-This looks fancy and smart, but it also smells suspicious. Like a pre-mature optimization. See also [Array performance: append() vs reserveCapacity()](https://www.hackingwithswift.com/articles/128/array-performance-append-vs-reservecapacity).
+But careful of pre-mature optimization. See: [Array performance: append() vs reserveCapacity()](https://www.hackingwithswift.com/articles/128/array-performance-append-vs-reservecapacity).
 
 ## Connected Screens
 
