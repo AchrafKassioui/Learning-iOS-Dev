@@ -872,7 +872,7 @@ func setupGestureRecognizers(in view: SKView) {
 
 ## Xcode Comments
 
-*9 April 2024, updated 25 January 2025*
+*9 April 2024, updated 16 August 2025*
 
 Xcode provides various ways to style and organize code comments:
 
@@ -883,20 +883,26 @@ Xcode provides various ways to style and organize code comments:
 
 /// `inlineCode`
 
-// MARK: A Title that Shows up in the Minimap
+// MARK: - A title that creates a line separator
 
-// MARK: - A Title that Shows up in the Minimap with a Line Separator
+// MARK: A title that is visible in the minimap
 
-// TODO: A Comment that Shows up in the Symbol Navigator as a Todo Item
+// TODO: A flag for a todo item
+
+// FIXME: A flag for an issue to fix
 
 /**
  
- # A Documentation Block with a Title
+ # Documentation Block with a Title
  
- The parameters of a function:
- - Parameter name: description of the parameter
+ Function signature documentation:
+ - Parameter name: description of the parameter.
  
  */
+ 
+/// Function signature documentation:
+/// - Parameter parameterName1: a description of the first parameter.
+/// - Parameter parameterName2: a description of the second parameter.
 ```
 <p align="center">
 <img src="Screenshots/Xcode - Comments.png" alt="Xcode - Comments" style="width:100%;" />
@@ -1459,6 +1465,7 @@ Sorting a dictionary is useful in scenarios where the unordered nature of dictio
 
 *Started 17 February 2024*
 
+- Command + Shift + O : open quickly (jump to file)
 - Control + I : auto-indent code
 - Control + M : format objects into multiple lines. Useful for function signatures or hierarchical data structures
 - Control + 6 : search your methods and symbols 
