@@ -6,7 +6,7 @@
 
 I find the difference between `break` and `continue` in Swift confusing. Here's what seems to be the case: 
 
-### Inside a switch that is inside a loop
+Inside a switch that is inside a loop:
 
 ```swift
 for event in events {
@@ -25,7 +25,7 @@ for event in events {
 }
 ```
 
-### Directly in a loop
+Directly in a loop:
 
 ```swift
 for i in 1...5 {
