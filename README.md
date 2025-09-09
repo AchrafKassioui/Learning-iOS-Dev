@@ -1,5 +1,42 @@
 # Learning iOS Development
 
+## break/continue
+
+*9 September 2025*
+
+I find the difference between `break` and `continue` in Swift confusing. Here's what seems to be the case: 
+
+### Inside a switch that is inside a loop
+
+```swift
+for event in events {
+    switch event {
+    case .foo:
+        break      // exit only the switch
+                   // code after the switch still runs
+                   // then the loop goes to the next item
+    default:
+        continue   // skip the rest of the code inside for this iteration
+                   // therefore code after the switch is skipped
+                   // loop goes directly to next item
+    }
+
+    // afterSwitch (runs only if we used `break`)
+}
+```
+
+### Directly in a loop
+
+```swift
+for i in 1...5 {
+    if i > 3 { break }     // exit loop entirely
+    if i == 2 { continue } // skip this iteration
+    print(i)
+}
+```
+
+The break here will stop the loop entirely, while continue would just move to the next iteration of the loop.
+
 ## Detect When Window Moves to a Different Display
 
 *17 April 2025*
