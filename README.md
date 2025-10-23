@@ -1,5 +1,49 @@
 # Learning iOS Development
 
+## Identifiable
+
+*23 Oct 2025*
+
+When I was learning SwiftUI, I'd want to use ForEach to display a list of elements, but SwiftUI seemed to require some obscure `id` argument that was frustrating. What is it about? What is this `id: \.self` I keep seeing?
+
+```swift
+enum MyItems: String, CaseIterable {
+    case itemA = "Item A"
+    case itemB = "Item B"
+    case itemC = "Item C"
+}
+
+List {
+    ForEach(MyItems.allCases, id: \.self) { item in // Notice the id argument
+        Text(item.rawValue)
+    }
+}
+```
+
+Answer: a view in SwiftUI needs an identity. SwiftUI requires that the Text view inside the ForEach has something to identify it with, in order to track the view updates and transitions.
+
+Good news: the id argument isn't necessary if the list supplied to ForEach conforms to Identifiable, i.e. if the list has a rule that supplies a unique ID to each of its elements. The enumeration above can be made identifiable like this:
+
+```swift
+enum MyItems: String, CaseIterable, Identifiable {
+    case itemA = "Item A"
+    case itemB = "Item B"
+    case itemC = "Item C"
+    
+    var id: String { self.rawValue }
+}
+```
+
+We are telling the compiler that each item of the enumeration can be identified by its raw value, which in this example is the string value attached to each case. Now in SwiftUI we can write this:
+
+```swift
+List {
+    ForEach(MyItems.allCases) { item in
+        Text(item.rawValue)
+    }
+}
+```
+
 ## break/continue
 
 *9 September 2025*
