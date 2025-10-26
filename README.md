@@ -44,6 +44,10 @@ List {
 }
 ```
 
+Links:
+
+- [WWDC21: Demystify SwiftUI](https://www.youtube.com/watch?v=XwdVz0Ef1vU&t=170s)
+
 ## break/continue
 
 *9 September 2025*
