@@ -54,7 +54,7 @@ Links:
 
 I find the difference between `break` and `continue` in Swift confusing. Here's what seems to be the case: 
 
-Inside a switch that is inside a loop:
+In a switch that's inside a loop:
 
 ```swift
 for event in events {
@@ -69,7 +69,7 @@ for event in events {
                    // loop goes directly to next item
     }
 
-    // afterSwitch (runs only if we used `break`)
+    // after switch code (runs only if we used `break`)
 }
 ```
 
@@ -132,7 +132,7 @@ func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive t
 }
 ```
 
-Gesture recognizer delegates fire before `UIResponder` touch event methods. For example:
+Gesture recognizer delegates fire before the view's touch event methods. For example:
 
 ```swift
 // Inside a UIView
@@ -149,7 +149,7 @@ func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive t
 }
 ```
 
-The print of the delegate happens before the print of the touch event. If you want to determine whether the gesture recognizer should recognize that touch or not, the logic should not depend on what the touchesBegan has determined, because that logic runs after the delegate method. Instead, the delegate method should be considered as a touch began, and any touch exclusion logic should run there.
+The print of the delegate happens before the print of the touch event. If you want to determine whether the gesture recognizer should recognize that touch or not, the logic should not depend on what the touchesBegan has determined, because that logic runs after the delegate method. The delegate method should be considered as a touch began, and any touch exclusion logic should run there.
 
 ## reserveCapacity
 
@@ -205,7 +205,7 @@ let numberOfConnectedScreens = UIScreen.screens.count
 
 That method returns 1 on an iPhone, and returns 2 when screen mirroring is enabled.
 
-However, Xcode says that `UIScreen.screens` was deprecated in iOS 16. We should use a scene-based API instead of the screen based one (I find the screen based framework to be more intuitive and straightforward...)
+However, Xcode says that `UIScreen.screens` was deprecated in iOS 16. We should use a scene-based API instead of the screen based one (I find the previous screen based framework to be more intuitive and straightforward...)
 
 ```swift
 let numberOfConnectedScenes = UIApplication.shared.connectedScenes.count
