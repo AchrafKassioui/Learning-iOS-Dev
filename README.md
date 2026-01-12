@@ -8,7 +8,7 @@ Sometimes I get this build error in Xcode:
 
 <img src="Screenshots/CodeSign-Build-Error.png" alt="CodeSign-Build-Error" style="width:50%;" />
 
-```swift
+```bash
 Command CodeSign failed with a nonzero exit code
 ```
 
