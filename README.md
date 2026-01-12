@@ -1,5 +1,301 @@
 # Learning iOS Development
 
+## CodeSign Error
+
+*12 Jan 2026*
+
+Sometimes I get this build error in Xcode:
+
+<img src="Screenshots/CodeSign-Build-Error.png" alt="CodeSign-Build-Error" style="width:50%;" />
+
+```swift
+Command CodeSign failed with a nonzero exit code
+```
+
+It seems this happens because the build folder is in iCloud Drive, and some meta data that iCloud adds conflicts with the code signing. Note that I didn't use to get these errors until I set up a Time Machine external drive. Maybe that is linked?
+
+A fix is to do this in the terminal:
+
+```bash
+# Navigate to your project directory, then:
+# 1. Remove meta data
+xattr -cr .
+# 2. Clean Xcode derived data
+rm -rf ~/Library/Developer/Xcode/DerivedData
+```
+
+Xcode code should be able to build the project again.
+
+## App Lifecycle
+
+*19 Dec 2025*
+
+With UIKit, AppDelegate and SceneDelegate provide extensive access to app state and device information. We can get notified when the app launches or goes to the background, set window size restrictions, or query the display's refresh rate.
+In SwiftUI, we get access to some of these state changes through `ScenePhase`:
+
+```swift
+struct MyView: View {
+    @Environment(\.scenePhase) private var scenePhase
+    
+    var body: some View {
+        ZStack {
+            
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            switch newPhase {
+            case .active:
+                print("App is active")
+            case .background:
+                print("App is in the background")
+            case .inactive:
+				print("App is inactive")
+            @unknown default:
+                break
+            }
+        }
+    }
+}
+```
+
+Scene phase is a built-in environment value that can be accessed from any view. Note that the scene phase notifications do not work in Xcode Live Preview.
+
+In order to access all the information UIKit provides, we can use `UIApplicationDelegateAdaptor` to wrap a custom AppDelegate. In the main entry point of the SwiftUI app, add this:
+
+```swift
+/**
+ 
+ The entry point of a SwiftUI app.
+ 
+ `UIApplicationDelegateAdaptor` bridges to UIKit's AppDelegate for lifecycle hooks
+ that SwiftUI doesn't expose directly (memory warnings, device state changes, etc.).
+ 
+ */
+@main
+struct MyApp: App {
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    
+    var body: some Scene {
+        WindowGroup {
+            HomeView()
+        }
+    }
+}
+```
+
+Then create a class that inherits from `NSObject` and `UIApplicationDelegate`. The system will instantiate it, and it will act as an app delegate in a SwiftUI app:
+
+```swift
+/**
+ 
+ AppDelegate is the entry point of a UIKit app.
+ 
+ This class bridges UIKit's app-level events into a SwiftUI app. The name is arbitrary,
+ but it must inherit from NSObject and conform to UIApplicationDelegate to function
+ as the app's delegate.
+ 
+ Note: the delegates are not called in Xcode live preview.
+ 
+ */
+class AppDelegate: NSObject, UIApplicationDelegate {
+    
+    /// Called when app launches, before any scenes are created
+    /// Return false to abort launch, true to continue
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        return true
+    }
+
+    /// New scene (window) is about to be created
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        
+        /// Assign a scene delegate
+        let config = UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        config.delegateClass = SceneDelegate.self /// UIKit will create an instance of this class for this scene
+        return config
+    }
+    
+    /// Called when system is low on memory
+    /// Optimization: Clear cached data, release large objects
+    func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+        print("\(self) - ⚠️ Memory warning")
+    }
+    
+    // other methods of UIApplicationDelegate
+}
+```
+
+When a window/scene is created, UIKit will associate a scene delegate instance to that scene. SceneDelegate provides additional useful hooks. For example:
+
+```swift
+/**
+ 
+ SceneDelegate manages a single scene (window) instance.
+ 
+ Each window gets its own SceneDelegate instance. On iPhone this is typically one.
+ iPad/Mac apps can have multiple windows, each with their own delegate.
+
+*/
+class SceneDelegate: NSObject, UIWindowSceneDelegate {
+    
+    /// iOS 26 API, replaces trait collection method
+    func windowScene(_ windowScene: UIWindowScene, didUpdateEffectiveGeometry previousEffectiveGeometry: UIWindowScene.Geometry) {
+        /// Call a custom function
+        updateDisplayInfo(from: windowScene)
+    }
+    
+    /// Called when UIKit creates a new scene instance
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        guard let windowScene = scene as? UIWindowScene else { return }
+        updateDisplayInfo(from: windowScene)
+        
+        /// Specify size restrictions for resizable windows
+        windowScene.sizeRestrictions?.minimumSize.width = 768
+    }
+    
+    /// A user custom function
+    private func updateDisplayInfo(from windowScene: UIWindowScene) {
+        let screen = windowScene.screen
+        let refreshRate = screen.maximumFramesPerSecond
+        let scale = screen.scale
+        
+        print("Display: \(refreshRate)Hz, @\(scale)x")
+    }
+    
+    /// Other UIWindowSceneDelegate methods 
+}
+```
+
+`UIApplicationDelegateAdaptor` provides full access to UIKit lifecycle nuances.
+
+### Historical Context
+
+Up until iOS 12, the app delegate was the single point of entry, and there was no scene delegate. An app could have a single window.
+
+```swift
+// iOS 12 and earlier
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    var window: UIWindow?  // App delegate owned THE window
+    
+    func application(_ application: UIApplication, 
+                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // Create the ONE window for the app
+        window = UIWindow(frame: UIScreen.main.bounds)
+        
+        // Set root view controller HERE
+        window?.rootViewController = MyViewController()
+        window?.makeKeyAndVisible()
+        
+        return true
+    }
+}
+
+// No SceneDelegate existed!
+```
+
+Starting from iOS 13 and iPadOS 13, multi-window support was introduced. AppDelegate no longer owned a window property. Instead, scenes were introduced, and each scene would have its own window. A scene delegate instance manages that window.
+
+```swift
+// iOS 13+
+// Multi-window support introduced for iPad and Mac Catalyst
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    // No window property anymore
+    
+    func application(_ application: UIApplication, 
+                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Don't create window here anymore
+        // Just do global app setup
+        return true
+    }
+    
+    // Tell UIKit which scene delegate to use
+    func application(_ application: UIApplication, 
+                    configurationForConnecting connectingSceneSession: UISceneSession, 
+                    options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        // Option 1: Let iOS find SceneDelegate from Info.plist
+        return UISceneConfiguration(name: "Default Configuration", 
+                                   sessionRole: connectingSceneSession.role)
+    }
+}
+
+// New in iOS 13
+class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
+    var window: UIWindow?  // Scene delegate owns THIS window
+    
+    func scene(_ scene: UIScene, 
+              willConnectTo session: UISceneSession, 
+              options connectionOptions: UIScene.ConnectionOptions) {
+        
+        guard let windowScene = scene as? UIWindowScene else { return }
+        
+        // Create window for THIS scene
+        window = UIWindow(windowScene: windowScene)
+        
+        // Set root view controller HERE (per-window)
+        window?.rootViewController = MyViewController()
+        window?.makeKeyAndVisible()
+    }
+}
+```
+
+The scene delegate class was often set in the Info.plist file:
+
+<img src="Screenshots/info-plist-scene-delegate.png" alt="info-plist-scene-delegate" style="width:100%;" />
+
+We can also set the scene delegate class programmatically:
+
+```swift
+/// Inside AppDelegate
+func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+
+    /// Assign a scene delegate
+    let config = UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    // Option 2: Specify programmatically
+    config.delegateClass = SceneDelegate.self /// The system will instantiate the class
+    return config
+}
+```
+
+### Links
+
+- Apple Documentation, [Migrating to the SwiftUI life cycle](https://developer.apple.com/documentation/swiftui/migrating-to-the-swiftui-life-cycle).
+
+## Subscriptions
+
+*4 Dec 2025*
+
+We can use NotificationCenter with Combine like so:
+
+```swift
+// Example with AVFoundation
+import Combine
+import AVFoundation
+
+var subscriptions = Set<AnyCancellable>()
+
+let player = AVPlayer(url: videoURL)
+player.play()
+
+let subscription = NotificationCenter.default.publisher(for: AVPlayerItem.didPlayToEndTimeNotification, object: player.currentItem)
+    .sink { _ in
+        player.seek(to: .zero)
+        player.play()
+    }
+
+subscription.store(in: &subscriptions)
+```
+
+The subscription above loops a video player.
+
+- The `object:` parameter filters notifications to only this specific player item
+- `.sink { }` creates an `AnyCancellable` subscription
+- `.store(in: &subscriptions)` adds it to the Set and keeps it alive
+- Subscriptions cancel when removed from the Set or when the Set is deallocated
+- Use `&` because `store(in:)` needs to mutate the Set
+
 ## Identifiable
 
 *23 Oct 2025*
@@ -635,9 +931,16 @@ Overriding a property means that the class `UIViewController` has these two prop
 
 ## Interesting Methods
 
-*23 October 2024, updated 17 January 2025*
+*23 October 2024, updated 23 Dec 2025*
 
 ```swift
+// Get display gamut from inside a UIView
+let gamut: UIDisplayGamut
+if let screen = view.window?.windowScene?.screen {
+    gamut = screen.traitCollection.displayGamut
+    print(gamut)
+}
+
 // Delay the execution of something, Mac and iOS
 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
     // Run something after 0.1 second
