@@ -68,7 +68,7 @@ xattr -cr .
 rm -rf ~/Library/Developer/Xcode/DerivedData
 ```
 
-Xcode code should be able to build the project again.
+Xcode should be able to build the project again.
 
 ## App Lifecycle
 
@@ -2789,6 +2789,3 @@ Links:
 - 🎬 [Miguel de Icaza talks about Swift in general](https://media.ccc.de/v/godotcon2023-57866-swift-godot-fixing-the-multi-million-dollar-mistake#t=3280), and advocates for using Swift for The Godot game engine. 2023.
 - 💻 You can use [this online Swift compiler](https://www.programiz.com/swift/online-compiler/) to run some code. 
 - 🎬 [Good basic tutorial](https://www.youtube.com/watch?v=Sb7ytck3gMA) on how to present a SpriteKit scene in a SwiftUI view, by Daniel Budd. 2023.
-
-
-
