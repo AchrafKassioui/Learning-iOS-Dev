@@ -1,5 +1,49 @@
 # Learning iOS Development
 
+## onChanged vs updating
+
+*17 January 2026*
+
+In SwiftUI, we can listen to gesture changes with different modifiers such as `onChanged` and `updating`. What is the difference?
+
+### updating
+
+ - For transient state during gesture
+ - Require the use of `@GestureState`
+ - Use when state should automatically reset when gesture ends
+ - Good for temporary visual feedback (highlights, offsets)
+
+```swift
+ @GestureState private var dragOffset = CGSize.zero
+ 
+ DragGesture()
+    .updating($dragOffset) { value, state, transaction in
+        state = value.translation  // Auto-resets to .zero on gesture end
+    }
+```
+
+### onChanged
+
+ - For direct manipulation
+ - Works with `@State` or any mutable property
+ - Use to permanently modify entity state
+ - `onEnded` can be used to finalize state
+
+```swift
+@State private var position = CGSize.zero
+@State private var dragOffset = CGSize.zero
+
+DragGesture()
+    .onChanged { value in
+        dragOffset = value.translation
+    }
+    .onEnded { value in
+        position.width += value.translation.width
+        position.height += value.translation.height
+        dragOffset = .zero
+    }
+```
+
 ## CodeSign Error
 
 *12 Jan 2026*
