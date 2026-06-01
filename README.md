@@ -1,5 +1,155 @@
 # Learning iOS Development
 
+## Swift & C
+
+*31 May 2026*
+
+It's possible to use C libraries directly inside Swift code. SpriteKit-Box2D is a demo project that integrate SpriteKit, used with Swift, and Box2D version 3, a C library. Below are the minimal steps needed to mix C and Swift in the same Xcode project.
+
+### Pick the C Library
+
+Download Box2D [from the official repository](https://github.com/erincatto/box2d). I cloned the latest commit, `f2086ed` as of May 2026. You can download the latest release instead ([3.1.1](https://github.com/erincatto/box2d/releases/tag/v3.1.1), June 2025). It's up to you to choose which version you wish to work with.
+
+### Copy the Source Code
+
+Create the following folder hierarchy in your Xcode project. By convention, "Vendor" is used to hold third-party libraries:
+
+```
+SpriteKit-Box2D/  ← app target’s source folder
+  Vendor/
+    Box2D/
+      include/    ← copy files from box2d repo
+      src/        ← copy files from box2d repo
+      LICENSE
+```
+
+<img src="Screenshots/Swift & C - Folder Hierarchy.png" alt="Swift & C - Folder Hierarchy" style="width:25%;" />
+
+Locate the "include" and "src" folders inside the Box2D source code, and copy their content to their respective folders in the Xcode project.
+
+### Create a Module Map
+
+This is the first magic step: create a file called "module.modulemap", and put it inside the "include" folder. Xcode knows how to create .modulemap files: go to File > New > File from Template. You'll find a template for this kind of file:
+
+<img src="Screenshots/Swift & C - Module Map Template.png" alt="Swift & C - Module Map Template" style="width:50%;" />
+
+Add the following code inside that file:
+
+```C
+module box2d {
+    header "box2d/box2d.h"
+    export *
+}
+```
+
+This code is read by Clang, the compiler that handles C, Objective-C, and C++. All of Swift, C, Objective-C, and C++ are first class languages on Apple platforms and they can work together in the same project.
+
+The modulemap file is what will allow you to write `import box2d` inside your Swift files. In fact, you can change the name of the module right there. For example, you can change to `module Box2D` which is more Swift looking:
+
+```C
+module Box2D {
+    header "box2d/box2d.h"
+    export *
+}
+```
+
+### Update Build Settings
+
+Next, we need to tell Xcode and the compiler about these new additions.
+
+1. Go to Project Settings > Targets > YourApp > Build Settings.
+
+<img src="Screenshots/Swift & C - Build Settings.png" alt="Swift & C - Build Settings" style="width:50%;" />
+
+2. Search for "Module Map File" and add the module map path:
+
+```
+$(SRCROOT)/SpriteKit-Box2D/Vendor/Box2D/include/module.modulemap
+```
+
+<img src="Screenshots/Swift & C - Module Map File.png" alt="Swift & C - Module Map File" style="width:50%;" />
+
+3. Then search for "Header Search Paths" and add the source code paths:
+
+```
+$(SRCROOT)/SpriteKit-Box2D/Vendor/Box2D/include
+$(SRCROOT)/SpriteKit-Box2D/Vendor/Box2D/src
+```
+
+<img src="Screenshots/Swift & C - Header Search Paths.png" alt="Swift & C - Header Search Paths" style="width:50%;" />
+
+`$(SRCROOT)` means the folder containing the .xcodeproj file, i.e. the outer folder.
+
+### Import Module
+
+If the module map and the paths were right, we should now be able to import Box2D and directly use it inside Swift!
+
+```swift
+import SpriteKit
+import Box2D
+
+class MinimalScene: SKScene {
+    
+    /// Init a Box2D world with a null ID.
+    var b2WorldId: b2WorldId = b2_nullWorldId // C
+    
+	override func sceneDidLoad() {
+        /// Setup scene..
+        
+        /// Create a Box2D world.
+        var worldDef = b2DefaultWorldDef() // C
+        worldDef.gravity = b2Vec2(x: 0, y: 0) // C
+        b2WorldId = b2CreateWorld(&worldDef) // C
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        /// Run Box2D with a fixed timestep.
+        b2World_Step(b2WorldId, 1/60, 4) // C
+    }
+    
+}
+```
+
+### Extend C with Swift
+
+We can use C methods directly inside Swift code. But C types do not always behave like native Swift types. For example, in order to use a Box2D type as a key in a Swift dictionary, the type must conform to the Swift protocol `Hashable`.
+
+```swift
+/// Does not compile yet, because b2BodyId is not Hashable
+var indexedEntities: [b2BodyId: SKNode] = [:]
+```
+
+We can add these conformances manually. In this case, `b2BodyId` is a Box2D handle made of `index1`, `world0`, and `generation`. Two body ids are the same handle when those fields match.
+
+```swift
+extension b2BodyId: @retroactive Equatable {
+    public static func == (lhs: b2BodyId, rhs: b2BodyId) -> Bool {
+        lhs.index1 == rhs.index1 &&
+        lhs.world0 == rhs.world0 &&
+        lhs.generation == rhs.generation
+    }
+}
+
+extension b2BodyId: @retroactive Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(index1)
+        hasher.combine(world0)
+        hasher.combine(generation)
+    }
+}
+
+/// Now compiles!
+var indexedEntities: [b2BodyId: SKNode] = [:]
+```
+
+Note how we used `extension` directly on a C type and added Swift code to it!
+
+In this SpriteKit-Box2D integration, I kept the wrappers to a minimum. They are all in the `Box2D+Extensions.swift` file. It's up to you to extend further according to your needs and coding style.
+
+### Go Further
+
+Mixing Swift with C is a large topic and this project is a first entry to it. The WWDC 2025 session [Safely mix C, C++, and Swift](https://www.youtube.com/watch?v=fFPq_4_LCqo) covers more details and advanced memory safety features from Swift 6.2.
+
 ## onChanged vs updating
 
 *17 January 2026*
