@@ -42,9 +42,9 @@ module box2d {
 }
 ```
 
-This code is read by Clang, the compiler that handles C, Objective-C, and C++. All of Swift, C, Objective-C, and C++ are first class languages on Apple platforms and they can work together in the same project.
+This file is read by Clang, the compiler that handles C, Objective-C, and C++. Swift is compiled by the Swift compiler, but Swift can import Clang modules. Swift, C, Objective-C, and C++ are all first class languages on Apple platforms. They can work together in the same Xcode project.
 
-The modulemap file is what will allow you to write `import box2d` inside your Swift files. In fact, you can change the name of the module right there. For example, you can change to `module Box2D` which is more Swift looking:
+The module map gives us a named C module that Swift can import. In fact, we can change the name of the module. For example, we can change to `module Box2D` which is more Swift looking:
 
 ```C
 module Box2D {
@@ -149,6 +149,10 @@ In this SpriteKit-Box2D integration, I kept the wrappers to a minimum. They are 
 ### Go Further
 
 Mixing Swift with C is a large topic and this project is a first entry to it. The WWDC 2025 session [Safely mix C, C++, and Swift](https://www.youtube.com/watch?v=fFPq_4_LCqo) covers more details and advanced memory safety features from Swift 6.2.
+
+### Links
+
+- [Modules](https://clang.llvm.org/docs/Modules.html), Clang documentation.
 
 ## onChanged vs updating
 
