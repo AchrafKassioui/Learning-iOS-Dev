@@ -116,10 +116,10 @@ We can use C methods directly inside Swift code. But C types do not always behav
 
 ```swift
 /// Does not compile yet, because b2BodyId is not Hashable
-var indexedEntities: [b2BodyId: SKNode] = [:]
+var dictionary: [b2BodyId: SKNode] = [:]
 ```
 
-We can add these conformances manually. In this case, `b2BodyId` is a Box2D handle made of `index1`, `world0`, and `generation`. Two body ids are the same handle when those fields match.
+We can add these conformances manually. In this case, [`b2BodyId`](https://box2d.org/documentation/group__id.html#structb2_body_id) is a Box2D handle made of `index1`, `world0`, and `generation`. Two body ids are the same handle when those fields match.
 
 ```swift
 extension b2BodyId: @retroactive Equatable {
@@ -139,7 +139,7 @@ extension b2BodyId: @retroactive Hashable {
 }
 
 /// Now compiles!
-var indexedEntities: [b2BodyId: SKNode] = [:]
+var dictionary: [b2BodyId: SKNode] = [:]
 ```
 
 Note how we used `extension` directly on a C type and added Swift code to it!
