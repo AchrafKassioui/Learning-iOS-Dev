@@ -4,7 +4,7 @@
 
 *31 May 2026*
 
-It's possible to use C libraries directly inside Swift code. [SpriteKit-Box2D](https://github.com/AchrafKassioui/SpriteKit-Box2D) is a demo project that integrate SpriteKit, used with Swift, and Box2D version 3, written in C. Below are the minimal steps needed to mix C and Swift in the same Xcode project.
+It's possible to use C directly inside Swift. Below is a tutorial on how to mix Swift and C in the same Xcode project, using [SpriteKit-Box2D](https://github.com/AchrafKassioui/SpriteKit-Box2D) as a sample app.
 
 ### Pick the C Library
 
