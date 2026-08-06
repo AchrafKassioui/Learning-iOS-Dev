@@ -1,5 +1,36 @@
 # Learning iOS Development
 
+## App & Target
+
+*5 Aug 2026*
+
+In Xcode, a target can have multiple structs conforming to `App`, but only one can be marked with the `@main` attribute.
+
+```swift
+@main
+struct MyApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
+```
+
+An Xcode project can have multiple targets, each with its own `@main` entry point.
+
+To create a new target:
+
+- File > New > Target
+
+A file can belong to one or more targets. Its membership is configured in:
+
+- File inspector > Target Membership
+
+<img src="Screenshots/Xcode-Target-Memembership.png" alt="Xcode Target Memembership" style="width:25%;" />
+
+If a target has more than one type marked with `@main`, it won't compile.
+
 ## SwiftUI Metal View
 
 *24 Jun 2026*
